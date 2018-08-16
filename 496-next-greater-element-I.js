@@ -22,3 +22,4 @@ const nextGreaterElement = function(findNums, nums) {
 
 console.log(nextGreaterElement([4,1,2], [1,3,4,2]))
 console.log(nextGreaterElement([2,4], [1,2,3,4]))
+console.log(nextGreaterElement([1,2,3], [9, 8, 7, 3, 2, 1, 6]))
