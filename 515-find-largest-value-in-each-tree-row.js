@@ -10,22 +10,22 @@
  * @return {number[]}
  */
 const largestValues = function(root) {
-    const res = []
-    single(root, 0, res)
-    return res
+  const res = [];
+  single(root, 0, res);
+  return res;
 };
 
 function single(node, row, arr) {
-    if (node == null) {
-        return null
+  if (node == null) {
+    return null;
+  }
+  if (row < arr.length) {
+    if (node.val > arr[row]) {
+      arr[row] = node.val;
     }
-    if (row < arr.length) {
-        if (node.val > arr[row]) {
-            arr[row] = node.val
-        }
-    } else {
-        arr[row] = node.val
-    }
-    single(node.left, row + 1, arr)
-    single(node.right, row + 1, arr)
+  } else {
+    arr[row] = node.val;
+  }
+  single(node.left, row + 1, arr);
+  single(node.right, row + 1, arr);
 }
