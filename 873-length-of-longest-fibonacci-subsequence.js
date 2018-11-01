@@ -5,7 +5,7 @@
 const lenLongestFibSubseq = function(A) {
   const n = A.length;
   let max = 0;
-  const dp = Array(n).map(el => []);
+  const dp = Array(n).map(el => Array(n).fill(0));
   for (let i = 1; i < n; i++) {
     let l = 0,
       r = i - 1;
