@@ -3,65 +3,53 @@
  * @return {number}
  */
 const shortestBridge = function(A) {
-    const h = A.length
-    const w = A[0].length
-    let queue = []
-  
-    let foundOneIsland = false
-    for (let i = 0; i < h && !foundOneIsland; i++) {
-      for (let j = 0; j < w && !foundOneIsland; j++) {
-        if (A[i][j] == 1) {
-          dfs(A, i, j, w, h)
-          foundOneIsland = true
+    let r = A.length;
+    let c = A[0].length;
+    let found = false;
+    let queue = [];
+    for (let i = 0; i < r; i++) {
+        for (let j = 0; j < c; j++) {
+            if (A[i][j]) {
+                dfs(A, i, j, queue);
+                found = true;
+                break;
+            }
         }
-      }
+        if (found) break;
     }
-    // BFS每一个元素向外扩展，直至找到另一个小岛
-    const direction = [0, 1, 0, -1, 0]
-    let result = 0
-    while (queue.length !== 0) {
-      let size = queue.length
-      while (size--) {
-        const item = queue.pop()
-        const x = item.i
-        const y = item.j
-        for (let i = 0; i < 4; i++) {
-          // 向四个方向扩展 技巧
-          const newX = x + direction[i]
-          const newY = y + direction[i + 1]
-          if (newX < 0 || newY < 0 || newX > h - 1 || newY > w - 1 || A[newX][newY] == 2) {
-            continue
-          }
-          // 找到另一个小岛
-          if (A[newX][newY] == 1) {
-            return result
-          }
-          A[newX][newY] = 2
-          queue.unshift({
-            i: newX,
-            j: newY
-          })
+    
+    let replace = [];
+    let count = 0;
+    let cells = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    while (queue.length) {
+        let pos = queue.shift();
+        
+        for (let i = 0; i < cells.length; i++) {
+            let x = pos[0] + cells[i][0]; 
+            let y = pos[1] + cells[i][1];
+            
+            if (0 <= x && x < r && 0 <= y && y < c && A[x][y] != 2) {
+                if (A[x][y] == 1) return count;
+                A[x][y] = 2;
+                replace.push([x, y]);
+            }
         }
-      }
-      ++result
+        
+        if (!queue.length) {
+            queue = replace;
+            replace = [];
+            count++;
+        }
     }
-  
-    return result
-  
-    // 通过DFS找到其中一个小岛
-    function dfs (A, i, j, w, h) {
-      if (i < 0 || j < 0 || i > h - 1 || j > w - 1 || A[i][j] != '1') {
-        return
-      }
-  
-      A[i][j] = 2
-      queue.push({
-        i,
-        j
-      })
-      dfs(A, i - 1, j, w, h)
-      dfs(A, i + 1, j, w, h)
-      dfs(A, i, j - 1, w, h)
-      dfs(A, i, j + 1, w, h)
-    }
-  };
+};
+
+function dfs(A, x, y, queue) {
+    if (x < 0 || x >= A.length || y < 0 || y >= A[0].length || A[x][y] == 0 || A[x][y] == 2) return;
+    
+    A[x][y] = 2;
+    queue.push([x, y]);
+    dfs(A, x-1, y, queue);
+    dfs(A, x+1, y, queue);
+    dfs(A, x, y-1, queue);
+    dfs(A, x, y+1, queue);
+}
