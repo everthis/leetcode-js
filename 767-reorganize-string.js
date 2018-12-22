@@ -2,43 +2,37 @@
  * @param {string} S
  * @return {string}
  */
-function reorganizeString(S) {
-    const map = {}
-    const cArr = S.split('')
-    for(let c of cArr) {
-        let count = (map[c] || 0 ) + 1
-        // impossible to form a solution
-        if(count > (S.length + 1) / 2 ) {
-            return ''
+const reorganizeString = function(S) {
+    if (!S || S.length <= 1) {
+        return S;
+    }
+    const freqs = Array(26).fill(0);
+    const acode = 'a'.charCodeAt(0);
+    for (let i = 0, n = S.length; i < n; i++) {
+        const index = S.charCodeAt(i) - acode;
+        freqs[index]++;
+        if (freqs[index] > Math.ceil(n / 2)) {
+            return '';
         }
-        map[c] = count
     }
-
-    const pq = []
-    for(let c of Object.keys(map)) {
-        pq.push([c, map[c]])
-    }
-    pq.sort((a, b) => b[1] - a[1])
-
-    // build the result
-    let sb = ''
-    while(pq.length > 0) {
-        let first = pq.shift()
-        if (sb.length === 0 || first[0] !== sb.charAt(sb.length - 1)) {
-            sb += first[0]
-            if (--first[1] > 0) {
-                pq.push(first)
-            }
-        } else {
-            let second = pq.shift()
-            sb += second[0]
-            if (--second[1] > 0) {
-                pq.push(second)
-            }
-            pq.push(first)
+    const list = [];
+    for (let i = 0, n = S.length; i < 26; i++) {
+        if (freqs[i] === 0) {
+            continue;
         }
-        pq.sort((a, b) => b[1] - a[1])
+        list.push({ch: String.fromCharCode(i + acode), freq: freqs[i]});
     }
-
-    return sb
-}
+    list.sort((l1, l2) => l2.freq - l1.freq);
+    const parts = [];
+    for (let i = 0, n = list[0].freq; i < n; i++) {
+        parts.push(list[0].ch);
+    }
+    let idx = 0;
+    for (let i = 1, n = list.length; i < n; i++) {
+        for (let j = 0, m = list[i].freq; j < m; j++) {
+            idx %= list[0].freq;
+            parts[idx++] += list[i].ch;
+        }
+    }
+    return parts.join('');
+};
