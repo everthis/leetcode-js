@@ -4,31 +4,15 @@
  * @return {string}
  */
 const addBinary = function(a, b) {
-    const aLen = a.length
-    const bLen = b.length
-    
-    const len = Math.max(aLen, bLen)
-    const as = a.padStart(len, '0')
-    const bs = b.padStart(len, '0')
-
-    let ext = 0
-    const res = []
-    for(let i = len - 1; i >= 0; i--) {
-        let tmp = ext
-
-        if (as[i] === '1' && bs[i] === '1') {
-            ext = 1
-            res.push(''+tmp)
-        } else {
-            let sum = +as[i] + (+bs[i]) + (+tmp)
-            if (sum === 2) {
-                ext = 1
-                res.push('0')
-            } else {
-                ext = 0
-                res.push(''+sum)
-            }
-        }
+    let s = ''
+    let c = 0
+    let i = a.length - 1
+    let j = b.length - 1
+    while(i >= 0 || j >= 0 || c === 1) {
+        c += i >= 0 ? +a[i--] : 0
+        c += j >= 0 ? +b[j--] : 0
+        s = (c % 2 === 1 ? '1' : '0') + s
+        c = Math.floor(c / 2)
     }
-    return ext === 1 ? '1' + res.reverse().join('').trim() : res.reverse().join('').trim()
+    return s
 };
