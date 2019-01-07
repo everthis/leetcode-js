@@ -3,26 +3,23 @@
  * @return {boolean}
  */
 const isPalindrome = function(s) {
-    let start = 0
-    let end = s.length - 1
+  let start = 0
+  let end = s.length - 1
 
-    let char = ''
-    while(start < end) {
-        while(start < s.length && !valid(s[start])) {
-          start++      
-        }
-        while(end >=0 && !valid(s[end])) {
-          end--      
-        }
-        if(start < s.length && end >=0) {
-          if(s[start].toLowerCase() !== s[end].toLowerCase()) return false           
-        }
-  
-        start++
-        end--
+  while(start < end) {
+    while(start < s.length && !valid(s[start])) {
+      start++      
     }
-  
-    return true
+    while(end >=0 && !valid(s[end])) {
+      end--      
+    }
+    if(start < s.length && end >=0) {
+      if(s[start].toLowerCase() !== s[end].toLowerCase()) return false           
+    }
+    start++
+    end--
+  }
+  return true
 };
 
 function valid(c) {
