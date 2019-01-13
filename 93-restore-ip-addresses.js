@@ -27,6 +27,35 @@ const restoreIpAddresses = function(s) {
       }
     }
   }
-
   return res;
+};
+
+// another method
+
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+const restoreIpAddresses = function(s) {
+  const ans = [];
+  const stack = [];
+  let ipstr;
+  const len = s.length;
+  function restoreIp(start) {
+    if (stack.length > 4) return;
+    if (stack.length === 4 && start > len - 1) {
+      ans.push(stack.slice().join("."));
+      return;
+    }
+    for (let i = start; i < start + 3; i++) {
+      if (i > len - 1) return;
+      ipstr = s.substring(start, i + 1);
+      if ((ipstr[0] === "0" && ipstr.length !== 1) || ipstr > 255) return;
+      stack.push(ipstr);
+      restoreIp(i + 1);
+      stack.pop();
+    }
+  }
+  restoreIp(0);
+  return ans;
 };
