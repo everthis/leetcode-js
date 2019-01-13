@@ -28,3 +28,24 @@ const detectCycle = function(head) {
   }
   return null
 };
+
+// another method
+
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+const detectCycle = (head) => {
+  if (!head) return head;
+  let currentNode = head;
+  let previousNode = true;
+  while (currentNode) {
+    if (currentNode.previous) return currentNode
+    if (!currentNode.previous) {
+      currentNode.previous = previousNode;
+      previousNode = currentNode;
+      currentNode = currentNode.next;
+    }
+  }
+  return null;
+};
