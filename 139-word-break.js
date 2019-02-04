@@ -24,3 +24,30 @@ const wordBreak = function(s, wordDict) {
 
     return dp[len - 1];
 };
+
+// another
+
+/**
+ * @param {string} s
+ * @param {string[]} wordDict
+ * @return {boolean}
+ */
+const wordBreak = function(s, wordDict) {
+    const len = s.length;
+    const f = new Array(len + 1).fill(false);
+
+    f[0] = true;
+
+    for(let i = 1; i <= len; i++){
+        for(let str of wordDict){
+            if(str.length <= i && f[i - str.length]){
+                if(s.substring(i - str.length, i) === str){
+                    f[i] = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    return f[len];
+};
