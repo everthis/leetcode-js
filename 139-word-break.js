@@ -40,11 +40,11 @@ const wordBreak = function(s, wordDict) {
 
     for(let i = 1; i <= len; i++){
         for(let str of wordDict){
-            if(str.length <= i && f[i - str.length]){
-                if(s.substring(i - str.length, i) === str){
-                    f[i] = true;
-                    break;
-                }
+            if(str.length <= i 
+               && f[i - str.length] 
+               && s.slice(i - str.length, i) === str){
+                f[i] = true;
+                break;
             }
         }
     }
