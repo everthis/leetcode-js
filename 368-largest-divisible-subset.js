@@ -4,10 +4,10 @@
  */
 const largestDivisibleSubset = function(nums) {
   let len = nums.length;
-  let m = 0;
-  let mi;
-  const T = new Array(len).fill(0);
+  let maxSize = 0;
+  let maxSizeLastIdx;
   // T[n] should be the length of the largest divisible subset whose smallest number is a[n]
+  const T = new Array(len).fill(0);
   const son = new Array(len).fill(0);
   nums.sort((a, b) => a - b);
   for (let i = 0; i < len; i++) {
@@ -17,15 +17,15 @@ const largestDivisibleSubset = function(nums) {
         son[i] = j;
       }
     }
-    if (T[i] > m) {
-      m = T[i];
-      mi = i;
+    if (T[i] > maxSize) {
+      maxSize = T[i];
+      maxSizeLastIdx = i;
     }
   }
   const re = [];
-  for (let i = 0; i < m; i++) {
-    re.unshift(nums[mi]);
-    mi = son[mi];
+  for (let i = 0; i < maxSize; i++) {
+    re.unshift(nums[maxSizeLastIdx]);
+    maxSizeLastIdx = son[maxSizeLastIdx];
   }
   return re;
 };
