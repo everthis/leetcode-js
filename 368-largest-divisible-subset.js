@@ -7,6 +7,7 @@ const largestDivisibleSubset = function(nums) {
   let m = 0;
   let mi;
   const T = new Array(len).fill(0);
+  // T[n] should be the length of the largest divisible subset whose smallest number is a[n]
   const son = new Array(len).fill(0);
   nums.sort((a, b) => a - b);
   for (let i = 0; i < len; i++) {
