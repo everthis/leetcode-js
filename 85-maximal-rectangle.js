@@ -4,8 +4,8 @@
  */
 const maximalRectangle = function(matrix) {
     if(matrix.length === 0) return 0;
-    const m = matrix.length;
-    const n = matrix[0].length;
+    const m = matrix.length; // rows
+    const n = matrix[0].length; // cols
     const left = new Array(n).fill(0)
     const right = new Array(n).fill(n)
     const height = new Array(n).fill(0);
@@ -28,8 +28,9 @@ const maximalRectangle = function(matrix) {
             else {right[j] = n; cur_right = j;}    
         }
         // compute the area of rectangle (can do this from either side)
-        for(let j = 0; j < n; j++)
-            maxA = Math.max(maxA, (right[j]-left[j]) * height[j]);
+        for(let j = 0; j < n; j++) {
+          maxA = Math.max(maxA, (right[j] - left[j]) * height[j]); 
+        }
     }
     return maxA; 
 };
