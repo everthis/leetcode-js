@@ -14,8 +14,7 @@ const searchRange = function(nums, target) {
     if (target === nums[mid]) {
       idx = mid;
       break;
-    }
-    if (target < nums[mid]) end = mid - 1;
+    } else if (target < nums[mid]) end = mid - 1;
     else start = mid + 1;
   }
   if (idx == null) return [-1, -1];
