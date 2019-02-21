@@ -38,3 +38,24 @@ function build(arr, parent, type) {
     build(right, node, 'right')
     return node
 }
+
+// another
+
+const sortedListToBST = function(head, tail = null) {
+    if (head === tail) {
+        return null;
+    } else if (head.next === tail) {
+        return new TreeNode(head.val);
+    } else {
+        let slow = head; 
+        let fast = head;
+        while (fast !== tail && fast.next !== tail) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        let node = new TreeNode(slow.val);
+        node.left = sortedListToBST(head, slow);
+        node.right = sortedListToBST(slow.next, tail);
+        return node;
+    }
+};
