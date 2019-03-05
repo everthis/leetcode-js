@@ -14,3 +14,23 @@ const minDeletionSize = function(A) {
   }
   return A[0].length - Math.max(...dp)
 }
+
+// another
+
+const minDeletionSize = function(A) {
+  const rows = A.length
+  const cols = A[0].length
+  let res = cols - 1
+  let k
+  const dp = new Array(cols).fill(1)
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < i; j++) {
+      for (k = 0; k < rows; k++) {
+        if (A[k][j] > A[k][i]) break
+      }
+      if (k === rows && dp[j] + 1 > dp[i]) dp[i] = dp[j] + 1
+    }
+    res = Math.min(res, cols - dp[i])
+  }
+  return res
+}
