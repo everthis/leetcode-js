@@ -20,7 +20,7 @@ const multiply = function(num1, num2) {
     }
   }
 
-  let sb = "";
-  for (let p of pos) if (!(sb.length === 0 && p === 0)) sb += p;
-  return sb.length === 0 ? "0" : sb;
+  let str = "";
+  for (let p of pos) if (!(str.length === 0 && p === 0)) str += p;
+  return str.length === 0 ? "0" : str;
 };
