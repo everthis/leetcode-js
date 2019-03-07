@@ -34,3 +34,37 @@ const canPartition = function(nums) {
     }
     return dp[n][sum]
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+const canPartition = function(nums) {
+  if (nums.length < 2) return false
+
+  const total = nums.reduce((a, c) => a + c)
+  if (total % 2 !== 0) return false
+
+  nums.sort((a, b) => b - a)
+  const target = total / 2
+
+  if (nums[0] > target) return false
+  return findCombination(nums, target, 0)
+}
+
+function findCombination(nums, target, start) {
+  if (target === 0) {
+    return true
+  } else {
+    for (let i = start; i < nums.length; i++) {
+      if (nums[i] <= target) {
+        if (findCombination(nums, target - nums[i], i + 1)) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+}
