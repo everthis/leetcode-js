@@ -46,6 +46,42 @@ function dfs(grid, visited, dir, waterHeight, row, col, n) {
  * @param {number[][]} grid
  * @return {number}
  */
+const dirs = [[-1, 0], [1, 0], [0, 1], [0, -1]];
+const swimInWater = grid => {
+  let time = 0;
+  let N = grid.length;
+  const visited = new Set();
+  while (!visited.has(N * N - 1)) {
+    visited.clear();
+    dfs(grid, 0, 0, time, visited);
+    time++;
+  }
+  return time - 1;
+};
+
+function dfs(grid, i, j, time, visited) {
+  if (
+    i < 0 ||
+    i > grid.length - 1 ||
+    j < 0 ||
+    j > grid[0].length - 1 ||
+    grid[i][j] > time ||
+    visited.has(i * grid.length + j)
+  )
+    return;
+  visited.add(i * grid.length + j);
+  for (let dir of dirs) {
+    dfs(grid, i + dir[0], j + dir[1], time, visited);
+  }
+}
+
+
+// another
+
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
 class UnionFind {
   constructor(N) {
     this.id = [];
