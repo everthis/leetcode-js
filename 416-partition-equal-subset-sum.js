@@ -68,3 +68,27 @@ function findCombination(nums, target, start) {
     return false
   }
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+function helper(nums, target, pos) {
+  for (let i = pos; i <= nums.length; i++) {
+    if (i != pos && nums[i] == nums[i - 1]) continue
+    if (nums[i] === target) return true
+    if (nums[i] > target) break
+    if (helper(nums, target - nums[i], i + 1)) return true
+  }
+  return false
+}
+const canPartition = function(nums) {
+  const sum = nums.reduce((sum, n) => (sum += n), 0) / 2
+  if (sum % 1 != 0) {
+    return false
+  }
+
+  return helper(nums, sum, 0)
+}
