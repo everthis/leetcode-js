@@ -10,42 +10,14 @@
  * @return {TreeNode}
  */
 const bstFromPreorder = function(preorder) {
-  let preIndex = { index: 0 };
-  return constructTreeUtil(
-    preorder,
-    preIndex,
-    preorder[0],
-    Number.MIN_SAFE_INTEGER,
-    Number.MAX_SAFE_INTEGER,
-    preorder.length
-  );
-  function constructTreeUtil(pre, preIndex, key, min, max, size) {
-    if (preIndex.index >= size) {
-      return null;
-    }
-    let root = null;
-    if (key > min && key < max) {
-      root = new TreeNode(key);
-      preIndex.index = preIndex.index + 1;
-      if (preIndex.index < size) {
-        root.left = constructTreeUtil(
-          pre,
-          preIndex,
-          pre[preIndex.index],
-          min,
-          key,
-          size
-        );
-        root.right = constructTreeUtil(
-          pre,
-          preIndex,
-          pre[preIndex.index],
-          key,
-          max,
-          size
-        );
-      }
-    }
+  let i = 0;
+  return bstFromPreorder(preorder, 0, 100);
+
+  function bstFromPreorder(A, lo, hi) {
+    if (i === A.length || A[i] < lo || A[i] > hi) return null;
+    let root = new TreeNode(A[i++]);
+    root.left = bstFromPreorder(A, lo, root.val);
+    root.right = bstFromPreorder(A, root.val, hi);
     return root;
   }
 };
