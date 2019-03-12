@@ -28,3 +28,28 @@ function traverse(node, hash) {
   traverse(node.left, hash)
   traverse(node.right, hash)
 }
+
+
+// another
+const findMode = function(root) {
+  let res = [];
+  let cnt = 1;
+  let mx = 0;
+  let pre = null;
+  let search = function(node) {
+    if (!node) return;
+    search(node.left);
+    if (pre) {
+      cnt = (node.val === pre.val) ? cnt + 1 : 1;
+    }
+    if (cnt >= mx) {
+      if (cnt > mx) res.length = 0;
+      res.push(node.val);
+      mx = cnt;
+    }
+    pre = node;
+    search(node.right);
+  }
+  search(root);
+  return res;
+};
