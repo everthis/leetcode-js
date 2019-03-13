@@ -22,6 +22,5 @@ const memorySearch = (s, i, p, k, memory) => {
   } else {
     memory[i][k] = firstMatch && memorySearch(s, i + 1, p, k + 1, memory);
   }
-
   return memory[i][k];
 };
