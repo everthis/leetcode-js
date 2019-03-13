@@ -17,6 +17,3 @@ const isHappy = function(n) {
   }
   return false;
 };
-
-console.log(isHappy(2));
-console.log(isHappy(19));
