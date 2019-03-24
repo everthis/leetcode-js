@@ -10,3 +10,22 @@ const maxScoreSightseeingPair = function(A) {
     }
     return res;
 };
+
+
+// another
+
+/**
+ * @param {number[]} A
+ * @return {number}
+ */
+const maxScoreSightseeingPair = function(A) {
+    let ans =A[0];
+    let prevBestIdx =0;
+    for(let j=1;j<A.length;j++){
+        ans = Math.max(ans, A[prevBestIdx]+prevBestIdx+A[j]-j);
+        if(A[prevBestIdx ]+prevBestIdx <A[j]+j){
+            prevBestIdx =j;
+        }
+    }
+    return ans;
+};
