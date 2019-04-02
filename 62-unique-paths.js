@@ -14,3 +14,23 @@ const uniquePaths = function(m, n) {
     }
     return dp[m - 1][n - 1]
 };
+
+// another
+
+/**
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+const uniquePaths = function(m, n) {
+    return factorial(m+n-2)/(factorial(m - 1) * factorial(n - 1))
+};
+
+function factorial(n) {
+  let res = 1
+  while(n > 0) {
+    res *= n
+    n--
+  }
+  return res
+}
