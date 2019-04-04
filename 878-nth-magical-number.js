@@ -21,3 +21,22 @@ const nthMagicalNumber = function(N, A, B) {
   let res = Math.floor((N - 1) / arr.length) * arr[arr.length - 1] + arr[idx]
   return res % (1e9 + 7)
 }
+
+// another
+
+const nthMagicalNumber = function(N, A, B) {
+  const gcd = (x, y) => {
+    if (x == 0) return y
+    return gcd(y % x, x)
+  }
+  const MOD = 1e9 + 7
+  const L = (A / gcd(A, B)) * B
+  let lo = 0
+  let hi = 1e15
+  while (lo < hi) {
+    let mi = lo + Math.trunc((hi - lo) / 2)
+    if (Math.trunc(mi / A) + Math.trunc(mi / B) - Math.trunc(mi / L) < N) lo = mi + 1
+    else hi = mi
+  }
+  return lo % MOD
+}
