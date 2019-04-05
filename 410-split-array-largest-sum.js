@@ -32,6 +32,42 @@ function splitArray(nums, m) {
     }
     return left
 }
+
+
+/**
+ * @param {number[]} nums
+ * @param {number} m
+ * @return {number}
+ */
+const splitArray = function(nums, m) {
+  let l = 0,
+    r = 0
+  for (let el of nums) {
+    if (el > l) l = el
+    r += el
+  }
+  while (l < r) {
+    let mid = Math.floor((l + r) / 2)
+    if (numOfSubArrLessOrEqualThanM(nums, mid, m)) r = mid
+     else l = mid + 1
+  }
+  return l
+}
+
+function numOfSubArrLessOrEqualThanM(nums, target, m) {
+  let sum = 0,
+    count = 1
+  for (let el of nums) {
+    sum += el
+    if (sum > target) {
+      sum = el
+      count++
+    }
+    if (count > m) return false
+  }
+  return true
+}
+
 /**
 
 Introduction to this problem:
