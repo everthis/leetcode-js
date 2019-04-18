@@ -25,3 +25,19 @@ const bestRotation = function(A) {
   }
   return ans
 }
+
+// another
+
+const bestRotation = function(A) {
+    let n = A.length;
+    let c = new Array(n).fill(0);
+    for(let i = 0; i < n; i++) {
+        c[(i - A[i] + 1 + n) % n] -= 1;
+    }
+    let max = 0;
+    for(let i = 1; i < n; i++) {
+        c[i] += c[i-1] + 1;
+        max = c[i] > c[max] ? i : max;
+    }
+    return max;
+}
