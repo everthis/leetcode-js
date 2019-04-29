@@ -18,3 +18,24 @@ const maxUncrossedLines = function(A, B) {
   }
   return dp[lenA][lenB]
 };
+
+
+// another
+
+const maxUncrossedLines = function(A, B) {
+	const m = A.length, n = B.length
+  const dp = new Array(n + 1).fill(0)
+  let prev
+
+	for (let i = 1; i <= m; i++) {
+		prev = dp[0]
+		for (let j = 1; j <= n; j++) {
+			let backup = dp[j]
+      if (A[i - 1] == B[j - 1]) dp[j] = prev + 1
+      else dp[j] = Math.max(dp[j], dp[j - 1])
+			prev = backup;
+		}
+	}
+
+	return dp[n];
+};
