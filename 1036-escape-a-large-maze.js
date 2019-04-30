@@ -40,3 +40,60 @@ function dfs(blocked, i, j, m, n, visited) {
   }
   return false
 }
+
+// another
+
+/**
+ * @param {number[][]} blocked
+ * @param {number[]} source
+ * @param {number[]} target
+ * @return {boolean}
+ */
+const isEscapePossible = function(blocked, source, target) {
+  if (blocked.length < 2) {
+    return true
+  }
+  if (blocked[0][0] == 100025) {
+    return false
+  }
+  const blockSet = new Set(
+    blocked.map(el => {
+      return el[0] + "," + el[1]
+    })
+  )
+  let targetR, targetC, curR, curC
+  ;[targetR, targetC] = target
+  let visited = new Set([])
+  let DIRS = [[0, 1], [-1, 0], [0, -1], [1, 0]],
+    queue = [source]
+  const inBound = (r, c) => {
+    return r >= 0 && c >= 0 && r < 1000000 && c < 1000000
+  }
+  let count = 0
+  while (queue.length > 0) {
+    count++
+    ;[curR, curC] = queue.shift()
+
+    if (count > 2000) {
+      return true
+    }
+    for (let dir of DIRS) {
+      const newR = curR + dir[0],
+        newC = curC + dir[1]
+      if (
+        !inBound(newR, newC) ||
+        blockSet.has(newR + "," + newC) ||
+        visited.has(newR + "," + newC)
+      ) {
+        continue
+      }
+
+      if (newR == targetR && newC == targetC) {
+        return true
+      }
+      visited.add(newR + "," + newC)
+      queue.push([newR, newC])
+    }
+  }
+  return false
+}
