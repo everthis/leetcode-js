@@ -23,3 +23,27 @@ const numDistinct = function(s, t) {
   }
   return mem[tlen][slen]
 }
+
+
+// another
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {number}
+ */
+const numDistinct = function(s, t) {
+  const m = t.length,
+    n = s.length
+  const cur = new Array(m + 1).fill(0)
+  cur[0] = 1
+  for (let j = 1; j <= n; j++) {
+    let pre = 1
+    for (let i = 1; i <= m; i++) {
+      let temp = cur[i]
+      cur[i] = cur[i] + (t[i - 1] == s[j - 1] ? pre : 0)
+      pre = temp
+    }
+  }
+  return cur[m]
+}
