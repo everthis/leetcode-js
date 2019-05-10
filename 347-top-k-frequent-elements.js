@@ -4,19 +4,30 @@
  * @return {number[]}
  */
 const topKFrequent = function(nums, k) {
-  const hash = {};
-  nums.forEach(el => {
-    if (hash.hasOwnProperty(el)) {
-      hash[el] += 1;
-    } else {
-      hash[el] = 1;
-    }
-  });
-
-  const arr = Object.entries(hash).sort((a, b) => b[1] - a[1]);
-  const res = [];
-  for (let i = 0; i < k; i++) {
-    res.push(+arr[i][0]);
+  const hash = {}
+  for(let i = 0; i < nums.length; i++) {
+    if(hash.hasOwnProperty(nums[i])) hash[nums[i]]++
+    else hash[nums[i]] = 1
   }
-  return res;
+  const res = new Array()
+  const keys = Object.keys(hash)
+  
+  const bucket = new Array(nums.length)
+  
+  for(let k of keys) {
+    let freq = hash[k]
+    if(bucket[freq] == null) {
+      bucket[freq] = []
+    }
+    bucket[freq].push(k)
+  }
+  
+  for(let i = bucket.length - 1; i >= 0 && res.length < k; i--) {
+    if(bucket[i] != null) {
+      res.push(...bucket[i])
+    }
+  }
+  
+  return res
 };
+
