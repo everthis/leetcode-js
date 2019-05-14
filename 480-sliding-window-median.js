@@ -31,3 +31,46 @@ const medianSlidingWindow = function(nums, k) {
   }
   return medians
 }
+
+// another
+
+const medianSlidingWindow = function(nums, k) {
+  let pq = []
+  for (let i = 0; i < k; i++) {
+    insert(nums[i])
+  }
+  let res = []
+  res.push(findMid())
+  for (let i = k; i < nums.length; i++) {
+    remove(nums[i - k])
+    insert(nums[i])
+    res.push(findMid())
+  }
+  return res
+  function findMid() {
+    let mid = (pq.length - 1) / 2
+    return (pq[Math.ceil(mid)] + pq[Math.floor(mid)]) / 2
+  }
+  function insert(n) {
+    if (pq.length === 0 || pq[pq.length - 1] <= n) {
+      pq.push(n)
+    } else {
+      let idx = bsEnd(pq, n)
+      pq.splice(idx, 0, n)
+    }
+  }
+  function bsEnd(arr, n) {
+    let lo = 0,
+      hi = arr.length - 1
+    while (lo < hi) {
+      let mid = Math.floor((lo + hi) / 2)
+      if (arr[mid] < n) lo = mid + 1
+      else hi = mid
+    }
+    return hi
+  }
+  function remove(n) {
+    let idx = bsEnd(pq, n)
+    pq.splice(idx, 1)
+  }
+}
