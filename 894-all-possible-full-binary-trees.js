@@ -10,13 +10,8 @@
  * @return {TreeNode[]}
  */
 const allPossibleFBT = function(N) {
-  if (N <= 0) {
-    return []
-  }
-  const dp = new Array(N + 1)
-  for (let i = 0; i <= N; i++) {
-    dp[i] = []
-  }
+  if (N <= 0) return []
+  const dp = Array.from({ length: N + 1 }, () => [])
   dp[1].push(new TreeNode(0))
 
   for (let numNode = 1; numNode <= N; numNode += 2) {
