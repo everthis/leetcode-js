@@ -17,3 +17,22 @@ const countDigitOne = function(n) {
   }
   return count
 }
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const countDigitOne = function(n) {
+  if (n <= 0) return 0
+  let ones = 0
+  for (let i = 1, q = n; i <= n; i *= 10, q = (q / 10) >> 0) {
+    let pre = (n / (i * 10)) >> 0,
+      cur = q % 10,
+      suf = n % i
+    ones += pre * i
+    ones += 1 < cur ? i : 1 == cur ? suf + 1 : 0
+  }
+  return ones
+}
