@@ -19,3 +19,29 @@ function dfs(tiles, used, visited, path, obj) {
     used[i] = false;
   }
 }
+
+// another
+
+/**
+ * @param {string} tiles
+ * @return {number}
+ */
+const numTilePossibilities = function(tiles) {
+  let used = new Array(tiles.length).fill(false);
+  let visited = new Set();
+  let cnt = 0;
+  const dfs = (path) => {
+    if (path.length && !visited.has(path)) {
+      visited.add(path);
+      cnt++;
+    }
+    for (let i = 0; i < tiles.length; i++) {
+      if (used[i]) continue;
+      used[i] = true;
+      dfs(path + tiles[i]);
+      used[i] = false;
+    }
+  }
+  dfs('');
+  return cnt;
+};
