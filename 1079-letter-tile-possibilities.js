@@ -45,3 +45,30 @@ const numTilePossibilities = function(tiles) {
   dfs('');
   return cnt;
 };
+
+// another
+
+/**
+ * @param {string} tiles
+ * @return {number}
+ */
+const numTilePossibilities = function(tiles) {
+  const count = new Array(26).fill(0)
+  const ACode = 'A'.charCodeAt(0)
+  for (let i = 0, len = tiles.length; i < len; i++) {
+    count[tiles.charCodeAt(i) - ACode]++
+  }
+  return dfs(count)
+}
+
+function dfs(arr) {
+  let sum = 0
+  for (let i = 0; i < 26; i++) {
+    if (arr[i] === 0) continue
+    sum++
+    arr[i]--
+    sum += dfs(arr)
+    arr[i]++
+  }
+  return sum
+}
