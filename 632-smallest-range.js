@@ -85,3 +85,102 @@ PQ.prototype.swap = function(i, j) {
   q[i] = q[j]
   q[j] = t
 }
+
+// another
+
+function Queue() {
+  this.data = []
+}
+
+Queue.prototype.pop = function() {
+  return this.data.shift()
+}
+
+Queue.prototype.getMax = function() {
+  let n = this.data.length - 1
+  let max = this.data[n]
+  if (max === undefined) {
+    return 100000000
+  }
+  return max.val
+}
+
+Queue.prototype.getMin = function() {
+  let min = this.data[0]
+  if (min === undefined) {
+    return -100000000
+  }
+  return min.val
+}
+
+Queue.prototype.add = function(node) {
+  if (!this.data.length) {
+    this.data.push(node)
+    return
+  }
+
+  let index = findIndex(this.data, node)
+  this.data.splice(index, 0, node)
+  return true
+
+  function findIndex(arr, node) {
+    let left = 0
+    let right = arr.length - 1
+    while (left <= right) {
+      let mid = Math.floor((left + right) / 2)
+      if (arr[mid].val === node.val) {
+        return mid
+      }
+
+      if (arr[mid].val > node.val) {
+        right = mid - 1
+      } else {
+        left = mid + 1
+      }
+    }
+    return left
+  }
+}
+
+function Node(list, val, index) {
+  this.list = list
+  this.val = val
+  this.index = index
+}
+/**
+ * @param {number[][]} nums
+ * @return {number[]}
+ */
+var smallestRange = function(nums) {
+  let queue = new Queue()
+  for (let i = 0; i < nums.length; i++) {
+    let node = new Node(i, nums[i][0], 0)
+    queue.add(node)
+  }
+
+  let a = Math.min(queue.getMin(), queue.getMax())
+  let b = Math.max(queue.getMin(), queue.getMax())
+  let ans = [a, b]
+  let min = ans[1] - ans[0]
+  for (;;) {
+    let a = Math.min(queue.getMin(), queue.getMax())
+    let b = Math.max(queue.getMin(), queue.getMax())
+    if (b - a < min) {
+      min = b - a
+      ans = [a, b]
+    }
+
+    let m = queue.pop()
+    let list = nums[m.list]
+    let index = m.index
+    if (index + 1 < list.length) {
+      m.index++
+      m.val = list[m.index]
+      queue.add(m)
+    } else {
+      break
+    }
+  }
+
+  return ans
+}
