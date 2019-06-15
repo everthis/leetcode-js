@@ -1,53 +1,38 @@
 /**
  * Initialize your data structure here.
  */
-const SummaryRanges = function() {
-  this.intervals = [];
-  this.map = Object.create(null);
-};
+var SummaryRanges = function() {
+  this.intervals = []
+}
+
 /**
  * @param {number} val
  * @return {void}
  */
 SummaryRanges.prototype.addNum = function(val) {
-  if (this.map[val]) {
-    return;
-  }
-  let l = this.map[val - 1] || 0;
-  let r = this.map[val + 1] || 0;
-  let len = l + r + 1;
-  this.map[val - l] = len;
-  this.map[val] = len;
-  this.map[val + r] = len;
-  let low = 0;
-  let high = this.intervals.length;
-  while (low < high) {
-    let mid = (low + high) >> 1;
-    if (this.intervals[mid][1] < val) {
-      low = mid + 1;
+  const current = [val, val]
+  const intervals = this.intervals
+  const less = []
+  const more = []
+  for (let vals of intervals) {
+    if (vals[0] > current[1] + 1) {
+      more.push(vals)
+    } else if (vals[1] + 1 < current[0]) {
+      less.push(vals)
     } else {
-      high = mid;
+      current[0] = Math.min(current[0], vals[0])
+      current[1] = Math.max(current[1], vals[1])
     }
   }
-  if (len === 1) {
-    this.intervals.splice(low, 0, [val, val]);
-  } else if (l > 0 && r > 0) {
-    let max = this.intervals[low][1];
-    this.intervals.splice(low, 1);
-    this.intervals[low - 1][1] = max;
-  } else if (l > 0) {
-    this.intervals[low - 1][1] = val;
-  } else {
-    this.intervals[low][0] = val;
-  }
-};
+  this.intervals = [...less, current, ...more]
+}
 
 /**
  * @return {number[][]}
  */
 SummaryRanges.prototype.getIntervals = function() {
-  return this.intervals;
-};
+  return this.intervals
+}
 
 /**
  * Your SummaryRanges object will be instantiated and called as such:
