@@ -25,3 +25,36 @@ const minCameraCover = function(root) {
     return left === 1 || right === 1 ? 2 : 0;
   }
 };
+
+ // another
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+const minCameraCover = function(root) {
+  let ans = 0
+  const covered = new Set([null])
+  dfs(root, null)
+  return ans
+  function dfs(node, parent) {
+    if (node) {
+      dfs(node.left, node)
+      dfs(node.right, node)
+      if (
+        !(
+          (parent || covered.has(node)) &&
+          covered.has(node.left) &&
+          covered.has(node.right)
+        )
+      ) {
+        ans += 1
+        covered
+          .add(node)
+          .add(parent)
+          .add(node.left)
+          .add(node.right)
+      }
+    }
+  }
+};
