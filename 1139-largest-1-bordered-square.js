@@ -21,8 +21,10 @@ const largest1BorderedSquare = function(grid) {
     for (let j = n - 1; j >= 0; j--) {
       let small = Math.min(hori[i][j], ver[i][j]);
       while (small > max) {
-        if (ver[i][j - small + 1] >= small && hori[i - small + 1][j] >= small)
+        if (ver[i][j - small + 1] >= small && hori[i - small + 1][j] >= small) {
           max = small;
+          break
+        }
         small--;
       }
     }
