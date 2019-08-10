@@ -14,3 +14,22 @@ const numSpecialEquivGroups = function(A) {
     )
   ).size;
 };
+
+// another
+
+/**
+ * @param {string[]} A
+ * @return {number}
+ */
+const numSpecialEquivGroups = function(A) {
+  const result = new Set();
+  for (let i of A) {
+    let arr = i.split("");
+    let res = [[], []];
+    for (let j = 0; j < arr.length; j++) {
+      res[j & 1].push(arr[j]);
+    }
+    result.add(res[0].sort().join("") + res[1].sort().join(""));
+  }
+  return result.size;
+};
