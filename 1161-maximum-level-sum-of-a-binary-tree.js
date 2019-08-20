@@ -36,3 +36,33 @@ const maxLevelSum = function(root) {
 
   return res
 }
+
+// DFS
+
+const maxLevelSum = function(root) {
+  let result = {};
+  let recursion = function(root, level) {
+    if (result[level] !== undefined) {
+      result[level] += root.val;
+    } else {
+      result[level] = root.val;
+    }
+    if (root.left !== null) {
+      recursion(root.left, level + 1);
+    }
+    if (root.right !== null) {
+      recursion(root.right, level + 1);
+    }
+  };
+  recursion(root, 1);
+  let resultkey = 1;
+  let max = Number.MIN_VALUE;
+  for (let key of Object.keys(result)) {
+    if (result[key] > max) {
+      max = result[key];
+      resultkey = key;
+    }
+  }
+  return Number(resultkey);
+};
+
