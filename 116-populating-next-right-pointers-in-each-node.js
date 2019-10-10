@@ -27,3 +27,16 @@ const connect = function(root) {
   }
   return root
 }
+
+// another
+
+const connect = function(root) {
+  if (!root) return null
+  if (root.left && root.right) {
+    root.left.next = root.right
+    root.right.next = root.next ? root.next.left : null
+  }
+  connect(root.left)
+  connect(root.right)
+  return root
+}
