@@ -24,3 +24,21 @@ const rightSideView = function(root) {
   }
   return res
 };
+
+// another
+
+const rightSideView = function(root) {
+  const res = []
+  const helper = function(node, level) {
+    if (!node) {
+      return
+    }
+    if (!res[level]) {
+      res.push(node.val)
+    }
+    helper(node.right, level + 1)
+    helper(node.left, level + 1)
+  }
+  helper(root, 0)
+  return res
+}
