@@ -30,3 +30,45 @@ const canFinish = function(numCourses, prerequisites) {
     return true
   }
 }
+
+// another
+
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+const canFinish = function(vertices, edges) {
+  const sortedOrder = []
+  if (vertices <= 0) {
+    return sortedOrder
+  }
+  const inDegree = Array(vertices).fill(0)
+  const graph = Array(vertices)
+    .fill(0)
+    .map(() => Array())
+  edges.forEach(edge => {
+    let parent = edge[0]
+    let child = edge[1]
+    graph[parent].push(child)
+    inDegree[child]++
+  })
+  const sources = []
+  for (let i = 0; i < inDegree.length; i++) {
+    if (inDegree[i] === 0) {
+      sources.push(i)
+    }
+  }
+  while (sources.length > 0) {
+    const vertex = sources.shift()
+    sortedOrder.push(vertex)
+
+    graph[vertex].forEach(child => {
+      inDegree[child] -= 1
+      if (inDegree[child] === 0) {
+        sources.push(child)
+      }
+    })
+  }
+  return sortedOrder.length === vertices ? true : false
+}
