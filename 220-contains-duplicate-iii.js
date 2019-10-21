@@ -4,7 +4,7 @@
  * @param {number} t
  * @return {boolean}
  */
-var containsNearbyAlmostDuplicate = function(nums, k, t) {
+const containsNearbyAlmostDuplicate = function(nums, k, t) {
   if (k < 1 || t < 0) {
     return false
   }
