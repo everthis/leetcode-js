@@ -3,18 +3,14 @@
  * @return {number}
  */
 const nthUglyNumber = function(n) {
-  if (n <= 0) return false
-  if (n == 1) return true
-  let t2 = 0,
-    t3 = 0,
-    t5 = 0
-  const k = Array(n).fill(0)
-  k[0] = 1
+  const dp = [1]
+  let [a, b, c] = [0, 0, 0]
   for (let i = 1; i < n; i++) {
-    k[i] = Math.min(k[t2] * 2, Math.min(k[t3] * 3, k[t5] * 5))
-    if (k[i] === k[t2] * 2) t2++
-    if (k[i] === k[t3] * 3) t3++
-    if (k[i] === k[t5] * 5) t5++
+    let [ua, ub, uc] = [dp[a] * 2, dp[b] * 3, dp[c] * 5]
+    dp[i] = Math.min(ua, ub, uc)
+    if (dp[i] === ua) a++
+    if (dp[i] === ub) b++
+    if (dp[i] === uc) c++
   }
-  return k[n - 1]
+  return dp[n - 1]
 }
