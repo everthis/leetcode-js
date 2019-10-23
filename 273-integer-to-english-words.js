@@ -1,70 +1,59 @@
-const LESS_THAN_20 = [
-  "",
-  "One",
-  "Two",
-  "Three",
-  "Four",
-  "Five",
-  "Six",
-  "Seven",
-  "Eight",
-  "Nine",
-  "Ten",
-  "Eleven",
-  "Twelve",
-  "Thirteen",
-  "Fourteen",
-  "Fifteen",
-  "Sixteen",
-  "Seventeen",
-  "Eighteen",
-  "Nineteen"
-];
-const TENS = [
-  "",
-  "Ten",
-  "Twenty",
-  "Thirty",
-  "Forty",
-  "Fifty",
-  "Sixty",
-  "Seventy",
-  "Eighty",
-  "Ninety"
-];
-const THOUSANDS = ["", "Thousand", "Million", "Billion"];
-const RADIXS = [1, 10 ** 3, 10 ** 6, 10 ** 9];
-
 /**
  * @param {number} num
  * @return {string}
  */
 const numberToWords = function(num) {
-  if (num === 0) {
-    return "Zero";
-  }
+  if (num === 0) return "Zero";
+  if (num <= 20) return translations.get(num);
+  const result = [];
 
-  let res = "";
-  for (let i = RADIXS.length - 1; i >= 0; i--) {
-    if (~~(num / RADIXS[i]) === 0) {
+  for (let [value, translation] of translations) {
+    const times = Math.floor(num / value);
+    if (times === 0) continue;
+    num -= times * value;
+    if (times === 1 && value >= 100) {
+      result.push("One", translation);
       continue;
     }
-
-    res += transform(~~(num / RADIXS[i])) + THOUSANDS[i] + " ";
-    num %= RADIXS[i];
+    if (times === 1) {
+      result.push(translation);
+      continue;
+    }
+    result.push(numberToWords(times), translation);
   }
-
-  return res.trim();
+  return result.join(" ");
 };
 
-const transform = num => {
-  if (num === 0) {
-    return "";
-  } else if (num < 20) {
-    return LESS_THAN_20[num] + " ";
-  } else if (num < 100) {
-    return TENS[~~(num / 10)] + " " + transform(num % 10);
-  } else {
-    return LESS_THAN_20[~~(num / 100)] + " Hundred " + transform(num % 100);
-  }
-};
+const translations = new Map([
+  [1000000000, "Billion"],
+  [1000000, "Million"],
+  [1000, "Thousand"],
+  [100, "Hundred"],
+  [90, "Ninety"],
+  [80, "Eighty"],
+  [70, "Seventy"],
+  [60, "Sixty"],
+  [50, "Fifty"],
+  [40, "Forty"],
+  [30, "Thirty"],
+  [20, "Twenty"],
+  [19, "Nineteen"],
+  [18, "Eighteen"],
+  [17, "Seventeen"],
+  [16, "Sixteen"],
+  [15, "Fifteen"],
+  [14, "Fourteen"],
+  [13, "Thirteen"],
+  [12, "Twelve"],
+  [11, "Eleven"],
+  [10, "Ten"],
+  [9, "Nine"],
+  [8, "Eight"],
+  [7, "Seven"],
+  [6, "Six"],
+  [5, "Five"],
+  [4, "Four"],
+  [3, "Three"],
+  [2, "Two"],
+  [1, "One"]
+]);
