@@ -11,3 +11,18 @@ const hIndex = function(citations) {
 
   return citations.length
 }
+
+// another
+
+
+const hIndex = function(citations) {
+  const buckets = Array(citations.length + 1).fill(0)
+  citations.forEach(citation => {
+    buckets[citation >= citations.length ? citations.length : citation]++
+  })
+  for (let i = citations.length, count = 0; i >= 0; i--) {
+    count += buckets[i]
+    if (count >= i) return i
+  }
+  return 0
+}
