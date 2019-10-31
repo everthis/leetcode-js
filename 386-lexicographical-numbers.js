@@ -24,3 +24,20 @@ function dfs(num, res, n) {
   }
   return true
 }
+
+// another
+
+const lexicalOrder = function(n) {
+  function getNumberByOrder(start, end) {
+    for (var i = start; i <= end; i++) {
+      if (i > n) {
+        break
+      }
+      res.push(i)
+      getNumberByOrder(i * 10, i * 10 + 9)
+    }
+  }
+  var res = []
+  getNumberByOrder(1, 9)
+  return res
+}
