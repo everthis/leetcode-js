@@ -3,26 +3,19 @@
  * @return {number[]}
  */
 const lexicalOrder = function(n) {
-  let res = []
-  for (let i = 1; i < 10; ++i) {
-    if (!dfs(i, res, n)) {
-      break
+  const result = []
+  for (let i = 1; i < 10; i++) {
+    dfs(i)
+  }
+  function dfs(n) {
+    if (n <= num) result.push(n)
+    if (10 * n <= num) {
+      for (let j = 0; j < 10; j++) {
+        dfs(10 * n + j)
+      }
     }
   }
-  return res
-}
-
-function dfs(num, res, n) {
-  if (num > n) {
-    return false
-  }
-  res.push(num)
-  for (let i = 0; i < 10; ++i) {
-    if (!dfs(num * 10 + i, res, n)) {
-      break
-    }
-  }
-  return true
+  return result
 }
 
 // another
