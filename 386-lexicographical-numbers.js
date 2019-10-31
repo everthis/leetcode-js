@@ -29,7 +29,7 @@ function dfs(num, res, n) {
 
 const lexicalOrder = function(n) {
   function getNumberByOrder(start, end) {
-    for (var i = start; i <= end; i++) {
+    for (let i = start; i <= end; i++) {
       if (i > n) {
         break
       }
@@ -37,7 +37,7 @@ const lexicalOrder = function(n) {
       getNumberByOrder(i * 10, i * 10 + 9)
     }
   }
-  var res = []
+  const res = []
   getNumberByOrder(1, 9)
   return res
 }
