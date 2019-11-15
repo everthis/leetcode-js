@@ -20,9 +20,7 @@ const levelOrder = function(root) {
     for(let i = 0; i < size; i++) {
       const node = q.shift()
       cur.push(node.val)
-      for(let j = 0, len = node.children.length; j < len; j++) {
-        q.push(node.children[j])
-      }
+      q.push(...node.children)
     }
     res.push(cur)
   }
