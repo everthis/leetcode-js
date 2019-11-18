@@ -7,35 +7,23 @@ function swap(items, l, r) {
   items[l] = items[r];
   items[r] = temp;
 }
-function partition(items, left, right) {
-  let pivot = items[left + Math.floor((right - left) / 2)],
-    i = left,
-    j = right;
-  while (i <= j) {
-    while (items[i] < pivot) {
-      i++;
-    }
-    while (items[j] > pivot) {
-      j--;
-    }
-    if (i <= j) {
-      swap(items, i, j);
-      i++;
-      j--;
+function partition(items, start, end) {
+  let pivot = items[end], s = start
+  for(let i = start; i < end; i++) {
+    if(items[i] <= pivot) {
+      swap(items, s, i)
+      s++
     }
   }
-  return i;
+  swap(items, s, end)
+  return s
 }
 
 function quickSort(items, left, right) {
-  if (items.length > 1) {
-    const index = partition(items, left, right);
-    if (left < index - 1) {
-      quickSort(items, left, index - 1);
-    }
-    if (index < right) {
-      quickSort(items, index, right);
-    }
+  if(left < right) {
+    const pIdx = partition(items, left, right)
+    quickSort(items, left, pIdx - 1)
+    quickSort(items, pIdx + 1, right)
   }
   return items;
 }
