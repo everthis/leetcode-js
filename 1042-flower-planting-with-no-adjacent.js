@@ -4,19 +4,17 @@
  * @return {number[]}
  */
 const gardenNoAdj = function(N, paths) {
-  let map = {};
+  const map = {};
   for (let i = 0; i < N; i++) {
     map[i] = [];
   }
-
   for (let path of paths) {
-    let lhs = path[0] - 1;
-    let rhs = path[1] - 1;
-    map[lhs].push(rhs);
-    map[rhs].push(lhs);
+    let l = path[0] - 1;
+    let r = path[1] - 1;
+    map[l].push(r);
+    map[r].push(l);
   }
-
-  let result = new Array(N).fill(-1);
+  const result = new Array(N).fill(-1);
   for (let i = 0; i < N; i++) {
     let colors = new Array(4).fill(false);
     for (let neighbor of map[i]) {
@@ -31,6 +29,5 @@ const gardenNoAdj = function(N, paths) {
       }
     }
   }
-
   return result;
 };
