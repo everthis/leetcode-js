@@ -31,7 +31,7 @@ const minMeetingRooms = function(intervals) {
   ends.sort((a, b) => a - b)
   let rooms = 0
   let endsItr = 0
-  for (let i = 0, l = starts.length; i < l; i++) {
+  for (let i = 0; i < len; i++) {
     if (starts[i] < ends[endsItr]) rooms++
     else endsItr++
   }
