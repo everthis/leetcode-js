@@ -67,3 +67,25 @@ const employeeFreeTime = function(schedule) {
   }
   return result
 }
+
+// another
+
+const employeeFreeTime = function(schedule) {
+  const intervals = []
+  schedule.forEach(s => s.forEach(t => intervals.push(t)))
+  intervals.sort((a, b) =>
+    a.start !== b.start ? a.start - b.start : a.end - b.end
+  )
+  let i1 = intervals[0]
+  const res = []
+  for (let interval of intervals.slice(1)) {
+    let i2 = interval
+    if (i1.end >= i2.start) {
+      i1.end = Math.max(i1.end, i2.end)
+    } else {
+      res.push(new Interval(i1.end, i2.start))
+      i1 = i2
+    }
+  }
+  return res
+}
