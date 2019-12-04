@@ -40,33 +40,57 @@ Constraints:
  * };
  */
 /**
+ * // Definition for an Interval.
+ * function Interval(start, end) {
+ *    this.start = start;
+ *    this.end = end;
+ * };
+ */
+
+/**
  * @param {Interval[][]} schedule
  * @return {Interval[]}
  */
 const employeeFreeTime = function(schedule) {
-  schedule = [].concat(...schedule)
-  schedule.sort((a, b) => a.start - b.start)
-  const intervals = [schedule[0]]
-  for (let i = 1; i < schedule.length; i++) {
-    const prev = intervals.pop()
-    const current = schedule[i]
-    if (prev.end >= current.start) {
-      const start = Math.min(prev.start, current.start)
-      const end = Math.max(prev.end, current.end)
-      intervals.push(new Interval(start, end))
+  const n = schedule.length
+  const time = mergeSort(schedule, 0, n - 1)
+  const free = []
+  let end = time[0].end
+  for(let i = 1; i < time.length; i++) {
+    if(time[i].start > end) {
+      free.push(new Interval(end, time[i].start))
+    }
+    end = Math.max(end, time[i].end)
+  }
+  return free
+}
+
+function mergeSort(schedule, l, r) {
+  if(l === r) return schedule[l]
+  const mid = l + ((r - l) >> 1)
+  const left = mergeSort(schedule, l, mid)
+  const right = mergeSort(schedule, mid + 1, r)
+  return merge(left, right)
+}
+
+function merge(A, B) {
+  const res = []
+  const m = A.length, n = B.length
+  let i = 0, j = 0
+  while(i < m || j < n) {
+    if(i === m) {
+      res.push(B[j++])
+    } else if(j === n) {
+      res.push(A[i++])
+    } else if(A[i].start < B[j].start) {
+      res.push(A[i++])
     } else {
-      intervals.push(prev)
-      intervals.push(current)
+      res.push(B[j++])
     }
   }
-  const result = []
-  for (let i = 1; i < intervals.length; i++) {
-    const prev = intervals[i - 1]
-    const current = intervals[i]
-    result.push(new Interval(prev.end, current.start))
-  }
-  return result
+  return res
 }
+
 
 // another
 
