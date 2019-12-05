@@ -44,6 +44,7 @@ const treeToDoublyList = function(root) {
   return connect(connect(left, root), right)
 };
 
+// n1 is the head of circular DLL as well as n2
 function connect(n1, n2) {
   if(n1 === null) return n2
   if(n2 === null) return n1
