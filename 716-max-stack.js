@@ -38,19 +38,9 @@ MaxStack.prototype.peekMax = function() {
  * @return {number}
  */
 MaxStack.prototype.popMax = function() {
-  let max = Number.MIN_SAFE_INTEGER
-  let k = 0
-  if (this.stack.length == 1) {
-    return this.stack.pop()
-  }
-  for (let i = 0; i < this.stack.length; i++) {
-    if (max <= this.stack[i]) {
-      max = this.stack[i]
-      k = i
-    }
-  }
-  this.stack.splice(k, 1)
-  return max
+  const elem = Math.max(...this.stack)
+  const index = this.stack.lastIndexOf(elem)
+  return this.stack.splice(index, 1)[0]
 }
 
 /**
