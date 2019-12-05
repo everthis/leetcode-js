@@ -28,3 +28,36 @@ const treeToDoublyList = function(root) {
   }
   return head;
 };
+
+// another
+
+/**
+ * @param {Node} root
+ * @return {Node}
+ */
+const treeToDoublyList = function(root) {
+  if(root == null) return null
+  let cur = root
+  let start = root
+  while(start.left !== null) {
+    start = start.left
+  }
+  let prev = null
+  const stack = []
+  while(stack.length !== 0 || cur !== null) {
+    while(cur !== null) {
+      stack.push(cur)
+      cur = cur.left
+    }
+    cur = stack.pop()
+    if(prev !== null) {
+      prev.right = cur
+      cur.left = prev
+    }
+    prev = cur
+    cur = cur.right
+  }
+  start.left = prev
+  prev.right = start
+  return start
+};
