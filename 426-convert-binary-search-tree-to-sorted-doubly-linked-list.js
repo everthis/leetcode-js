@@ -36,6 +36,35 @@ const treeToDoublyList = function(root) {
  * @return {Node}
  */
 const treeToDoublyList = function(root) {
+  if(root === null) return null
+  const left = treeToDoublyList(root.left)
+  const right = treeToDoublyList(root.right)
+  root.left = root
+  root.right = root
+  return connect(connect(left, root), right)
+};
+
+function connect(n1, n2) {
+  if(n1 === null) return n2
+  if(n2 === null) return n1
+  const t1 = n1.left
+  const t2 = n2.left
+
+  t1.right = n2
+  n2.left = t1
+  t2.right = n1
+  n1.left = t2
+
+  return n1
+}
+
+// another
+
+/**
+ * @param {Node} root
+ * @return {Node}
+ */
+const treeToDoublyList = function(root) {
   if(root == null) return null
   let cur = root
   let start = root
