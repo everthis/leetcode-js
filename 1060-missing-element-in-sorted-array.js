@@ -46,3 +46,32 @@ const missingElement = function(nums, k) {
   }
   return nums[nums.length - 1] + k
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const missingElement = function(nums, k) {
+  const n = nums.length
+  let l = 0
+  let h = n - 1
+  const missingNum = nums[n - 1] - nums[0] + 1 - n
+  if (missingNum < k) {
+    return nums[n - 1] + k - missingNum
+  }
+  while (l < h - 1) {
+    const m = l + ((h - l) >> 1)
+    const missing = nums[m] - nums[l] - (m - l)
+    if (missing >= k) {
+      h = m
+    } else {
+      k -= missing
+      l = m
+    }
+  }
+  return nums[l] + k
+}
+
