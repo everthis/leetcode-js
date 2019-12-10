@@ -75,3 +75,27 @@ const missingElement = function(nums, k) {
   return nums[l] + k
 }
 
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const missingElement = function(nums, k) {
+  const n = nums.length
+  if (k > missing(nums, n - 1)) return nums[n - 1] + k - missing(nums, n - 1)
+  let left = 0,
+    right = n - 1,
+    pivot
+  while (left < right) {
+    pivot = left + Math.floor((right - left) / 2)
+    if (missing(nums, pivot) < k) left = pivot + 1
+    else right = pivot
+  }
+  return nums[left - 1] + k - missing(nums, left - 1)
+}
+function missing(arr, idx) {
+  return arr[idx] - arr[0] - idx
+}
+
