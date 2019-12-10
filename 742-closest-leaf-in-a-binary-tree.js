@@ -88,7 +88,6 @@ const findClosestLeaf = function(root, k) {
       s.add(node)
     }
   }
-  return root.val
 }
 
 function dfs(node, parent, g) {
