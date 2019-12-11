@@ -33,28 +33,25 @@ After running your function, the 2D grid should be:
  * @return {void} Do not return anything, modify rooms in-place instead.
  */
 const wallsAndGates = function(rooms) {
-  const d = [0, 1, 0, -1, 0];
-  const INF = 2147483647;
-  if (rooms.length == 0) return;
-  const m = rooms.length,
-    n = rooms[0].length;
-  const queue = [];
-  for (let i = 0; i < m; ++i) {
-    for (let j = 0; j < n; ++j) {
-      if (rooms[i][j] == 0) queue.push(i * n + j);
+  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+  const rows = rooms.length
+  const cols = rows === 0 ? 0 : rooms[0].length
+  const q = []
+  const INF = 2147483647
+  for(let i = 0; i < rows; i++) {
+    for(let j = 0; j < cols; j++) {
+      if(rooms[i][j] === 0) q.push([i, j])
     }
   }
-  while (queue.length) {
-    let x = queue.shift();
-    let i = (x / n) >> 0,
-      j = x % n;
-    for (let k = 0; k < 4; k++) {
-      let p = i + d[k],
-        q = j + d[k + 1];
-      if (0 <= p && p < m && 0 <= q && q < n && rooms[p][q] == INF) {
-        rooms[p][q] = rooms[i][j] + 1;
-        queue.push(p * n + q);
-      }
+  while(q.length) {
+    const el = q.shift()
+    for(let d of dirs) {
+      const r = el[0] + d[0]
+      const c = el[1] + d[1]
+      if(r < 0 || c < 0 || r >= rows || c >= cols || rooms[r][c] !== INF) continue
+      rooms[r][c] = rooms[el[0]][el[1]] + 1
+      q.push([r, c])
     }
   }
 };
+
