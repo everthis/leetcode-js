@@ -36,6 +36,19 @@ Output: 4
  * @return {number}
  */
 const closestValue = function(root, target) {
+  let res = root.val
+  while(root) {
+    if(Math.abs(root.val - target) < Math.abs(res - target)) {
+      res = root.val
+    }
+    root = root.val > target ? root.left : root.right
+  }
+  return res
+};
+
+// another
+
+const closestValue = function(root, target) {
   const child = target < root.val ? root.left : root.right;
   if (!child) return root.val;
   const closest = closestValue(child, target);
