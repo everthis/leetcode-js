@@ -36,6 +36,17 @@ Output: 4
  * @return {number}
  */
 const closestValue = function(root, target) {
+  const child = target < root.val ? root.left : root.right;
+  if (!child) return root.val;
+  const closest = closestValue(child, target);
+  return Math.abs(closest - target) < Math.abs(root.val - target)
+    ? closest
+    : root.val;
+};
+
+// another
+
+const closestValue = function(root, target) {
   if(root == null) return -1
   let node = root
   const stack = []
