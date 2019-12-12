@@ -17,7 +17,6 @@ Input:  root = [5,1,5,5,5,null,5]
 Output: 4
 
 */
-
 /**
  * Definition for a binary tree node.
  * function TreeNode(val) {
@@ -40,8 +39,15 @@ function chk(node, pVal, obj) {
   const left = chk(node.left, node.val, obj)
   const right = chk(node.right, node.val, obj)
   if (left && right) {
+    if (node.left !== null && node.val !== node.left.val) {
+      return false;
+    }
+    if (node.right !== null && node.val !== node.right.val) {
+      return false;
+    }
     obj.num++
-    return pVal == null ? true : pVal === node.val
+    return true
   }
   return false
 }
+
