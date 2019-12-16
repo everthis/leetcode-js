@@ -94,3 +94,34 @@ const connectSticks = function(sticks) {
   return result
 }
 
+// another
+
+/**
+ * @param {number[]} sticks
+ * @return {number}
+ */
+const connectSticks = function(sticks) {
+  sticks.sort((a, b) => a - b)
+  const sums = []
+  let result = 0
+  if (sticks.length < 2) return result
+  const getMin = () => {
+    const stick = sticks.length ? sticks[0] : Infinity
+    const sum = sums.length ? sums[0] : Infinity
+    if (sum < stick) {
+      return sums.shift()
+    } else {
+      return sticks.shift()
+    }
+  }
+  while (sticks.length || sums.length > 1) {
+    const tmp1 = getMin()
+    const tmp2 = getMin()
+    const curr = tmp1 + tmp2
+    result += curr
+    sums.push(curr)
+  }
+  return result
+}
+
+
