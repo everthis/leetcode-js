@@ -1,4 +1,29 @@
 /**
+
+You have some sticks with positive integer lengths.
+
+You can connect any two sticks of lengths X and Y into
+one stick by paying a cost of X + Y.  You perform this action until there is one stick remaining.
+
+Return the minimum cost of connecting all the given sticks into one stick in this way.
+
+Example 1:
+
+Input: sticks = [2,4,3]
+Output: 14
+Example 2:
+
+Input: sticks = [1,8,3,5]
+Output: 30
+ 
+Constraints:
+
+1 <= sticks.length <= 10^4
+1 <= sticks[i] <= 10^4
+
+*/
+
+/**
  * @param {number[]} sticks
  * @return {number}
  */
@@ -40,3 +65,32 @@ const swap = (arr, i, j) => {
   arr[i] = arr[j]
   arr[j] = temp
 }
+
+// another
+
+/**
+ * @param {number[]} sticks
+ * @return {number}
+ */
+const connectSticks = function(sticks) {
+  if (sticks.length === 1) return 0
+  sticks.sort((a, b) => a - b)
+  let sum = [],
+    result = 0
+  while (sticks.length || sum.length > 1) {
+    let cur = 0
+    for (let i = 0; i < 2; i++) {
+      if (sticks[0] && (sum[0] === undefined || sticks[0] < sum[0])) {
+        cur += sticks[0]
+        sticks.shift()
+      } else {
+        cur += sum[0]
+        sum.shift()
+      }
+    }
+    sum.push(cur)
+    result += cur
+  }
+  return result
+}
+
