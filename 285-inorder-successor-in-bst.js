@@ -46,3 +46,18 @@ const inorderSuccessor = function(root, p) {
   const left = root == null ? null : inorderSuccessor(root.left, p)
   return left != null && left.val > p.val ? left : root
 }
+
+// another
+
+const inorderSuccessor = function(root, p) {
+  let succ = null
+  while(root) {
+    if (p.val < root.val) {
+      succ = root
+      root = root.left
+    } else {
+      root = root.right
+    }
+  }
+  return succ
+}
