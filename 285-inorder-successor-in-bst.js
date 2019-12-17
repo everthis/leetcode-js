@@ -38,3 +38,11 @@ const inorderSuccessor = function(root, p) {
   }
   return chk(root)
 };
+
+// another
+
+const inorderSuccessor = function(root, p) {
+  while (root != null && root.val <= p.val) root = root.right
+  const left = root == null ? null : inorderSuccessor(root.left, p)
+  return left != null && left.val > p.val ? left : root
+}
