@@ -23,3 +23,18 @@ function dfs(node, arr, res, target) {
   arr.push(node)
   dfs(node.right, arr, res, target)
 } 
+
+// another
+
+const inorderSuccessor = function(root, p) {
+  let last = null
+  const chk = node => {
+    if(!node) return
+    const l = chk(node.left)
+    if(l !== undefined) return l
+    if(last === p) return node
+    last = node
+    return chk(node.right)
+  }
+  return chk(root)
+};
