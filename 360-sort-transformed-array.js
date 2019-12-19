@@ -50,3 +50,56 @@ const sortTransformedArray = function(nums, a, b, c) {
 function quad(x, a, b, c) {
   return a * x * x + b * x +c
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} a
+ * @param {number} b
+ * @param {number} c
+ * @return {number[]}
+ */
+const sortTransformedArray = function(nums, a, b, c) {
+  const ret = []
+  const sum = v => a * v * v + b * v + c
+  if (a > 0) {
+    const point = (b / a / 2) * -1
+    let i = 0,
+      j = nums.length
+    while (i < j) {
+      let ax = nums[i]
+      if (Math.abs(nums[i] - point) - Math.abs(nums[j - 1] - point) > 0) {
+        ++i
+      } else {
+        ax = nums[--j]
+      }
+      ret.unshift(sum(ax))
+    }
+    return ret
+  } else if (a < 0) {
+    const point = (b / a / 2) * -1
+    let i = 0,
+      j = nums.length
+    while (i < j) {
+      let ax = nums[i]
+      if (Math.abs(ax - point) - Math.abs(nums[j - 1] - point) > 0) {
+        ++i
+      } else {
+        ax = nums[--j]
+      }
+      ret.push(sum(ax))
+    }
+    return ret
+  } else {
+    if (b > 0) {
+      return nums.map(v => sum(v))
+    } else {
+      nums.forEach(v => {
+        ret.unshift(sum(v))
+      })
+      return ret
+    }
+  }
+}
+
