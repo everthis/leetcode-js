@@ -44,3 +44,31 @@ function lcs(s1, s2, m, n) {
   }
   return dp[m][n]
 }
+
+// another
+
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {boolean}
+ */
+const isValidPalindrome = function(s, k) {
+  const len = s.length
+  const cache = Array.from({ length: len }, () => new Array(len).fill(0))
+  chk(s, 0, len - 1, cache)
+  return cache[0][len - 1] <= k
+};
+
+function chk(s, l, r, cache) {
+  if(l >= r) return 0
+  if(cache[l][r]) return cache[l][r]
+  let num = 0
+  if(s[l] === s[r]) {
+    num = chk(s, l + 1, r - 1, cache) 
+  } else {
+    num = 1 + Math.min(chk(s, l, r - 1, cache), chk(s, l + 1, r, cache))
+  }
+  cache[l][r] = num
+  return num
+}
+
