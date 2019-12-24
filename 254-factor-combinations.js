@@ -47,26 +47,23 @@ Output:
  * @return {number[][]}
  */
 const getFactors = function(n) {
-  const res = []
-  if(n <= 3) return res
-  helper(n, 2, [], res)
-  return res
-};
-function helper(n, start, cur, res) {
-  if(n === 1) {
-    if(cur.length > 1) {
-      res.push(cur.slice())
-    }
-    return
+  if (n <= 0) {
+    return []
   }
-  for(let i = start; i <= Math.sqrt(n); i++) {
-    if(n % i !== 0) continue
-    cur.push(i)
-    helper(n/i, i, cur, res)
-    cur.pop()
-  }
-  let i = n
-  cur.push(i)
-  helper(n/i, i, cur, res)
-  cur.pop()
+  const result = []
+  helper(n, result, [], 2)
+  return result
 }
+const helper = (n, result, list, start) => {
+  for (let i = start; i * i <= n; i++) {
+    if (n % i === 0) {
+      list.push(i)
+      list.push(n / i)
+      result.push(list.slice())
+      list.pop()
+      helper(n / i, result, list, i)
+      list.pop()
+    }
+  }
+}
+
