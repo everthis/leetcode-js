@@ -40,27 +40,26 @@ const plusOneRecursion = node => {
 
 // another
 
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
 const plusOne = function(head) {
-  if(head == null) return null
-  let inc = false
-  const arr = []
-  const dummy = new ListNode(1)
+  const dummy = new ListNode(0)
   dummy.next = head
-  while(head) {
-    arr.push(head)
-    head = head.next
+  let node = head
+  let lastNotNine = dummy
+  while(node) {
+    if(node.val !== 9) lastNotNine = node
+    node = node.next
   }
-  let oneAdded = false
-  for(let i = arr.length - 1; i >= 0; i--) {
-    const el = arr[i]
-    let sum 
-    if(!oneAdded) {
-      sum = el.val + 1
-      oneAdded = true
-    } else sum = el.val
-    if(inc) sum += 1
-    arr[i].val = sum % 10
-    inc = sum >= 10 ? true : false
+  lastNotNine.val++
+  node = lastNotNine.next
+  while(node) {
+    node.val = 0
+    node = node.next
   }
-  return inc ? dummy : dummy.next 
-};
+  return dummy.val === 1 ? dummy : dummy.next
+}
+
+
