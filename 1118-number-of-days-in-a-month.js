@@ -43,6 +43,12 @@ function numberOfDays(Y, M) {
 
 // another
 
+const numberOfDays = function(Y, M) {
+    return new Date(Y,M,0).getDate();
+};
+
+// another
+
 /**
  * @param {number} Y
  * @param {number} M
