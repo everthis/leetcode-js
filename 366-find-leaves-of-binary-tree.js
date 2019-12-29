@@ -67,3 +67,19 @@ function leaves(node, p, res) {
   leaves(node.left, node, res)
   leaves(node.right, node, res)
 }
+
+// another
+
+const findLeaves = function(root) {
+  const res = []
+  dfs(root, res)
+  return res
+};
+
+function dfs(node, res) {
+  if(node == null) return -1
+  const i = 1 + Math.max(dfs(node.left, res), dfs(node.right, res))
+  if(!res[i]) res[i] = []
+  res[i].push(node.val)
+  return i
+}
