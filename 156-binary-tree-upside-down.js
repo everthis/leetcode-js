@@ -10,20 +10,17 @@
  * @return {TreeNode}
  */
 const upsideDownBinaryTree = function(root) {
-  let curr = root
-  let next = null
-  let temp = null
-  let prev = null
-  while (curr !== null) {
-    next = curr.left
-    curr.left = temp
-    temp = curr.right
-    curr.right = prev
-    prev = curr
-    curr = next
+  let node = root, parent = null, right = null
+  while(node !== null) {
+    const left = node.left
+    node.left = right
+    right = node.right
+    node.right = parent
+    parent = node
+    node = left
   }
-  return prev
-}
+  return parent
+};
 
 // another
 
