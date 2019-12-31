@@ -1,12 +1,9 @@
 # Write your MySQL query statement below
-select a.seller_id from
-(select seller_id, sum(price) as p from Sales
-group by seller_id) a
-join 
-(select  sum(price) p 
+select seller_id from Sales
+group by seller_id
+having sum(price) =
+(select sum(price) as sm
 from Sales
 group by seller_id
-order by 1 desc
- limit 1
- ) b
- on a.p = b.p 
+order by sm desc
+limit 1);
