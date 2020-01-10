@@ -23,6 +23,10 @@ const generatePalindromes = function(s) {
 }
 
 function generate(ans, count, build, len) {
+  if (build.length === len) {
+    ans.push(build)
+    return
+  }
   for (let idx = 0; idx < count.length; idx++) {
     if (count[idx] > 0) {
       count[idx] -= 2
@@ -35,5 +39,4 @@ function generate(ans, count, build, len) {
       count[idx] += 2
     }
   }
-  if (build.length === len) ans.push(build)
 }
