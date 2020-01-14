@@ -8,7 +8,7 @@ const hIndex = function(citations) {
     right = len - 1,
     mid
   while (left <= right) {
-    mid = (left + (right - left)) >> 1
+    mid = left + ((right - left) >> 1)
     if (citations[mid] >= len - mid) right = mid - 1
     else left = mid + 1
   }
