@@ -67,7 +67,7 @@ const minArea = function(image, x, y) {
     dfs(x, y + 1)
   }
 
-  if (image.length == 0 || image[0].length == 0) return 0
+  if (image.length === 0 || image[0].length === 0) return 0
   dfs(x, y)
   return (right - left) * (bottom - top)
 }
