@@ -40,3 +40,59 @@ ZigzagIterator.prototype.next = function next() {
  * var i = new ZigzagIterator(v1, v2), a = [];
  * while (i.hasNext()) a.push(i.next());
  */
+
+// another
+
+/**
+ * @constructor
+ * @param {Integer[]} v1
+ * @param {Integer[]} v1
+ */
+const ZigzagIterator = function ZigzagIterator(v1, v2) {
+  const A = [v1, v2]
+  this.A = A
+  this.n = A.length
+  this.m = Math.max(v1.length, v2.length)
+  this.j = 0
+  this.i = 0
+}
+
+/**
+ * @this ZigzagIterator
+ * @returns {boolean}
+ */
+ZigzagIterator.prototype.hasNext = function hasNext() {
+  return this.j < this.m
+}
+
+/**
+ * @this ZigzagIterator
+ * @returns {integer}
+ */
+ZigzagIterator.prototype.incrementPointers = function incrementPointers() {
+  this.i += 1
+  if (this.i === this.n) {
+    this.j += 1
+    this.i = 0
+  }
+}
+
+ZigzagIterator.prototype.next = function next() {
+  let next = undefined
+  while (next === undefined) {
+    next = this.A[this.i][this.j]
+    this.incrementPointers()
+  }
+  while (this.hasNext()) {
+    if (this.A[this.i][this.j] !== undefined) break
+    this.incrementPointers()
+  }
+  return next
+}
+
+/**
+ * Your ZigzagIterator will be called like this:
+ * var i = new ZigzagIterator(v1, v2), a = [];
+ * while (i.hasNext()) a.push(i.next());
+ */
+
