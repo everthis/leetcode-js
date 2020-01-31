@@ -5,8 +5,8 @@
  */
 const PhoneDirectory = function(maxNumbers) {
   this.len = maxNumbers
-  this.set = new Set()
-  while (maxNumbers--) this.set.add(maxNumbers)
+  this.used = new Set()
+  this.free = []
 }
 
 /**
@@ -15,10 +15,10 @@ const PhoneDirectory = function(maxNumbers) {
  * @return {number}
  */
 PhoneDirectory.prototype.get = function() {
-  if (this.set.size === 0) return -1
-  const n = this.set.values().next().value
-  this.set.delete(n)
-  return n
+  if (this.used.size === this.len) return -1
+  const tmp = this.free.length === 0 ? this.used.size : this.free.pop()
+  this.used.add(tmp)
+  return tmp
 }
 
 /**
@@ -27,7 +27,7 @@ PhoneDirectory.prototype.get = function() {
  * @return {boolean}
  */
 PhoneDirectory.prototype.check = function(number) {
-  return this.set.has(number)
+  return !this.used.has(number)
 }
 
 /**
@@ -36,7 +36,10 @@ PhoneDirectory.prototype.check = function(number) {
  * @return {void}
  */
 PhoneDirectory.prototype.release = function(number) {
-  this.set.add(number)
+  if(this.used.has(number)) {
+    this.used.delete(number)
+    this.free.push(number)
+  }
 }
 
 /**
