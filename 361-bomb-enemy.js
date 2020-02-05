@@ -4,7 +4,7 @@
  */
 const maxKilledEnemies = function(grid) {
   const m = grid.length
-  const n = m != 0 ? grid[0].length : 0
+  const n = m !== 0 ? grid[0].length : 0
   let result = 0
   let rowhits = 0
   const colhits = new Array(n).fill(0)
