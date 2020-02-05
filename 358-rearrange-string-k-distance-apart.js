@@ -30,6 +30,7 @@ Explanation: The same letters are at least distance 2 from each other.
  * @return {string}
  */
 const rearrangeString = function(s, k) {
+  if(k > 26) return ''
   const length = s.length
   const count = new Array(26).fill(0)
   const valid = new Array(26).fill(0)
