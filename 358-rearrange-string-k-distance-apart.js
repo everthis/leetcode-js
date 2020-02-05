@@ -33,8 +33,9 @@ const rearrangeString = function(s, k) {
   const length = s.length
   const count = new Array(26).fill(0)
   const valid = new Array(26).fill(0)
+  const a = 'a'.charCodeAt(0)
   for (let i = 0; i < length; i++) {
-    count[s.charCodeAt(i) - 'a'.charCodeAt(0)]++
+    count[s.charCodeAt(i) - a]++
   }
   let sb = ''
   for (let index = 0; index < length; index++) {
@@ -42,7 +43,7 @@ const rearrangeString = function(s, k) {
     if (candidatePos == -1) return ''
     count[candidatePos]--
     valid[candidatePos] = index + k
-    sb += String.fromCharCode('a'.charCodeAt(0) + candidatePos)
+    sb += String.fromCharCode(a + candidatePos)
   }
   return sb
 }
@@ -58,3 +59,4 @@ function findValidMax(count, valid, index) {
   }
   return candidatePos
 }
+
