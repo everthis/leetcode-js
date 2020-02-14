@@ -41,21 +41,17 @@
  * @return {number}
  */
 const depthSum = function(nestedList) {
-  const obj = { res: 0 }
-  h(nestedList, 1, obj)
-  return obj.res
+  return h(nestedList, 1)
 };
 
-function h(arr, level, obj) {
+function h(arr, level) {
   if(arr == null || arr.length === 0) return 0
-  const next = []
   let sum = 0
   for(let i = 0, len = arr.length; i < len; i++) {
     if(arr[i].isInteger()) sum += arr[i].getInteger() * level
     else {
-      next.push(...(arr[i].getList()))
+      sum += h(arr[i].getList(), level + 1)
     }
   }
-  obj.res += sum
-  h(next, level + 1, obj)
+  return sum
 }
