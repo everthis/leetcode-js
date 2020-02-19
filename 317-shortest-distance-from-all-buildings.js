@@ -1,7 +1,3 @@
-/**
- * @param {number[][]} grid
- * @return {number}
- */
 const DIRECTIONS = [
   [0, 1],
   [1, 0],
@@ -38,6 +34,10 @@ function distanceFromBuilding(grid, r, c, distance, start) {
   return minDistance
 }
 
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
 const shortestDistance = function(grid) {
   const rows = grid.length
   const cols = grid[0].length
