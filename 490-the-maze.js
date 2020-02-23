@@ -90,3 +90,51 @@ const hasPath = function(maze, start, destination) {
   }
   return false
 }
+
+// another
+
+/**
+ * @param {number[][]} maze
+ * @param {number[]} start
+ * @param {number[]} destination
+ * @return {boolean}
+ */
+const hasPath = function(maze, start, destination) {
+  const visited = Array.from({ length: maze.length }, () =>
+    new Array(maze[0].length).fill(false)
+  )
+  const dirs = [
+    [-1, 0],
+    [0, -1],
+    [0, 1],
+    [1, 0]
+  ]
+  return dfs(maze, start, destination, visited, dirs)
+}
+
+function dfs(maze, start, destination, visited, dirs) {
+  if (visited[start[0]][start[1]]) return false
+  if (start[0] === destination[0] && start[1] === destination[1]) return true
+  visited[start[0]][start[1]] = true
+  for (let i = 0; i < dirs.length; i++) {
+    const d = dirs[i]
+    let row = start[0]
+    let col = start[1]
+    while (isValid(maze, row + d[0], col + d[1])) {
+      row += d[0]
+      col += d[1]
+    }
+    if (dfs(maze, [row, col], destination, visited, dirs)) return true
+  }
+  return false
+}
+
+function isValid(maze, row, col) {
+  return (
+    row >= 0 &&
+    row < maze.length &&
+    col >= 0 &&
+    col < maze[0].length &&
+    maze[row][col] !== 1
+  )
+}
