@@ -16,10 +16,10 @@
  *     this.turnLeft = function() {
  *         ...
  *     };
- * 
+ *
  *     // Robot will stay in the same cell after calling turnLeft/turnRight.
  *     // Each turn will be 90 degrees.
- *     @return {void} 
+ *     @return {void}
  *     this.turnRight = function() {
  *         ...
  *     };
@@ -36,25 +36,30 @@
  * @return {void}
  */
 const cleanRoom = function(robot) {
-    const visited = new Set();
-    const shift = [[-1,0],[0,1],[1,0],[0,-1]];
-    dfs(0,0,0);
-    function dfs(r, c, dir) {
-        visited.add(r+','+c);
-        robot.clean();
-        for (let i = 0; i < 4; i++) {
-            const newDir = (dir + i) % 4;
-            const x = shift[newDir][0] + r;
-            const y = shift[newDir][1] + c;
-            if (!visited.has(x+','+y) && robot.move()) {
-                dfs(x, y, newDir);
-                robot.turnRight();
-                robot.turnRight();
-                robot.move();
-                robot.turnRight();
-                robot.turnRight();
-            }
-            robot.turnRight();
-        }
+  const visited = new Set()
+  const shift = [
+    [-1, 0],
+    [0, 1],
+    [1, 0],
+    [0, -1]
+  ]
+  dfs(0, 0, 0)
+  function dfs(r, c, dir) {
+    visited.add(r + ',' + c)
+    robot.clean()
+    for (let i = 0; i < 4; i++) {
+      const newDir = (dir + i) % 4
+      const x = shift[newDir][0] + r
+      const y = shift[newDir][1] + c
+      if (!visited.has(x + ',' + y) && robot.move()) {
+        dfs(x, y, newDir)
+        robot.turnRight()
+        robot.turnRight()
+        robot.move()
+        robot.turnRight()
+        robot.turnRight()
+      }
+      robot.turnRight()
     }
-};
+  }
+}
