@@ -49,3 +49,22 @@ const findRadius = function(houses, heaters) {
   }
   return res
 }
+
+// another
+
+/**
+ * @param {number[]} houses
+ * @param {number[]} heaters
+ * @return {number}
+ */
+const findRadius = function(houses, heaters) {
+  heaters.sort((a, b) => a - b)
+  houses.sort((a, b) => a - b)
+  let res = 0, i = 0
+  for(let h of houses) {
+    while(i < heaters.length - 1 && heaters[i] + heaters[i + 1] <= h * 2) i++
+    res = Math.max(res, Math.abs(heaters[i] - h))
+  }
+  return res
+}
+
