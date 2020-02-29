@@ -24,3 +24,28 @@ const findMinDistance = (house, heaters) => {
   if (left === 0) return heaters[0] - house
   if (left === heaters.length) return house - heaters[heaters.length - 1]
 }
+
+// another
+
+/**
+ * @param {number[]} houses
+ * @param {number[]} heaters
+ * @return {number}
+ */
+const findRadius = function(houses, heaters) {
+  let res = 0
+  let k = 0
+  houses = houses.sort((a, b) => a - b)
+  heaters = heaters.sort((a, b) => a - b)
+  for (let i = 0; i < houses.length; i++) {
+    const curr = houses[i]
+    while (
+      k < heaters.length &&
+      Math.abs(heaters[k + 1] - curr) <= Math.abs(heaters[k] - curr)
+    ) {
+      k++
+    }
+    res = Math.max(res, Math.abs(heaters[k] - curr))
+  }
+  return res
+}
