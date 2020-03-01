@@ -3,6 +3,47 @@
  * @return {boolean}
  */
 const makesquare = function(nums) {
+  if (nums == null || nums.length < 4) return false
+  const sum = nums.reduce((ac, el) => ac + el, 0)
+  if (sum % 4 !== 0) return false
+  nums.sort((a, b) => a - b)
+  reverse(nums)
+  return dfs(nums, new Array(4).fill(0), 0, sum / 4)
+}
+
+function dfs(nums, arr, idx, target) {
+  if (idx === nums.length) {
+    return true
+  }
+  for (let i = 0; i < 4; i++) {
+    if (arr[i] + nums[idx] > target || (i > 0 && arr[i] === arr[i - 1]))
+      continue
+    arr[i] += nums[idx]
+    if (dfs(nums, arr, idx + 1, target)) return true
+    arr[i] -= nums[idx]
+  }
+  return false
+}
+
+function reverse(nums) {
+  let i = 0,
+    j = nums.length - 1
+  while (i < j) {
+    let temp = nums[i]
+    nums[i] = nums[j]
+    nums[j] = temp
+    i++
+    j--
+  }
+}
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+const makesquare = function(nums) {
   if (nums.length == 0) return false
   const edge = nums.reduce((accum, val) => accum + val) / 4
   nums.sort((val1, val2) => val2 - val1)
@@ -28,3 +69,4 @@ const makesquare = function(nums) {
   }
   return true
 }
+
