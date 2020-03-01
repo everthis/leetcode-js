@@ -6,8 +6,7 @@ const makesquare = function(nums) {
   if (nums == null || nums.length < 4) return false
   const sum = nums.reduce((ac, el) => ac + el, 0)
   if (sum % 4 !== 0) return false
-  nums.sort((a, b) => a - b)
-  reverse(nums)
+  nums.sort((a, b) => b - a)
   return dfs(nums, new Array(4).fill(0), 0, sum / 4)
 }
 
@@ -25,17 +24,7 @@ function dfs(nums, arr, idx, target) {
   return false
 }
 
-function reverse(nums) {
-  let i = 0,
-    j = nums.length - 1
-  while (i < j) {
-    let temp = nums[i]
-    nums[i] = nums[j]
-    nums[j] = temp
-    i++
-    j--
-  }
-}
+
 
 // another
 
