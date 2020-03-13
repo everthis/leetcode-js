@@ -8,7 +8,7 @@ const wordSquares = function(words) {
     const result = new Map()
     for (let word of words) {
       for (let i = 0; i < word.length - 1; ++i) {
-        const prefix = word.substr(0, i + 1)
+        const prefix = word.slice(0, i + 1)
         const array = result.get(prefix)
         if (array) {
           array.push(word)
@@ -24,20 +24,16 @@ const wordSquares = function(words) {
       result.push([...martix])
       return
     }
-    const visited = []
     for (let word of wordsList) {
-      if (visited.indexOf(word) == -1) {
-        martix.push(word)
-        let prefix = ''
-        for (let i = 0; i < step + 1; ++i) {
-          prefix += martix[i][step + 1]
-        }
-        let newLists = dictMap.get(prefix)
-        newLists = newLists ? newLists : []
-        backtracking(step + 1, result, martix, newLists)
-        martix.pop()
-        visited.push(word)
+      martix.push(word)
+      let prefix = ''
+      for (let i = 0; i < step + 1; ++i) {
+        prefix += martix[i][step + 1]
       }
+      let newLists = dictMap.get(prefix)
+      newLists = newLists ? newLists : []
+      backtracking(step + 1, result, martix, newLists)
+      martix.pop()
     }
   }
   const result = []
