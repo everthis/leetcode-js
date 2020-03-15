@@ -27,3 +27,32 @@ const validWordAbbreviation = (word, abbr) => {
   return i === word.length && j === aLen
 }
 const isNum = c => !isNaN(c)
+
+// another
+
+/**
+ * @param {string} word
+ * @param {string} abbr
+ * @return {boolean}
+ */
+const validWordAbbreviation = (word, abbr) => {
+  let i = 0,
+    j = 0
+  while (i < word.length && j < abbr.length) {
+    if (word.charAt(i) === abbr.charAt(j)) {
+      ++i
+      ++j
+      continue
+    }
+    if (abbr.charAt(j) <= '0' || abbr.charAt(j) > '9') {
+      return false
+    }
+    let start = j
+    while (j < abbr.length && abbr.charAt(j) >= '0' && abbr.charAt(j) <= '9') {
+      ++j
+    }
+    let num = +abbr.slice(start, j)
+    i += num
+  }
+  return i == word.length && j == abbr.length
+}
