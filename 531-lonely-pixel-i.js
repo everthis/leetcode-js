@@ -10,16 +10,19 @@ const findLonelyPixel = function(picture) {
   const c = new Array(cols).fill(0)
   for(let i = 0; i < rows; i++) {
     for(let j = 0; j < cols; j++) {
-      r[i] += picture[i][j] === 'B' ? 1 : 0
-      c[j] += picture[i][j] === 'B' ? 1 : 0
+      if(picture[i][j] === 'B') {
+        r[i]++
+        c[j]++
+      }
     }
   }
   let res = 0
   for(let i = 0; i < rows; i++) {
     if(r[i] === 1) {
       for(let j = 0; j < cols; j++) {
-        if(c[j] === 1 && picture[i][j] === 'B') {
-          res++
+        if(picture[i][j] === 'B') {
+          if(c[j] === 1)res++
+          break
         }
       }      
     }
