@@ -30,5 +30,5 @@ const str2tree = function(s) {
       stack.push(currentNode)
     }
   }
-  return stack.length === 0 ? null : stack[stack.length - 1]
+  return stack.length === 0 ? null : stack[0]
 }
