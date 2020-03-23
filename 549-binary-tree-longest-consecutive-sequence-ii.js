@@ -10,26 +10,21 @@
  * @return {number}
  */
 const longestConsecutive = function (root, res = { val: 0 }) {
-  if (!root) return 0;
-  const left1 = dfs(root, -1);
-  const right1 = dfs(root);
-  const left2 = dfs(root);
-  const right2 = dfs(root, -1);
-  res.val = Math.max(
-    res.val,
-    Math.max(
-      left1 + right1 - !!(left1 && right1),
-      left2 + right2 - !!(left2 && right2)
-    )
-  );
-  longestConsecutive(root.left, res);
-  longestConsecutive(root.right, res);
-  return res.val;
+  if (root === null) return 0;
+  let ans = 0;
+  function f(node) {
+    let inc = 1,
+      dec = 1;
+    const child = [node.left, node.right];
+    for (let c of child) {
+      if (c === null) continue;
+      let r = f(c);
+      if (node.val + 1 === c.val) inc = Math.max(inc, r[0] + 1);
+      else if (node.val - 1 === c.val) dec = Math.max(dec, r[1] + 1);
+    }
+    ans = Math.max(ans, inc + dec - 1);
+    return [inc, dec];
+  }
+  f(root);
+  return ans;
 };
-
-function dfs(root, dir = 1, prev = null) {
-  if (!root || (prev !== null && root.val !== prev + dir)) return 0;
-  return (
-    1 + Math.max(dfs(root.left, dir, root.val), dfs(root.right, dir, root.val))
-  );
-}
