@@ -13,10 +13,10 @@ const longestLine = function (M) {
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
       if (M[i][j]) {
-        DP[i][j][0] = (i ? DP[i - 1][j][0] : 0) + 1 // up
-        DP[i][j][1] = (j < n - 1 && i ? DP[i - 1][j + 1][1] : 0) + 1 // diag
-        DP[i][j][2] = (j && i ? DP[i - 1][j - 1][2] : 0) + 1 // anti diag
-        DP[i][j][3] = (j ? DP[i][j - 1][3] : 0) + 1 // left
+        DP[i][j][0] = (i ? DP[i - 1][j][0] : 0) + 1
+        DP[i][j][1] = (j < n - 1 && i ? DP[i - 1][j + 1][1] : 0) + 1
+        DP[i][j][2] = (j && i ? DP[i - 1][j - 1][2] : 0) + 1
+        DP[i][j][3] = (j ? DP[i][j - 1][3] : 0) + 1
         max = Math.max(max, ...DP[i][j])
       }
     }
