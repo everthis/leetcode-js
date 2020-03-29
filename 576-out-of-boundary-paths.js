@@ -52,8 +52,8 @@ const findPaths = function (m, n, N, i, j) {
     for (let r = 0; r < m; r++) {
       for (let c = 0; c < n; c++) {
         for (let d of dirs) {
-          let nr = r + d[0];
-          let nc = c + d[1];
+          const nr = r + d[0];
+          const nc = c + d[1];
           if (nr < 0 || nr >= m || nc < 0 || nc >= n) {
             result = (result + count[r][c]) % MOD;
           } else {
