@@ -24,3 +24,46 @@ const findPaths = function (m, n, N, i, j) {
   }
   return dp[1][i][j]
 }
+
+// another
+
+/**
+ * @param {number} m
+ * @param {number} n
+ * @param {number} N
+ * @param {number} i
+ * @param {number} j
+ * @return {number}
+ */
+const findPaths = function (m, n, N, i, j) {
+  if (N <= 0) return 0;
+  const MOD = 1000000007;
+  let count = Array.from({ length: m }, () => new Array(n).fill(0));
+  count[i][j] = 1;
+  let result = 0;
+  const dirs = [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+  for (let step = 0; step < N; step++) {
+    const temp = Array.from({ length: m }, () => new Array(n).fill(0));
+    for (let r = 0; r < m; r++) {
+      for (let c = 0; c < n; c++) {
+        for (let d of dirs) {
+          let nr = r + d[0];
+          let nc = c + d[1];
+          if (nr < 0 || nr >= m || nc < 0 || nc >= n) {
+            result = (result + count[r][c]) % MOD;
+          } else {
+            temp[nr][nc] = (temp[nr][nc] + count[r][c]) % MOD;
+          }
+        }
+      }
+    }
+    count = temp;
+  }
+  return result;
+};
+
