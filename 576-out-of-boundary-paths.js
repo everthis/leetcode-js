@@ -77,37 +77,19 @@ const findPaths = function (m, n, N, i, j) {
  * @param {number} j
  * @return {number}
  */
-const findPaths = function (m, n, N, i, j) {
-  const cache = []
-  const M = 1000000007
-  for (let i = 0; i < N; i++) {
-    const map2D = []
-    for (let j = 0; j < m; j++) {
-      const arr = []
-      for (let k = 0; k < n; k++) {
-        arr.push(null)
-      }
-      map2D.push(arr)
-    }
-    cache.push(map2D)
-  }
-  return makeMove(cache, m, n, N, i, j)
-
-  function makeMove(cache, m, n, N, i, j) {
-    if (i === m || j === n || i < 0 || j < 0) return 1
-    if (N === 0) return 0
-    if (cache[N - 1][i][j] !== null) return cache[N - 1][i][j]
-    cache[N - 1][i][j] =
-      (((makeMove(cache, m, n, N - 1, i - 1, j) +
-        makeMove(cache, m, n, N - 1, i + 1, j)) %
-        M) +
-        ((makeMove(cache, m, n, N - 1, i, j - 1) +
-          makeMove(cache, m, n, N - 1, i, j + 1)) %
-          M)) %
-      M
-
-    return cache[N - 1][i][j]
-  }
+const findPaths = function (m, n, N, i, j, memo = new Map()) {
+    const key = N + ',' + i + ',' + j;
+    if (memo.has(key)) return memo.get(key);
+    const isOutside = i === -1 || i === m || j === -1 || j === n;
+    if (N === 0 || isOutside) return +isOutside;
+    memo.set(key, (
+          findPaths(m, n, N - 1, i - 1, j, memo)
+        + findPaths(m, n, N - 1, i + 1, j, memo)
+        + findPaths(m, n, N - 1, i, j + 1, memo)
+        + findPaths(m, n, N - 1, i, j - 1, memo)
+    ) % 1000000007);
+    return memo.get(key);
 }
+
 
 
