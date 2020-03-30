@@ -28,3 +28,33 @@ const killProcess = function(pid, ppid, kill) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} pid
+ * @param {number[]} ppid
+ * @param {number} kill
+ * @return {number[]}
+ */
+const killProcess = function(pid, ppid, kill) {
+  const pm = new Map()
+  for(let i = 0, len = pid.length; i < len; i++) {
+    const p = ppid[i]
+    let tmp = pm.get(p)
+    if(!tmp) tmp = new Set()
+    tmp.add(pid[i])
+    pm.set(p, tmp)
+  }
+  const res = []
+  function dfs(k) {
+    res.push(k)
+    if(pm.get(k)) {
+      for(let e of pm.get(k)) {
+        dfs(e)
+      }      
+    }
+  }
+  dfs(kill)
+  return res
+};
