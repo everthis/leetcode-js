@@ -79,3 +79,91 @@ Excel.prototype.getRange = function (arr) {
  * var param_2 = obj.get(r,c)
  * var param_3 = obj.sum(r,c,strs)
  */
+
+
+// another
+
+/**
+ * @param {number} H
+ * @param {character} W
+ */
+const Excel = function (H, W) {
+  this.data = []
+  for (let i = 1; i <= H; i++) {
+    this.data[i] = []
+    for (let j = 1; j <= this.col(W); j++) {
+      this.data[i][j] = 0
+    }
+  }
+}
+
+Excel.prototype.col = function (c) {
+  return c.charCodeAt() - 'A'.charCodeAt() + 1
+}
+
+Excel.prototype.parse = function (str) {
+  let idx = str.indexOf(':')
+  if (idx === -1) return { r: Number(str.slice(1)), c: str[0] }
+  let topLeft = str.slice(0, idx),
+    bottomRight = str.slice(idx + 1)
+  return [
+    { r: Number(topLeft.slice(1)), c: topLeft[0] },
+    { r: Number(bottomRight.slice(1)), c: bottomRight[0] },
+  ]
+}
+
+/**
+ * @param {number} r
+ * @param {character} c
+ * @param {number} v
+ * @return {void}
+ */
+Excel.prototype.set = function (r, c, v) {
+  this.data[r][this.col(c)] = v
+}
+
+/**
+ * @param {number} r
+ * @param {character} c
+ * @return {number}
+ */
+Excel.prototype.get = function (r, c) {
+  if (Array.isArray(this.data[r][this.col(c)])) {
+    let sum = 0
+    for (let str of this.data[r][this.col(c)]) {
+      let parsed = this.parse(str)
+      if (Array.isArray(parsed)) {
+        for (let i = parsed[0].r; i <= parsed[1].r; i++) {
+          for (
+            let jc = parsed[0].c;
+            jc <= parsed[1].c;
+            jc = String.fromCharCode(jc.charCodeAt() + 1)
+          ) {
+            sum += this.get(i, jc)
+          }
+        }
+      } else sum += this.get(parsed.r, parsed.c)
+    }
+    return sum
+  }
+  return this.data[r][this.col(c)]
+}
+
+/**
+ * @param {number} r
+ * @param {character} c
+ * @param {string[]} strs
+ * @return {number}
+ */
+Excel.prototype.sum = function (r, c, strs) {
+  this.set(r, c, strs)
+  return this.get(r, c)
+}
+
+/**
+ * Your Excel object will be instantiated and called as such:
+ * var obj = new Excel(H, W)
+ * obj.set(r,c,v)
+ * var param_2 = obj.get(r,c)
+ * var param_3 = obj.sum(r,c,strs)
+ */
