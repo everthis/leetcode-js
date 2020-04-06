@@ -13,7 +13,6 @@ const exclusiveTime = function (n, logs) {
       if(stack.length !== 0) res[stack[stack.length - 1]] += +log[2] - pre
       stack.push(log[0])
       pre = log[2]
-      
     } else {
       res[stack.pop()] += +log[2] - pre + 1
       pre = +log[2] + 1
