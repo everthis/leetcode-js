@@ -2,28 +2,6 @@
  * @param {string[]} strs
  * @return {string[][]}
  */
-const groupAnagrams = function (strs) {
-  const hash = new Map()
-  for (let str of strs) {
-    let key = 0
-    for (let char of str) {
-      const idx = char.charCodeAt(0)
-      key += Math.pow(idx, 4)
-    }
-    if (!hash.has(key)) hash.set(key, [str])
-    else {
-      hash.set(key, hash.get(key).concat(str))
-    }
-  }
-  return Array.from(hash.values())
-}
-
-// another
-
-/**
- * @param {string[]} strs
- * @return {string[][]}
- */
 const groupAnagrams = (strs) => {
   const resp = new Array(),
     termsGrouped = new Map()
@@ -39,45 +17,13 @@ const groupAnagrams = (strs) => {
 }
 
 const hash = (term) => {
-  const primeLetterNumbers = [
-    2,
-    3,
-    5,
-    7,
-    11,
-    13,
-    17,
-    19,
-    23,
-    29,
-    31,
-    37,
-    41,
-    43,
-    47,
-    53,
-    59,
-    61,
-    67,
-    71,
-    73,
-    79,
-    83,
-    89,
-    97,
-    101,
-  ]
-  let accum = 1
-  for (let letter of term) {
-    const primeIndex = letter.charCodeAt(0) - 'a'.charCodeAt(0)
-    const primeMapping = primeLetterNumbers[primeIndex]
-    accum *= primeMapping
+  const arr = Array(26).fill(0)
+  const a = 'a'.charCodeAt(0)
+  for(let i = 0, len = term.length; i < len; i++) {
+    arr[term[i].charCodeAt(0) - a]++
   }
-  return accum
+  return arr.join('-')
 }
-
-
-
 
 // another
 
