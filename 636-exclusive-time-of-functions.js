@@ -4,19 +4,19 @@
  * @return {number[]}
  */
 const exclusiveTime = function (n, logs) {
-  const res = [...Array(n)].fill(0),
-    stack = []
+  const res = [...Array(n)].fill(0)
+  const stack = []
+  let pre = 0
   for (let i = 0; i < logs.length; i++) {
     const log = logs[i].split(':')
-    if (log[1] == 'start') {
-      stack.push([log[2], 0])
+    if (log[1] === 'start') {
+      if(stack.length !== 0) res[stack[stack.length - 1]] += +log[2] - pre
+      stack.push(log[0])
+      pre = log[2]
+      
     } else {
-      const start = stack.pop()
-      const time = log[2] - start[0] + 1
-      res[log[0]] += time - start[1]
-      if (stack.length > 0) {
-        stack[stack.length - 1][1] += time
-      }
+      res[stack.pop()] += +log[2] - pre + 1
+      pre = +log[2] + 1
     }
   }
   return res
