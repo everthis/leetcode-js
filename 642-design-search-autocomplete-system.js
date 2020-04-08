@@ -6,9 +6,8 @@ const AutocompleteSystem = function (sentences, times) {
   this.trie = new Trie()
   this.inputString = ''
   this.MAX_RESULTS = 3
-  for (let i = 0; i < times.length; i++) {
-    const sentence = sentences[i]
-    this.trie.insert(sentence, times[i])
+  for (let i = 0, len = times.length; i < len; i++) {
+    this.trie.insert(sentences[i], times[i])
   }
 }
 
