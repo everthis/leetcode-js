@@ -31,3 +31,24 @@ const maxA = function (N) {
   }
   return dp[N]
 }
+
+// another
+
+/**
+ * @param {number} N
+ * @return {number}
+ */
+const maxA = function (N) {
+  const dp = new Array(7).fill(0)
+  for (let i = 1; i <= N; i++) {
+    dp[0] = i
+    for (let k = 6; k > 2; k--) {
+      dp[0] = Math.max(dp[0], dp[k] * (k - 1))
+    }
+    for (let k = 6; k > 0; k--) {
+      dp[k] = dp[k - 1]
+    }
+  }
+  return dp[0]
+}
+
