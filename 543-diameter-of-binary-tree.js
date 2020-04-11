@@ -9,16 +9,17 @@
  * @param {TreeNode} root
  * @return {number}
  */
-let ans;
-const diameterOfBinaryTree = function(root) {
-  ans = 1;
-  depth(root);
-  return ans - 1;
-};
-function depth(node) {
-  if (node == null) return 0;
-  let L = depth(node.left);
-  let R = depth(node.right);
-  ans = Math.max(ans, L + R + 1);
-  return Math.max(L, R) + 1;
+const diameterOfBinaryTree = function (root) {
+  if (root === null) return 0
+  let longest = 0
+  function dfs(node) {
+    if (node === null) return 0
+    let leftmax = dfs(node.left)
+    let rightmax = dfs(node.right)
+    longest = Math.max(longest, leftmax + 1 + rightmax)
+    return Math.max(leftmax, rightmax) + 1
+  }
+  dfs(root)
+  return longest - 1
 }
+
