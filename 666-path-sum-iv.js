@@ -40,6 +40,33 @@ const pathSum = function (nums) {
  * @return {number}
  */
 const pathSum = function (nums) {
+  if (nums == null || nums.length === 0) return 0
+  const tree = new Map()
+  for (let num of nums) {
+    tree.set((num / 10) >> 0, num % 10)
+  }
+  return traverse((nums[0] / 10) >> 0, 0)
+
+  function traverse(node, prev) {
+    if (!tree.has(node)) return 0
+    const level = (node / 10) >> 0
+    const pos = node % 10
+    const val = tree.get(node)
+    const left = (level + 1) * 10 + pos * 2 - 1
+    const right = (level + 1) * 10 + pos * 2
+    const cur = prev + val
+    if (!tree.has(left) && !tree.has(right)) return cur
+    return traverse(left, cur) + traverse(right, cur)
+  }
+}
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const pathSum = function (nums) {
   const arr = Array(1 << 5).fill(-1)
   for (let num of nums) {
     let [lvl, pos, val] = [
