@@ -3,33 +3,41 @@
  * @return {string}
  */
 const nextClosestTime = function (time) {
-  const [a, b, _, c, d] = time.split('').map((n) => parseInt(n))
-  const min = Math.min(a, b, c, d)
-  if ([a, b, c].some((n) => n > d)) {
-    return [a, b, ':', c, Math.min(...[a, b, c].filter((n) => n > d))].join('')
+  const digits = time.split('')
+  const orderedDigits = [...digits].sort()
+  for (let i = digits.length - 1; i >= 0; i--) {
+    const current = digits[i]
+    switch (i) {
+      case 4:
+        digits[i] = findSmallest(digits[i], '9', orderedDigits)
+        if (digits[i] > current) return digits.join('')
+        break
+      case 3:
+        digits[i] = findSmallest(digits[i], '5', orderedDigits)
+        if (digits[i] > current) return digits.join('')
+        break
+      case 1:
+        digits[i] = findSmallest(
+          digits[i],
+          digits[i - 1] == '2' ? '4' : '9',
+          orderedDigits
+        )
+        if (digits[i] > current) return digits.join('')
+        break
+      case 0:
+        digits[i] = findSmallest(digits[i], '2', orderedDigits)
+        if (digits[i] > current) return digits.join('')
+        break
+    }
   }
-  if ([a, b, d].some((n) => n > c && n < 6)) {
-    return [
-      a,
-      b,
-      ':',
-      Math.min(...[a, b, d].filter((n) => n > c && n < 6)),
-      min,
-    ].join('')
+  return digits.join('')
+}
+
+const findSmallest = (low, high, order) => {
+  for (let d = 0; d < order.length; d++) {
+    if (order[d] != ':' && order[d] > low && order[d] <= high) {
+      return order[d]
+    }
   }
-  if ([a, c, d].some((n) => n > b && ((a == 2 && n < 4) || a < 2))) {
-    return [
-      a,
-      Math.min(
-        ...[a, c, d].filter((n) => n > b && ((a == 2 && n < 4) || a < 2))
-      ),
-      ':',
-      min,
-      min,
-    ].join('')
-  }
-  if ([b, c, d].some((n) => n > a && n <= 2)) {
-    return [[b, c, d].some((n) => n > a && n <= 2), min, ':', min, min].join('')
-  }
-  return [min, min, ':', min, min].join('')
+  return order[0]
 }
