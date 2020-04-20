@@ -39,9 +39,15 @@ const cutOffTree = function (forest) {
         for (const [dx, dy] of direct) {
           const p = x + dx,
             q = y + dy
-          if (p < 0 || q < 0 || p >= n || q >= m || visited[p][q] === 1)
+          if (
+            p < 0 ||
+            q < 0 ||
+            p >= n ||
+            q >= m ||
+            visited[p][q] === 1 ||
+            forest[p][q] === 0
+          )
             continue
-          if (forest[p][q] === 0) continue
           visited[p][q] = 1
           next.push([p, q])
         }
