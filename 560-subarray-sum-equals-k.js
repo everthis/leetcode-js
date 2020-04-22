@@ -5,10 +5,10 @@
  */
 const subarraySum = function(nums, k) {
   let totalNum = 0
-  let map = new Map()
+  const map = new Map()
   let cumulativeSum = 0
   map.set(0, 1)
-  for (let i = 0; i < nums.length; i++) {
+  for (let i = 0, len = nums.length; i < len; i++) {
     cumulativeSum += nums[i]
     if (map.get(cumulativeSum - k)) {
       totalNum += map.get(cumulativeSum - k)
