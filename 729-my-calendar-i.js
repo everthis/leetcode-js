@@ -47,3 +47,28 @@ MyCalendar.prototype.book = function (start, end) {
  * var obj = new MyCalendar()
  * var param_1 = obj.book(start,end)
  */
+
+// another
+
+const MyCalendar = function() {
+  this.s = new Set()
+};
+
+/** 
+ * @param {number} start 
+ * @param {number} end
+ * @return {boolean}
+ */
+MyCalendar.prototype.book = function(start, end) {
+  for(let e of this.s) {
+    if(Math.max(start, e[0]) < Math.min(end, e[1])) return false
+  }
+  this.s.add([start, end])
+  return true
+};
+
+/** 
+ * Your MyCalendar object will be instantiated and called as such:
+ * var obj = new MyCalendar()
+ * var param_1 = obj.book(start,end)
+ */
