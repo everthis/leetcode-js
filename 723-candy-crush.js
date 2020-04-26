@@ -101,22 +101,22 @@ const candyCrush = function (board) {
         if (val === 0) continue
         if (
           j < M - 2 &&
-          Math.abs(board[i][j + 1]) == val &&
-          Math.abs(board[i][j + 2]) == val
+          Math.abs(board[i][j + 1]) === val &&
+          Math.abs(board[i][j + 2]) === val
         ) {
           found = true
           let ind = j
-          while (ind < M && Math.abs(board[i][ind]) == val)
+          while (ind < Math.min(M, j + 3) && Math.abs(board[i][ind]) === val)
             board[i][ind++] = -val
         }
         if (
           i < N - 2 &&
-          Math.abs(board[i + 1][j]) == val &&
-          Math.abs(board[i + 2][j]) == val
+          Math.abs(board[i + 1][j]) === val &&
+          Math.abs(board[i + 2][j]) === val
         ) {
           found = true
           let ind = i
-          while (ind < N && Math.abs(board[ind][j]) == val)
+          while (ind < Math.min(N, i + 3) && Math.abs(board[ind][j]) === val)
             board[ind++][j] = -val
         }
       }
