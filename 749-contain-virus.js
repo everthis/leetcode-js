@@ -3,6 +3,112 @@
  * @return {number}
  */
 const containVirus = function (grid) {
+  const R = grid.length
+  const C = grid[0].length
+  let ans = 0
+  const dirs = [
+    [0, 1],
+    [0, -1],
+    [1, 0],
+    [-1, 0],
+  ]
+  while (true) {
+    let walls = process(grid)
+    ans += walls
+    if (walls === 0) break
+  }
+  return ans
+  function process(grid) {
+    let maxArea = 0,
+      ans = 0,
+      color = -1,
+      row = -1,
+      col = -1
+    // visited virus as 1, visited 0 using different color to indicate being affected by different virus
+
+    let visited = Array.from({ length: R }, () => Array(C).fill(0))
+
+    // find the max zero area.
+    for (let i = 0; i < R; i++) {
+      for (let j = 0; j < C; j++) {
+        if (grid[i][j] === 1 && visited[i][j] === 0) {
+          const walls = [0]
+          const area = dfs(grid, visited, i, j, color, walls)
+          if (area > maxArea) {
+            maxArea = area
+            ans = walls[0]
+            row = i
+            col = j
+          }
+          color-- // different islands using different color
+        }
+      }
+    }
+
+    removeIsland(grid, row, col)
+    // spread by one step
+    visited = Array.from({ length: R }, () => Array(C).fill(0))
+    for (let i = 0; i < R; i++) {
+      for (let j = 0; j < C; j++) {
+        if (grid[i][j] === 1 && visited[i][j] === 0) {
+          spread(grid, visited, i, j)
+        }
+      }
+    }
+    return ans
+  }
+  function dfs(grid, visited, r, c, color, walls) {
+    if (r < 0 || r > R - 1 || c < 0 || c > C - 1) return 0
+    if (grid[r][c] === 0) {
+      walls[0]++
+      if (visited[r][c] === color) return 0
+      visited[r][c] = color
+      return 1
+    }
+    if (visited[r][c] === 1 || grid[r][c] !== 1) return 0
+    visited[r][c] = 1
+    let ans = 0
+    for (let dir of dirs) {
+      const x = r + dir[0]
+      const y = c + dir[1]
+      ans += dfs(grid, visited, x, y, color, walls)
+    }
+    return ans
+  }
+
+  function removeIsland(grid, r, c) {
+    if (r < 0 || r > R - 1 || c < 0 || c > C - 1 || grid[r][c] !== 1) return
+    grid[r][c] = -1
+    for (let dir of dirs) {
+      const x = r + dir[0]
+      const y = c + dir[1]
+      removeIsland(grid, x, y)
+    }
+  }
+
+  function spread(grid, visited, r, c) {
+    if (r < 0 || r > R - 1 || c < 0 || c > C - 1 || visited[r][c] === 1) return
+    if (grid[r][c] === -1) return
+    visited[r][c] = 1
+    if (grid[r][c] === 0) {
+      grid[r][c] = 1
+      return
+    }
+    for (let dir of dirs) {
+      const x = r + dir[0]
+      const y = c + dir[1]
+      spread(grid, visited, x, y)
+    }
+  }
+}
+
+// another
+
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+const containVirus = function (grid) {
   const infected = 1
   const healthy = 0
   const quarantined = 2
