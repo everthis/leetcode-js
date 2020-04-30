@@ -2,103 +2,73 @@
  * @param {number[][]} grid
  * @return {number}
  */
-const containVirus = function (grid) {
-  const R = grid.length
-  const C = grid[0].length
-  let ans = 0
-  const dirs = [
-    [0, 1],
-    [0, -1],
-    [1, 0],
-    [-1, 0],
-  ]
+const containVirus = (grid) => {
+  const m = grid.length;
+  const n = grid[0].length;
+  let ans = 0;
   while (true) {
-    let walls = process(grid)
-    ans += walls
-    if (walls === 0) break
-  }
-  return ans
-  function process(grid) {
-    let maxArea = 0,
-      ans = 0,
-      color = -1,
-      row = -1,
-      col = -1
-    // visited virus as 1, visited 0 using different color to indicate being affected by different virus
-
-    let visited = Array.from({ length: R }, () => Array(C).fill(0))
-
-    // find the max zero area.
-    for (let i = 0; i < R; i++) {
-      for (let j = 0; j < C; j++) {
-        if (grid[i][j] === 1 && visited[i][j] === 0) {
-          const walls = [0]
-          const area = dfs(grid, visited, i, j, color, walls)
-          if (area > maxArea) {
-            maxArea = area
-            ans = walls[0]
-            row = i
-            col = j
-          }
-          color-- // different islands using different color
+    // list of regions can spread virus
+    const regions = [];
+    const visited = Array.from({ length: m }, () => Array(n).fill(false));
+    for (let i = 0; i < m; i++) {
+      for (let j = 0; j < n; j++) {
+        if (grid[i][j] === 1 && !visited[i][j]) {
+          const region = new Region();
+          dfs(grid, i, j, region, visited);
+          if (region.uninfected.size > 0) regions.push(region);
         }
       }
     }
 
-    removeIsland(grid, row, col)
-    // spread by one step
-    visited = Array.from({ length: R }, () => Array(C).fill(0))
-    for (let i = 0; i < R; i++) {
-      for (let j = 0; j < C; j++) {
-        if (grid[i][j] === 1 && visited[i][j] === 0) {
-          spread(grid, visited, i, j)
-        }
+    if (regions.length === 0) break;
+    regions.sort((a, b) => a.uninfected.size - b.uninfected.size);
+    let idx = -1, wall = -Infinity
+    for(let i = 0, len = regions.length; i < len; i++) {
+      if(regions[i].uninfected.size > wall) {
+        wall = regions[i].uninfected.size
+        idx = i
       }
     }
-    return ans
-  }
-  function dfs(grid, visited, r, c, color, walls) {
-    if (r < 0 || r > R - 1 || c < 0 || c > C - 1) return 0
-    if (grid[r][c] === 0) {
-      walls[0]++
-      if (visited[r][c] === color) return 0
-      visited[r][c] = color
-      return 1
+    const mostToBeInfected = regions[idx]
+    ans += mostToBeInfected.wallNeeded
+    regions.splice(idx, 1)
+    for (let x of mostToBeInfected.infected) {
+      let i = (x / n) >> 0,
+        j = x % n;
+      grid[i][j] = 2;
     }
-    if (visited[r][c] === 1 || grid[r][c] !== 1) return 0
-    visited[r][c] = 1
-    let ans = 0
-    for (let dir of dirs) {
-      const x = r + dir[0]
-      const y = c + dir[1]
-      ans += dfs(grid, visited, x, y, color, walls)
-    }
-    return ans
-  }
 
-  function removeIsland(grid, r, c) {
-    if (r < 0 || r > R - 1 || c < 0 || c > C - 1 || grid[r][c] !== 1) return
-    grid[r][c] = -1
-    for (let dir of dirs) {
-      const x = r + dir[0]
-      const y = c + dir[1]
-      removeIsland(grid, x, y)
+    for (let region of regions) {
+      for (let x of region.uninfected) {
+        let i = (x / n) >> 0,
+          j = x % n;
+        grid[i][j] = 1;
+      }
     }
   }
 
-  function spread(grid, visited, r, c) {
-    if (r < 0 || r > R - 1 || c < 0 || c > C - 1 || visited[r][c] === 1) return
-    if (grid[r][c] === -1) return
-    visited[r][c] = 1
-    if (grid[r][c] === 0) {
-      grid[r][c] = 1
-      return
+  return ans;
+  function dfs(grid, i, j, region, visited) {
+    if (i < 0 || i == m || j < 0 || j == n) return;
+  
+    if (grid[i][j] === 1 && !visited[i][j]) {
+      visited[i][j] = true;
+      region.infected.add(i * n + j);
+      dfs(grid, i - 1, j, region, visited);
+      dfs(grid, i + 1, j, region, visited);
+      dfs(grid, i, j - 1, region, visited);
+      dfs(grid, i, j + 1, region, visited);
+    } else if (grid[i][j] === 0) {
+      region.wallNeeded += 1;
+      region.uninfected.add(i * n + j);
     }
-    for (let dir of dirs) {
-      const x = r + dir[0]
-      const y = c + dir[1]
-      spread(grid, visited, x, y)
-    }
+  }
+};
+class Region {
+  constructor() {
+    this.wallNeeded = 0;
+    this.infected = new Set();
+    this.uninfected = new Set();
   }
 }
 
