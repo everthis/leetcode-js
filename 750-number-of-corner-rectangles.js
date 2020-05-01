@@ -10,7 +10,7 @@ const countCornerRectangles = function (grid) {
       for (let k = 0; k < grid[0].length; k++) {
         if (grid[i][k] === 1 && grid[j][k] === 1) counter++
       }
-      if (counter > 0) ans += (counter * (counter - 1)) / 2
+      ans += (counter * (counter - 1)) / 2
     }
   }
   return ans
