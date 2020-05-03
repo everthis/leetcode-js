@@ -4,16 +4,13 @@
  * @return {boolean}
  */
 const canConstruct = function(ransomNote, magazine) {
-  const rArr = ransomNote.split("");
-  const mArr = magazine.split("");
-  let idx;
-  for (let i = 0; i < rArr.length; i++) {
-    idx = mArr.indexOf(rArr[i]);
-    if (idx === -1) {
-      return false;
-    } else {
-      mArr.splice(idx, 1);
-    }
+  const m = new Map()
+  for(let c of magazine) {
+    m.set(c, (m.get(c) || 0) + 1 )
   }
-  return true;
+  for(let c of ransomNote) {
+    if(!m.has(c) || m.get(c) <= 0) return false
+    m.set(c, m.get(c) - 1)
+  }
+  return true
 };
