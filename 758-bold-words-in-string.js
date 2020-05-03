@@ -4,27 +4,26 @@
  * @return {string}
  */
 const boldWords = function (words, S) {
-  const boldMap = new Array(S.length).fill(0)
-  for (let i = 0; i < words.length; i++) {
-    let match = -1
-    while ((match = S.indexOf(words[i], match + 1)) > -1) {
-      for (let j = match; j < match + words[i].length; j++) {
-        boldMap[j] = 1
+  const arr = new Array(S.length).fill(false)
+  for(let w of words) {
+    for(let i = 0, len = S.length - w.length; i <= len; i++) {
+      const tmp = S.slice(i)
+      if(tmp && tmp.startsWith(w)) {
+        for(let j = i; j < i + w.length; j++) {
+          arr[j] = true
+        }
       }
     }
   }
   let res = ''
-  let openTag = false
-  for (let i = 0; i < S.length; i++) {
-    if (boldMap[i] && !openTag) {
-      res += `<b>`
-      openTag = true
-    } else if (!boldMap[i] && openTag) {
-      res += `</b>`
-      openTag = false
+  for(let i = 0, len = S.length; i < len; i++) {
+    if(arr[i] && (i === 0 || !arr[i - 1])) {
+      res += '<b>'
     }
     res += S[i]
+    if(arr[i] && (i === len - 1 || !arr[i + 1])) {
+      res += '</b>'
+    }
   }
-  res += openTag ? `</b>` : ``
   return res
 }
