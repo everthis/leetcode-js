@@ -9,6 +9,8 @@ const longestPrefix = function(s) {
     let j = 0
     const len = s.length
     const prefix = Array(len + 1).fill(0)
+    prefix[0] = -1
+    prefix[1] = 0
     while(i < len) {
       if(s[j] === s[i]) {
         j++
@@ -16,10 +18,7 @@ const longestPrefix = function(s) {
         prefix[i] = j
       } else {
         if(j > 0) j = prefix[j]
-        else {
-          i++
-          prefix[i] = 0
-        }
+        else i++
       }
     }
     return prefix
