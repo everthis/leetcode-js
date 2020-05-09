@@ -2,24 +2,15 @@
  * @param {number} num
  * @return {boolean}
  */
-
 const isPerfectSquare = function(num) {
-    let lo = 1
-    let hi = num
-    let mid
-    let val
-    while(lo <= hi) {
-        mid = (lo + hi) >>> 1
-        val = mid * mid
-        if (val === num) {
-            return true
-        }
-        if (val < num) {
-            lo = mid + 1
-        }
-        if (val > num) {
-            hi = mid - 1
-        }
-    }
-    return false
+  let s = 0
+  let e = num
+  while(s <= e) {
+    const mid = s + ((e - s) >> 1)
+    const res = mid ** 2
+    if(res === num) return true
+    if(res < num) s = mid + 1
+    else e = mid - 1
+  }
+  return false
 };
