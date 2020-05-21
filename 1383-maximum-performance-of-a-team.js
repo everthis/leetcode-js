@@ -11,25 +11,25 @@ const maxPerformance = function (n, speed, efficiency, k) {
   const pq = new PriorityQueue({
     comparator: (a, b) => a <= b,
   })
-  const M = 10 ** 9 + 7
-  let sumOfSpeed = 0
-  let max = 0
+  const M = BigInt(10 ** 9 + 7)
+  let sumOfSpeed = BigInt(0)
+  let max = BigInt(0)
   for (const [s, e] of arr) {
     pq.enqueue(s)
     sumOfSpeed += s
     if (pq.length > k) {
       sumOfSpeed -= pq.dequeue()
     }
-    max = Math.max(max, sumOfSpeed * e)
+    const tmp = sumOfSpeed * BigInt(e)
+    if(tmp > max) max = tmp
   }
-  if (max === 125026844176762060) return 301574164
   return max % M
 }
 
 function zip(arr1, arr2) {
   const arr = []
   for (let i = 0; i < arr1.length; i++) {
-    arr.push([arr1[i], arr2[i]])
+    arr.push([BigInt(arr1[i]), arr2[i]])
   }
   return arr
 }
@@ -80,7 +80,6 @@ function moveDown(arr, i, comparator) {
     moveDown(arr, next, comparator)
   }
 }
-
 
 // another
 
