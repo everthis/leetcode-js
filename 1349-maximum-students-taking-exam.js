@@ -43,3 +43,42 @@ function canSit(row, arrangement, newStudent) {
     !(arrangement & (newStudent >> 1))
   )
 }
+
+// another
+
+/**
+ * @param {character[][]} seats
+ * @return {number}
+ */
+const maxStudents = function (seats) {
+  const m = seats.length
+  const n = seats[0].length
+  const validity = []
+  for (let i = 0; i < m; i++) {
+    let cur = 0
+    for (let j = 0; j < n; j++) {
+      cur = (cur << 1) + (seats[i][j] === '.' ? 1 : 0)
+    }
+    validity.push(cur)
+  }
+  const f = Array.from({ length: m + 1 }, () => Array(1 << n).fill(-1))
+  f[0][0] = 0
+  for (let i = 1; i <= m; i++) {
+    const valid = validity[i - 1]
+    for (let j = 0; j < 1 << n; j++) {
+      if ((j & valid) === j && !(j & (j >> 1))) {
+        for (let k = 0; k < 1 << n; k++) {
+          if (!(j & (k >> 1)) && !((j >> 1) & k) && f[i - 1][k] !== -1) {
+            f[i][j] = Math.max(f[i][j], f[i - 1][k] + bitCount(j))
+          }
+        }
+      }
+    }
+  }
+  return Math.max(...f[m])
+}
+function bitCount(n) {
+  const res = n.toString(2).match(/1/g)
+  return res === null ? 0 : res.length
+}
+
