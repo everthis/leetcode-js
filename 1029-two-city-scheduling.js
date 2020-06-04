@@ -29,6 +29,27 @@ const twoCitySchedCost = function(costs) {
  * @return {number}
  */
 const twoCitySchedCost = function(costs) {
+  const N = costs.length
+  let res = 0
+  const refund = []
+  for(let i = 0; i < N; i++) {
+    refund[i] = costs[i][1] - costs[i][0]
+    res += costs[i][0]
+  }
+  refund.sort((a, b) => a - b)
+  for(let i = 0; i < N / 2; i++) {
+    res += refund[i]
+  }
+  return res
+};
+
+// another
+
+/**
+ * @param {number[][]} costs
+ * @return {number}
+ */
+const twoCitySchedCost = function(costs) {
   const len = costs.length
   if(len === 0) return 0
   const N = len / 2
