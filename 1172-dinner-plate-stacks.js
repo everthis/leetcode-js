@@ -142,3 +142,73 @@ class PriorityQueue {
     return this.last < 1
   }
 }
+
+// another
+
+/**
+ * @param {number} capacity
+ */
+const DinnerPlates = function (capacity) {
+  this.pushIndex = 0
+  this.popIndex = 0
+  this.capacity = capacity
+  this.stacks = [[]]
+}
+
+/**
+ * @param {number} val
+ * @return {void}
+ */
+DinnerPlates.prototype.push = function (val) {
+  while (
+    this.pushIndex < this.stacks.length &&
+    this.stacks[this.pushIndex].length === this.capacity
+  ) {
+    this.pushIndex++
+  }
+  if (this.stacks.length === this.pushIndex) {
+    this.stacks[this.pushIndex] = [val]
+  } else {
+    this.stacks[this.pushIndex].push(val)
+  }
+  if (this.popIndex < this.pushIndex) {
+    this.popIndex = this.pushIndex
+  }
+}
+
+/**
+ * @return {number}
+ */
+DinnerPlates.prototype.pop = function () {
+  while (this.stacks[this.popIndex].length === 0) {
+    if (this.popIndex > 0) {
+      this.popIndex--
+    } else {
+      return -1
+    }
+  }
+  const valueAtIndex = this.stacks[this.popIndex].pop()
+  if (this.pushIndex > this.popIndex) {
+    this.pushIndex = this.popIndex
+  }
+  return valueAtIndex
+}
+
+/**
+ * @param {number} index
+ * @return {number}
+ */
+DinnerPlates.prototype.popAtStack = function (index) {
+  if (index >= this.stacks.length) return -1
+  if (index < this.pushIndex) this.pushIndex = index
+  return this.stacks[index].length > 0 ? this.stacks[index].pop() : -1
+}
+
+/**
+ * Your DinnerPlates object will be instantiated and called as such:
+ * var obj = new DinnerPlates(capacity)
+ * obj.push(val)
+ * var param_2 = obj.pop()
+ * var param_3 = obj.popAtStack(index)
+ */
+
