@@ -24,3 +24,20 @@ const isPowerOfTwo = function(n) {
 const isPowerOfTwo = function(n) {
     return Math.log2(n)%1 === 0
 };
+
+// another
+
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+const isPowerOfTwo = n => n < 1 ? false : Number.MAX_VALUE % n === 0
+
+// another
+
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+const isPowerOfTwo = x => x > 0 ? !(x & (x - 1)) : false;
+
