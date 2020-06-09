@@ -4,6 +4,25 @@
  * @return {boolean}
  */
 const isSubsequence = function(s, t) {
+  const sl = s.length
+  const tl = t.length
+  if(sl > tl) return false
+  if(sl === 0) return true
+  let si = 0
+  for(let i = 0; i < tl && si < sl; i++) {
+    if(s[si] === t[i]) si++
+  }
+  return si === sl
+};
+
+// another
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+const isSubsequence = function(s, t) {
   let ti = 0
   let tmp = 0
   for (let i = 0; i < s.length; i++) {
