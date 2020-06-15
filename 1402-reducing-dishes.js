@@ -3,11 +3,15 @@
  * @return {number}
  */
 const maxSatisfaction = function (satisfaction, max = 0) {
-  satisfaction.sort((a, b) => b - a)
-  for (let j = 1; j <= satisfaction.length; ++j) {
-    let next = 0
-    for (let i = 0, k = j; i < j; ++i, --k) next += satisfaction[i] * k
-    max = Math.max(max, next)
+  satisfaction.sort((a, b) => a - b)
+  let res = 0
+  let total = 0
+  let len = satisfaction.length
+  // "We'll keep doing this as long as satisfaction[i] + total > 0" === satisfaction[i] > -total
+  // It is because the current running sum needs to be greater than 0 otherwise, it would decrease res.
+  for (let i = len - 1; i >= 0 && satisfaction[i] > -total; i--) {
+    total += satisfaction[i]
+    res += total
   }
-  return max
+  return res
 }
