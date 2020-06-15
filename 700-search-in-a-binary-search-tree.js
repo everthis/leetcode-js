@@ -1,8 +1,9 @@
 /**
  * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
  * }
  */
 /**
@@ -10,14 +11,9 @@
  * @param {number} val
  * @return {TreeNode}
  */
-const searchBST = function(root, val) {
-  if (root === null) return [];
-
-  if (root.val === val) {
-    return root;
-  } else if (root.val < val) {
-    return searchBST(root.right, val);
-  } else {
-    return searchBST(root.left, val);
+const searchBST = function (root, val) {
+  if (!root || root.val === val) {
+    return root
   }
-};
+  return root.val < val ? searchBST(root.right, val) : searchBST(root.left, val)
+}
