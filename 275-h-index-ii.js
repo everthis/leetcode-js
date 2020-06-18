@@ -22,7 +22,7 @@ const hIndex = function(citations) {
  * @return {number}
  */
 const hIndex = function(citations) {
-  let len = citations.length
+  const len = citations.length
   let lo = 0,
     hi = len - 1
   while (lo <= hi) {
