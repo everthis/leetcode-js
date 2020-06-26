@@ -192,3 +192,92 @@ class PriorityQueue {
     }
   }
 }
+
+// another
+
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+const minPushBox = function (grid) {
+  const dirs = [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ]
+  const dis = new Map()
+  const rows = grid.length
+  const cols = grid[0].length
+  let sk, box, target
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (grid[i][j] === 'B') box = [i, j]
+      else if (grid[i][j] === 'S') sk = [i, j]
+      else if (grid[i][j] === 'T') target = [i, j]
+    }
+  }
+  const q = []
+  const start = encode(box[0], box[1], sk[0], sk[1])
+  dis.set(start, 0)
+  q.push(start)
+  let res = Number.MAX_VALUE
+  while (q.length) {
+    const u = q.pop()
+    const du = decode(u)
+    if (dis.get(u) >= res) continue
+    if (du[0] === target[0] && du[1] === target[1]) {
+      res = Math.min(res, dis.get(u))
+      continue
+    }
+    const b = [du[0], du[1]]
+    const s = [du[2], du[3]]
+    for (let dir of dirs) {
+      const nsx = s[0] + dir[0]
+      const nsy = s[1] + dir[1]
+      if (
+        nsx < 0 ||
+        nsx >= rows ||
+        nsy < 0 ||
+        nsy >= cols ||
+        grid[nsx][nsy] === '#'
+      )
+        continue
+      if (nsx === b[0] && nsy === b[1]) {
+        const nbx = b[0] + dir[0]
+        const nby = b[1] + dir[1]
+        if (
+          nbx < 0 ||
+          nbx >= rows ||
+          nby < 0 ||
+          nby >= cols ||
+          grid[nbx][nby] === '#'
+        )
+          continue
+        const v = encode(nbx, nby, nsx, nsy)
+        if (dis.has(v) && dis.get(v) <= dis.get(u) + 1) continue
+        dis.set(v, dis.get(u) + 1)
+        q.push(v)
+      } else {
+        const v = encode(b[0], b[1], nsx, nsy)
+        if (dis.has(v) && dis.get(v) <= dis.get(u)) continue
+        dis.set(v, dis.get(u))
+        q.push(v)
+      }
+    }
+  }
+  return res === Number.MAX_VALUE ? -1 : res
+
+  function encode(bx, by, sx, sy) {
+    return (bx << 24) | (by << 16) | (sx << 8) | sy
+  }
+  function decode(num) {
+    const res = []
+    res[0] = (num >>> 24) & 0xff
+    res[1] = (num >>> 16) & 0xff
+    res[2] = (num >>> 8) & 0xff
+    res[3] = num & 0xff
+    return res
+  }
+}
+
