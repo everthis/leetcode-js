@@ -16,3 +16,26 @@ const numSquares = function(n) {
     }
     return dp[n]
 };
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const numSquares = function (n) {
+  if (n <= 0) return 0
+  // cntPerfectSquares[i] = the least number of perfect square numbers
+  const cntPerfectSquares = [0]
+  // While cntPerfectSquares.length <= n, we need to incrementally
+  // calculate the next result until we get the result for n.
+  while (cntPerfectSquares.length <= n) {
+    const m = cntPerfectSquares.length
+    let cntSquares = Number.MAX_VALUE
+    for (let i = 1; i * i <= m; i++) {
+      cntSquares = Math.min(cntSquares, cntPerfectSquares[m - i * i] + 1)
+    }
+    cntPerfectSquares.push(cntSquares)
+  }
+  return cntPerfectSquares[n]
+}
