@@ -2,30 +2,26 @@
  * @param {string[][]} tickets
  * @return {string[]}
  */
-
-const findItinerary = tickets => {
-    let db = {}; 
-    let result = []; 
-    tickets.forEach(node => {
-        if (db[node[0]]) {
-            db[node[0]].push(node[1]);
-        } else {
-            db[node[0]] = [node[1]];
-        }
-    })
-    
-    for(let prop in db){
-        db[prop].sort();
-    } 
-    
-    const dfs = (from) => {
-        while (db[from] && db[from].length > 0) {
-            dfs(db[from].shift());
-        }
-        result.unshift(from);
+const findItinerary = function (tickets) {
+  const result = []
+  const map = new Map()
+  for (const [from, to] of tickets) {
+    if (!map.has(from)) {
+      map.set(from, [])
     }
-    
-    dfs('JFK');
-    return result;
-};
-
+    map.get(from).push(to)
+  }
+  for (const key of map.keys()) {
+    map.get(key).sort()
+  }
+  function dfs(departure) {
+    const destination = map.get(departure)
+    while (destination && destination.length) {
+      const newDeparture = destination.shift()
+      dfs(newDeparture)
+    }
+    result.push(departure)
+  }
+  dfs('JFK')
+  return result.reverse()
+}
