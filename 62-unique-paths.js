@@ -23,6 +23,24 @@ const uniquePaths = function(m, n) {
  * @return {number}
  */
 const uniquePaths = function(m, n) {
+  const dp = Array(m).fill(0)
+  for(let i = 0; i < n; i++) {
+    dp[0] = 1
+    for(let j = 1; j < m; j++) {
+      dp[j] += dp[j - 1]
+    }
+  }
+  return dp[m - 1]
+};
+
+// another
+
+/**
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+const uniquePaths = function(m, n) {
     return factorial(m+n-2)/(factorial(m - 1) * factorial(n - 1))
 };
 
