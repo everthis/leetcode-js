@@ -17,7 +17,7 @@ const movesToStamp = function (stamp, target) {
         stars = doReplace(T, i, S.length, stars)
         doneReplace = true
         visited[i] = true
-        res.push(i)
+        res.unshift(i)
         if (stars === T.length) {
           break
         }
@@ -29,11 +29,7 @@ const movesToStamp = function (stamp, target) {
     }
   }
 
-  const resArray = Array(res.length).fill(0)
-  for (let i = 0; i < res.length; i++) {
-    resArray[i] = res[res.length - i - 1]
-  }
-  return resArray
+  return res
   function canReplace(T, p, S) {
     for (let i = 0; i < S.length; i++) {
       if (T[i + p] !== '*' && T[i + p] !== S[i]) {
