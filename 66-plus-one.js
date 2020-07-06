@@ -2,15 +2,15 @@
  * @param {number[]} digits
  * @return {number[]}
  */
-const plusOne = function(digits) {
-  let p = true
-  let delta = 1
-  for(let i = digits.length - 1; i >= 0 && p; i--) {
-    let sum = digits[i] + delta
-    if (sum >= 10) p = true
-    else p = false
-    digits[i] = sum % 10
+const plusOne = function (digits) {
+  for (let i = digits.length - 1; i >= 0; i--) {
+    if (digits[i] !== 9) {
+      digits[i]++
+      return digits
+    } else {
+      digits[i] = 0
+    }
   }
-  if(p) digits.unshift(1)
+  digits.unshift(1)
   return digits
-};
+}
