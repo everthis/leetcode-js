@@ -36,3 +36,46 @@ const pathsWithMaxScore = (
   }
   return [S[N][N], P[N][N]]
 }
+
+// another
+
+/**
+ * @param {string[]} board
+ * @return {number[]}
+ */
+const pathsWithMaxScore = (
+  board,
+  DIRS = [
+    [-1, -1],
+    [-1, 0],
+    [0, -1],
+  ],
+  mod = 1e9 + 7
+) => {
+  const m = board.length,
+    n = board[0].length
+  const dpSum = Array.from({ length: m }, () => Array(n).fill(0))
+  const dpCnt = Array.from({ length: m }, () => Array(n).fill(0))
+  dpCnt[m - 1][n - 1] = 1 // start at the bottom right square
+  for (let r = m - 1; r >= 0; r--) {
+    for (let c = n - 1; c >= 0; c--) {
+      if (dpCnt[r][c] === 0) continue // can't reach to this square
+      for (let dir of DIRS) {
+        let nr = r + dir[0],
+          nc = c + dir[1]
+        if (nr >= 0 && nc >= 0 && board[nr].charAt(nc) !== 'X') {
+          let nsum = dpSum[r][c]
+          if (board[nr].charAt(nc) !== 'E') nsum += board[nr].charAt(nc) - '0'
+          if (nsum > dpSum[nr][nc]) {
+            dpCnt[nr][nc] = dpCnt[r][c]
+            dpSum[nr][nc] = nsum
+          } else if (nsum === dpSum[nr][nc]) {
+            dpCnt[nr][nc] = (dpCnt[nr][nc] + dpCnt[r][c]) % mod
+          }
+        }
+      }
+    }
+  }
+  return [dpSum[0][0], dpCnt[0][0]]
+}
+
