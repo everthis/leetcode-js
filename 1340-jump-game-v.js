@@ -3,31 +3,26 @@
  * @param {number} d
  * @return {number}
  */
-const maxJumps = function (arr, d) {
-  const map = {}
-  let max = 1
-  for (let i = 0; i < arr.length; i++) {
-    max = Math.max(max, calc(i))
-  }
-  return max
+const maxJumps = function (arr, d, res = 1) {
+  const dp = Array(1001).fill(0)
+  for (let i = 0, len = arr.length; i < len; ++i)
+    res = Math.max(res, dfs(arr, i, d))
+  return res
 
-  function calc(i) {
-    if (map[i]) return map[i]
-    let max = 1
-    const left = Math.max(0, i - d)
-    for (let j = i - 1; j >= left; j--) {
-      if (arr[j] >= arr[i]) break
-      if (arr[j] < arr[i]) max = Math.max(max, calc(j) + 1)
-    }
-    const right = Math.min(arr.length - 1, i + d)
-    for (let j = i + 1; j <= right; j++) {
-      if (arr[j] >= arr[i]) break
-      if (arr[j] < arr[i]) max = Math.max(max, calc(j) + 1)
-    }
-    map[i] = max
-    return map[i]
+  function dfs(arr, i, d, res = 1) {
+    if (dp[i]) return dp[i]
+    for (
+      let j = i + 1;
+      j <= Math.min(i + d, arr.length - 1) && arr[j] < arr[i];
+      ++j
+    )
+      res = Math.max(res, 1 + dfs(arr, j, d))
+    for (let j = i - 1; j >= Math.max(0, i - d) && arr[j] < arr[i]; --j)
+      res = Math.max(res, 1 + dfs(arr, j, d))
+    return (dp[i] = res)
   }
 }
+
 
 // another
 
