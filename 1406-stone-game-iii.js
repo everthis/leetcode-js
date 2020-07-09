@@ -20,3 +20,24 @@ const stoneGameIII = function (stoneValue) {
   else if (dp[0] * 2 > suffixSum[0]) return 'Alice'
   else return 'Bob'
 }
+
+// another
+
+/**
+ * @param {number[]} stoneValue
+ * @return {string}
+ */
+const stoneGameIII = function (stoneValue) {
+  const n = stoneValue.length,
+    dp = new Array(4).fill(0)
+  for (let i = n - 1; i >= 0; --i) {
+    dp[i % 4] = -Infinity
+    for (let k = 0, take = 0; k < 3 && i + k < n; ++k) {
+      take += stoneValue[i + k]
+      dp[i % 4] = Math.max(dp[i % 4], take - dp[(i + k + 1) % 4])
+    }
+  }
+  if (dp[0] > 0) return 'Alice'
+  if (dp[0] < 0) return 'Bob'
+  return 'Tie'
+}
