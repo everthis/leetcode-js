@@ -1,8 +1,9 @@
 /**
  * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
  * }
  */
 /**
@@ -11,15 +12,7 @@
  * @return {boolean}
  */
 const isSameTree = function(p, q) {
-  return isSame(p, q);
-};
-
-const isSame = (p, q) => {
-  if (p === null && q === null) return true;
-
-  if ((p !== null && q === null) || (p === null && q !== null)) return false;
-
-  if (p.val !== q.val) return false;
-
-  return isSame(p.left, q.left) && isSame(p.right, q.right);
+  if(p == null && q == null) return true
+  if(p == null || q == null || p.val !== q.val) return false
+  return isSameTree(p.left, q.left) && isSameTree(p.right, q.right)
 };
