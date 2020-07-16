@@ -37,3 +37,28 @@ const myPow = function (x, n) {
   return n % 2 == 0 ? myPow(x * x, n / 2) : x * myPow(x * x, (n / 2) >> 0)
 }
 
+// another
+
+/**
+ * @param {number} x
+ * @param {number} n
+ * @return {number}
+ */
+const myPow = function (x, n) {
+  if (n === 0) return 1
+  if (n < 0) {
+    n = -n
+    x = 1 / x
+  }
+  let res = 1
+  while (n > 0) {
+    if (n & 1) {
+      res *= x
+      --n
+    }
+    x *= x
+    n /= 2
+  }
+  return res
+}
+
