@@ -16,3 +16,28 @@ const addBinary = function(a, b) {
     }
     return s
 };
+
+// another
+
+/**
+ * @param {string} a
+ * @param {string} b
+ * @return {string}
+ */
+const addBinary = function(a, b) {
+  let next = false
+  let res = []
+  let ai = a.length - 1
+  let bi = b.length - 1
+  while((ai >= 0 && bi >=0) || next) {
+    const tmp = (ai >= 0 ? +a[ai--] : 0) + (bi >= 0 ? +b[bi--] : 0) + (next ? 1 : 0)
+    if(tmp > 1) next = true
+    else next = false
+    res.unshift('' + (tmp % 2))
+  }
+
+  while(ai >= 0) res.unshift(a[ai--])
+  while(bi >= 0) res.unshift(b[bi--])
+  
+  return res.join('')
+};
