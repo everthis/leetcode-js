@@ -36,6 +36,7 @@ function dfs(board, x, y, dirs, word, start) {
 }
 
 // time complexity: O(M * N * 3^L), where L is the length of word.
+// we have a visited array and we never go back, so 3 directions
 
 // another
 
