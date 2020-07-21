@@ -35,6 +35,8 @@ function dfs(board, x, y, dirs, word, start) {
   return false;
 }
 
+// time complexity: O(M * N * 3^L), where L is the length of word.
+
 // another
 
 /**
