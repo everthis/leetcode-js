@@ -38,3 +38,40 @@ function bfs(row, res) {
   }
   bfs(next, res)
 }
+
+// another
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+const zigzagLevelOrder = function (root) {
+  if (!root) return [];
+  const queue = [root];
+  const zigzag = [];
+  let numLevels = 1;
+  while (queue.length > 0) {
+    const width = queue.length;
+    const levelTraversal = [];
+    for (let i = 0; i < width; i++) {
+      const currentNode = queue.shift();
+      if (currentNode.right) queue.push(currentNode.right);
+      if (currentNode.left) queue.push(currentNode.left);
+      numLevels % 2 === 0
+        ? levelTraversal.push(currentNode.val)
+        : levelTraversal.unshift(currentNode.val);
+    }
+    zigzag.push(levelTraversal);
+    numLevels++;
+  }
+
+  return zigzag;
+};
