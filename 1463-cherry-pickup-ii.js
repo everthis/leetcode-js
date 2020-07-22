@@ -12,7 +12,7 @@ const cherryPickup = function (grid) {
 }
 
 const dfs = (grid, m, n, r, c1, c2, memo) => {
-  if (r == m) return 0
+  if (r === m) return 0
   if (memo[r][c1][c2]) return memo[r][c1][c2]
   let count = 0
   for (let i = -1; i <= 1; i++) {
@@ -24,6 +24,6 @@ const dfs = (grid, m, n, r, c1, c2, memo) => {
       }
     }
   }
-  count += c1 == c2 ? grid[r][c1] : grid[r][c1] + grid[r][c2]
+  count += c1 === c2 ? grid[r][c1] : grid[r][c1] + grid[r][c2]
   return (memo[r][c1][c2] = memo[r][c2][c1] = count)
 }
