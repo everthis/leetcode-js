@@ -14,3 +14,18 @@ const singleNumber = function(nums) {
   });
   return Object.keys(hash).map(el => +el);
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+const singleNumber = function(nums) {
+  const s = new Set()
+  for(let el of nums) {
+    if(s.has(el)) s.delete(el)
+    else s.add(el)
+  }
+  return Array.from(s)
+};
