@@ -29,3 +29,23 @@ const singleNumber = function(nums) {
   }
   return Array.from(s)
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+const singleNumber = function (nums) {
+  const res = Array(2).fill(0)
+  const x = nums.reduce((acc, v) => acc ^ v, 0)
+  const partition = x & ~(x - 1)
+  for (let i = 0; i < nums.length; i++) {
+    if (partition & nums[i]) {
+      res[1] ^= nums[i]
+    } else {
+      res[0] ^= nums[i]
+    }
+  }
+  return res
+}
