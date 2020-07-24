@@ -4,18 +4,16 @@
  */
 const allPathsSourceTarget = function(graph) {
   const res = []
-  traverse(graph, 0, [0], res)
+  const path = []
+  bt(graph, res, path, 0)
   return res
 };
 
-function traverse(arr, idx, cur, res) {
-  if(idx === arr.length - 1) {
-    res.push(cur.slice(0))
-    return
+function bt(g, res, path, cur) {
+  path.push(cur)
+  if(cur === g.length - 1) res.push(path.slice())
+  else {
+    for(let i of g[cur]) bt(g, res, path, i)
   }
-  for(let i = 0, len = arr[idx].length; i < len; i++) {
-    cur.push(arr[idx][i])
-    traverse(arr, arr[idx][i], cur, res)
-    cur.pop(arr[idx][i])
-  }
+  path.pop()
 }
