@@ -30,3 +30,39 @@ const buildTree = function(inorder, postorder) {
     return root;
   }
 };
+
+// another
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number[]} inorder
+ * @param {number[]} postorder
+ * @return {TreeNode}
+ */
+
+const buildTree = function (inorder, postorder) {
+  let pInorder = inorder.length - 1
+  let pPostorder = postorder.length - 1
+  return helper(inorder, postorder, null)
+  function helper(inorder, postorder, end) {
+    if (pPostorder < 0) return null
+    // create root node
+    const n = new TreeNode(postorder[pPostorder--])
+    // if right node exist, create right subtree
+    if (inorder[pInorder] != n.val) {
+      n.right = helper(inorder, postorder, n)
+    }
+    pInorder--
+    // if left node exist, create left subtree
+    if (end === null || inorder[pInorder] !== end.val) {
+      n.left = helper(inorder, postorder, end)
+    }
+    return n
+  }
+}
