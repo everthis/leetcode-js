@@ -13,3 +13,16 @@ const titleToNumber = function(s) {
 
 console.log(titleToNumber("A"));
 console.log(titleToNumber("AA"));
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const titleToNumber = function(s) {
+  let result = 0;
+  const A = 'A'.charCodeAt(0)
+  for (let i = 0; i < s.length; result = result * 26 + (s.charCodeAt(i) - A + 1), i++);
+  return result;
+};
