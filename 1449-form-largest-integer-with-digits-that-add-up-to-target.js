@@ -11,12 +11,11 @@ const largestNumber = function(cost, target) {
 function dfs(cost, index, remain, m) {
   if(remain === 0) return ''
   if(remain < 0 || index === cost.length + 1) return '0'
-  const k = `${index}-${remain}`
-  if(m.has(k)) return m.get(k)
+  if(m.has(remain)) return m.get(remain)
   const take = '' + index + dfs(cost, 1, remain - cost[index - 1], m)
   const skip = dfs(cost, index + 1, remain, m)
   const res = getBigger(take, skip)
-  m.set(k, res)
+  m.set(remain, res)
   return res
 }
 function getBigger(num1, num2) {
