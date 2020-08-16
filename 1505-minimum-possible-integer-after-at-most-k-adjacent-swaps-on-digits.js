@@ -4,36 +4,28 @@
  * @return {string}
  */
 const minInteger = function (num, k) {
-  const nums = num.split("")
-  const map = {}
-  nums.forEach((n, i) => {
-    map[n] = map[n] || []
-    map[n].push(i)
-  })
-
-  const used = new Set()
+  const nums = num.split('')
+  const len = nums.length
+  const q = Array(10)
+    .fill(null)
+    .map(() => [])
+  nums.forEach((n, i) => q[+n].push(i))
   const tree = new Fenwick(nums.length)
-  let idx = 0
-  let re = ""
-  while (k > 0 && idx < nums.length) {
-    for (let i = 0; i < 10; i++) {
-      if (!map[i] || !map[i].length) continue
-      const id = map[i][0]
-      const cost = id - tree.query(id)
-      if (k < cost) continue
-      re += nums[id]
-      k -= cost
-      used.add(id)
-      tree.update(id + 1, 1)
-      map[i].shift()
-      break
-    }
-    idx++
-  }
-
-  for (let i = 0; i < nums.length; i++) {
-    if (!used.has(i)) {
-      re += nums[i]
+  for (let i = 1; i <= len; i++) tree.update(i, 1)
+  let re = ''
+  for (let i = 0; i < len; i++) {
+    for (let j = 0; j <= 9; j++) {
+      const idxArr = q[j]
+      if (idxArr && idxArr.length) {
+        const idx = idxArr[0]
+        const num = tree.query(idx)
+        if (num > k) continue
+        k -= num
+        idxArr.shift()
+        tree.update(idx + 1, -1)
+        re += j
+        break
+      }
     }
   }
 
