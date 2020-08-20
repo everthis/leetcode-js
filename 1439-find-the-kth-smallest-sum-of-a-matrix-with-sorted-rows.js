@@ -16,21 +16,20 @@ const kthSmallest = function(mat, k) {
     if (row === mat.length) return 1;
     let totalcnt = 0;
     for(let v of mat[row]) {
-      let cnt = check(row+1, v+sum, limit);
+      const cnt = check(row + 1, v + sum, limit);
       totalcnt += cnt;
       if (cnt === 0 || totalcnt > k) break;  
     }
-    
     return totalcnt;
   };
 
   while(lo <= hi) {
-    let m = Math.floor((lo+hi)/2);
-    let cnt = check(0,0,m);
+    const m = (lo + (hi - lo) / 2) >> 0;
+    const cnt = check(0, 0, m);
     if (cnt < k) {
-      lo = m+1;
+      lo = m + 1;
     } else {
-      hi = m-1;
+      hi = m - 1;
     }
   }
 
