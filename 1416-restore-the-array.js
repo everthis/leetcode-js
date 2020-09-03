@@ -30,3 +30,32 @@ function dfs(s, k, i, dp) {
   }
   return (dp[i] = ans)
 }
+
+// another
+
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {number}
+ */
+const numberOfArrays = function (s, k) {
+  const mod = 10 ** 9 + 7
+  const n = s.length
+  const dp = new Array(n + 1).fill(0)
+  dp[n] = 1
+  for (let i = n - 1; i >= 0; i--) {
+    if (s[i] === '0') continue
+    else {
+      let temp = s[i]
+      for (let j = i + 1; j <= n; j++) {
+        if (temp > k) break
+        dp[i] = (dp[i] + dp[j]) % mod
+        if (j < n) {
+          temp = temp * 10 + parseInt(s[j])
+        }
+      }
+    }
+  }
+  return parseInt(dp[0])
+}
+
