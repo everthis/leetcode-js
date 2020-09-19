@@ -31,22 +31,21 @@ const subarraysWithKDistinct = function(A, K) {
  * @return {number}
  */
 const subarraysWithKDistinct = function (A, K) {
-  const atMostK = (A, K) => {
-    let left = 0,
-      right = 0,
-      counter = 0,
-      count = [],
-      result = 0
-    while (right < A.length) {
-      let currentR = A[right++]
-      !count[currentR] ? ((count[currentR] = 1), counter++) : count[currentR]++
-      while (counter > K) {
-        let currentL = A[left++]
-        if (--count[currentL] == 0) counter--
+  return mostK(K) - mostK(K - 1)
+  function mostK(num) {
+    const m = {}, len = A.length
+    let i = 0, j = 0, res = 0
+    for(j = 0; j < len; j++) {
+      if(!m[A[j]]) m[A[j]] = 0, num--
+      m[A[j]]++
+      while(num < 0) {
+        m[A[i]]--
+        if(!m[A[i]]) num++
+        i++
       }
-      result += right - left
+      res += j - i + 1
     }
-    return result
+    return res
   }
-  return atMostK(A, K) - atMostK(A, K - 1)
 }
+
