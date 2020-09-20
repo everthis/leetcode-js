@@ -9,12 +9,12 @@ const connectTwoGroups = function (cost) {
       min[j] = Math.min(min[j], cost[i][j])
     }
   }
-  const dp = Array.from({ length: 13 }, () => Array(4096).fill(0))
+  const dp = Array.from({ length: 13 }, () => Array(4096).fill(-1))
   return dfs(cost, min, 0, 0, dp)
 }
 
 function dfs(cost, min, i, mask, dp) {
-  if (dp[i][mask]) return dp[i][mask] - 1
+  if (dp[i][mask] !== -1) return dp[i][mask]
   let res = i >= cost.length ? 0 : Infinity
   if (i >= cost.length) {
     for (let j = 0; j < cost[0].length; j++) {
@@ -28,6 +28,6 @@ function dfs(cost, min, i, mask, dp) {
       )
     }
   }
-  dp[i][mask] = res + 1
+  dp[i][mask] = res
   return res
 }
