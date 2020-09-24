@@ -45,3 +45,22 @@ const maxProduct = function(nums) {
   }
   return max;
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const maxProduct = function(nums) {
+  const n = nums.length
+  let max, min
+  let res = max = min = nums[0]
+  for(let i = 1; i < n; i++) {
+    if(nums[i] < 0) [max, min] = [min, max]
+    max = Math.max(nums[i], nums[i] * max)
+    min = Math.min(nums[i], nums[i] * min)
+    res = Math.max(res, max)
+  }
+  return res
+};
