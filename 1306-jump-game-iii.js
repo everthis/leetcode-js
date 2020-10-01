@@ -31,3 +31,27 @@ const canReach = function (A, i) {
     (!(A[i] = -A[i]) || canReach(A, i + A[i]) || canReach(A, i - A[i]))
   )
 }
+
+// another
+
+/**
+ * @param {number[]} arr
+ * @param {number} start
+ * @return {boolean}
+ */
+const canReach = function(arr, start) {
+  const q = [start]
+  const s = new Set()
+  while(q.length) {
+    const len = q.length
+    for(let i = 0; i < len; i++) {
+      const cur = q.shift()
+      s.add(cur)
+      if(arr[cur] === 0) return true
+      if(!s.has(cur + arr[cur])) q.push(cur + arr[cur])
+      if(!s.has(cur - arr[cur])) q.push(cur - arr[cur])
+    }
+  }
+  return false
+};
+
