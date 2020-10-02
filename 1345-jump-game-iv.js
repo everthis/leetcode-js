@@ -68,12 +68,15 @@ const minJumps = function (arr) {
     const len = queue.length
     for(let i = 0; i < len; i++) {
       const cur = queue.shift()
-      visited.add(cur)
       if(cur === n - 1) return distance
-      if(cur + 1 < n && !visited.has(cur + 1)) queue.push(cur + 1)
-      if(cur - 1 >= 0 && !visited.has(cur - 1)) queue.push(cur - 1)
-      for(let next of indexMap.get(arr[cur])) {
-        if(!visited.has(next)) queue.push(next)
+      const tmp = indexMap.get(arr[cur])
+      tmp.push(cur - 1)
+      tmp.push(cur + 1)
+      for(let e of tmp) {
+        if(e >= 0 && e < n && !visited.has(e)) {
+          visited.add(e)
+          queue.push(e)
+        }
       }
       indexMap.set(arr[cur], [])
     }
@@ -81,3 +84,4 @@ const minJumps = function (arr) {
   }
   return -1
 }
+
