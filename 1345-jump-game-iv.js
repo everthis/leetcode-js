@@ -43,3 +43,41 @@ var minJumps = function (arr) {
   }
   return -1
 }
+
+// another
+
+/**
+ * @param {number[]} arr
+ * @return {number}
+ */
+const minJumps = function (arr) {
+  if (arr.length === 1) return 0
+  const n = arr.length
+  const indexMap = new Map()
+  for (let i = n - 1; i >= 0; i--) {
+    if (!indexMap.has(arr[i])) {
+      indexMap.set(arr[i], [])
+    }
+    indexMap.get(arr[i]).push(i)
+  }
+  let distance = 0
+  const queue = [0]
+  const visited = new Set()
+  visited.add(0)
+  while (queue.length) {
+    const len = queue.length
+    for(let i = 0; i < len; i++) {
+      const cur = queue.shift()
+      visited.add(cur)
+      if(cur === n - 1) return distance
+      if(cur + 1 < n && !visited.has(cur + 1)) queue.push(cur + 1)
+      if(cur - 1 >= 0 && !visited.has(cur - 1)) queue.push(cur - 1)
+      for(let next of indexMap.get(arr[cur])) {
+        if(!visited.has(next)) queue.push(next)
+      }
+      indexMap.set(arr[cur], [])
+    }
+    distance++
+  }
+  return -1
+}
