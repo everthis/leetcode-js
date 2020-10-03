@@ -55,3 +55,38 @@ const maxJumps = function (arr, d) {
   for (let i = 0; i < arr.length; i++) dfs(i)
   return Math.max(...cache)
 }
+
+// another
+
+/**
+ * @param {number[]} arr
+ * @param {number} d
+ * @return {number}
+ */
+const maxJumps = function (arr, d, res = 0) {
+  const n = arr.length
+  const stack = [], stack2 = []
+  const dp = Array(n + 1).fill(1)
+  arr.push(Infinity)
+  for(let i = 0; i <= n; i++) {
+    while(stack.length && arr[stack[stack.length - 1]] < arr[i]) {
+      const pre = arr[stack[stack.length - 1]]
+      while(stack.length && pre === arr[stack[stack.length - 1]]) {
+        const j = stack[stack.length - 1]
+        stack.pop()
+        if(i - j <= d) dp[i] = Math.max(dp[i], dp[j] + 1)
+        stack2.push(j)
+      }
+      while(stack2.length) {
+        const j = stack2[stack2.length - 1]
+        stack2.pop()
+        if(stack.length && j - stack[stack.length - 1] <= d) {
+          dp[stack[stack.length - 1]] = Math.max(dp[stack[stack.length - 1]], dp[j] + 1)
+        }
+      }
+    }
+    stack.push(i)
+  }
+  for(let i = 0; i < n; i++) res = Math.max(res, dp[i]) 
+  return res
+}
