@@ -12,3 +12,18 @@ const minimumOneBitOperations = function (n) {
   }
   return Math.abs(res);
 };
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const minimumOneBitOperations = function(n) {
+  let mask = n;
+  while (mask) {
+    mask >>= 1;
+    n   ^= mask;
+  }
+  return n;
+};
