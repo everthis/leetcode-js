@@ -26,5 +26,7 @@ const specialArray = function(nums) {
     if(mid < nums[mid]) left = mid + 1
     else right = mid - 1
   }
+  // if we found i == nums[i], there will be i + 1 items
+  // larger or equal to i, which makes array not special.
   return left < nums.length && left === nums[left] ? -1 : left
 };
