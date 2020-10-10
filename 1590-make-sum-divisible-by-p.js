@@ -18,3 +18,18 @@ const minSubarray = function(nums, p) {
   
   return res === nums.length ? -1 : res;
 };
+
+/**
+
+Let pre[] be the prefix sum array,
+then pre[i] is running prefix sum or prefix sum of i elements,
+pre[j] is the prefix sum such that pre[i]-pre[j] is the subarray we
+need to remove to make pre[n] (sum of all elements) divisible by p
+
+(pre[n] - (pre[i]-pre[j])) % p = 0 ... (remove a subarray to make pre[n] divisible by p)
+=> pre[n] % p = (pre[i]-pre[j]) % p ... ((a-b)%m = a%m - b%m)
+=> pre[j]%p = pre[i]%p - pre[n]%p ... (same property used above)
+since RHS can be negative we make it positive modulus by adding p and taking modulus
+=> pre[j]%p = (pre[i]%p - pre[n]%p + p) % p
+
+*/
