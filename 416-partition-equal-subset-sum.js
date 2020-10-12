@@ -92,3 +92,23 @@ const canPartition = function(nums) {
 
   return helper(nums, sum, 0)
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+const canPartition = function (nums) {
+  const sumA = nums.reduce((acc, curr) => acc + curr, 0)
+  if (sumA % 2) return false
+  let row = 1n << BigInt(sumA / 2)
+  for (const weight of nums) row = row | (row >> BigInt(weight))
+  /*
+     check the the column corresponding to my target by bitwise ANDing
+     it with just 1,so if the first bit is 1,
+     it will return true, otherwise false
+     */
+  return row & 1n
+}
+
