@@ -3,29 +3,20 @@
  * @param {string} b
  * @return {boolean}
  */
-const checkPalindromeFormation = function(a, b) {
-  return helper(a, b) || helper(b, a)
-};
+const checkPalindromeFormation = function (a, b) {
+  return check(a, b) || check(b, a)
+}
 
-function helper(A, B) {
-  const str_len = A.length
-  let idx = 0
-  while(A[idx] === B[str_len - idx - 1]) {
-    idx += 1
+function isPalindrome(s, i, j) {
+  for (; i < j; ++i, --j) {
+    if (s[i] != s[j]) return false
   }
-  console.log(idx)
-  if (idx > Math.floor(str_len / 2) ) return true
-  else if (chk(A.slice(idx + 1, str_len - idx - 2 + 1))) return true
-  else if (chk(B.slice(idx + 1, str_len - idx - 2 + 1))) return true
-  else return false
-} 
+  return true
+}
 
-function chk(s) {
-  let l = 0, r = s.length - 1
-  while(l < r) {
-    if(s[l] !== s[r]) return false
-    l++
-    r--
+function check(a, b) {
+  for (let i = 0, j = a.length - 1; i < j; ++i, --j) {
+    if (a[i] !== b[j]) return isPalindrome(a, i, j) || isPalindrome(b, i, j)
   }
   return true
 }
