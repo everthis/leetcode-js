@@ -16,7 +16,7 @@ const expTree = function (s) {
   let i = 0
   const number = () => {
     let num = ''
-    while (i < n && '0' <= s[i] && s[i] <= s[i]) {
+    while (i < n && '0' <= s[i]) {
       num += s[i++]
     }
     return new Node(Number(num))
@@ -54,6 +54,7 @@ const expTree = function (s) {
   }
   return expression()
 }
+
 
 // another
 
