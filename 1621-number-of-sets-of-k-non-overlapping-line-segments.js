@@ -22,18 +22,19 @@ const numberOfSets = function (n, k) {
  * @return {number}
  */
 const numberOfSets = function (n, k) {
-  const dp = Array.from({ length: n + 1 }, () => Array(n + 1).fill(0))
+  // dp[i][k] as: the number of ways to generate
+  // k non-overlapping segments you can make using [0 ~ i].
+  const dp = Array.from({ length: n }, () => Array(k + 1).fill(0))
   const MOD = 10 ** 9 + 7
-  for (let i = 2; i <= n; i++) {
-    dp[i][i - 1] = 1
-    dp[i][1] = (i * (i - 1)) / 2
-  }
-  for (let i = 4; i <= n; i++) {
-    for (let j = 2; j < i; j++) {
-      let count =
-        dp[i - 1][j] - dp[i - 2][j] + dp[i - 1][j] + dp[i - 1][j - 1] + MOD
-      dp[i][j] = count % MOD
+  dp[1][1] = 1
+  for (let i = 2; i < n; i++) dp[i][1] = ((i + 1) * i) / 2
+  const sum = Array.from({ length: n }, () => Array(k + 1).fill(0))
+  for (let i = 2; i < n; i++) {
+    for (let j = 2; j <= k; j++) {
+      if (j <= i) sum[i][j] = (sum[i - 1][j] + dp[i - 1][j - 1]) % MOD
+      dp[i][j] = (sum[i][j] + dp[i - 1][j]) % MOD
     }
   }
-  return dp[n][k]
+  return dp[n - 1][k]
 }
+
