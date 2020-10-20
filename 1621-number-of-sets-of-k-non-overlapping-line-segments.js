@@ -28,6 +28,8 @@ const numberOfSets = function (n, k) {
   const MOD = 10 ** 9 + 7
   dp[1][1] = 1
   for (let i = 2; i < n; i++) dp[i][1] = ((i + 1) * i) / 2
+  // sum[i][j] as: the number of ways to generate
+  // j - 1 segments from i - 1 points.
   const sum = Array.from({ length: n }, () => Array(k + 1).fill(0))
   for (let i = 2; i < n; i++) {
     for (let j = 2; j <= k; j++) {
