@@ -15,10 +15,6 @@ const findLexSmallestString = function(s, a, b) {
       const tmp = q.shift()
       const t1 = podd(tmp, a)
       const t2 = rotate(tmp, b)
-      if(!set.has(tmp)) {
-        set.add(tmp)
-        q.push(tmp)
-      }
       if(!set.has(t1)) {
         set.add(t1)
         q.push(t1)
@@ -30,7 +26,6 @@ const findLexSmallestString = function(s, a, b) {
       if(t1 < res) res = t1
       if(t2 < res) res = t2
     }
-
   }
   return res
 };
