@@ -33,11 +33,12 @@ const minCost = function (n, cuts) {
   cuts.push(0, n)
   cuts.sort((a, b) => a - b)
   const N = cuts.length,
-    dp = Array.from({ length: N }, () => Array(N).fill(0))
-  for (let l = 2; l < N; l++) {
-    for (let i = 0; i + l < N; i++) {
-      const j = i + l
-      dp[i][j] = Infinity
+    dp = Array.from({ length: N }, () => Array(N).fill(Infinity))
+  for(let i = 1; i < N; i++) dp[i - 1][i] = 0
+  for(let i = 2; i < N; i++) dp[i - 2][i] = cuts[i] - cuts[i - 2]
+  for (let l = 4; l <= N; l++) {
+    for (let i = 0; i <= N - l; i++) {
+      const j = i + l - 1
       for (let k = i + 1; k < j; k++) {
         dp[i][j] = Math.min(dp[i][j], cuts[j] - cuts[i] + dp[i][k] + dp[k][j])
       }
