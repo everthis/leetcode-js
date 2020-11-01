@@ -19,3 +19,23 @@ const countVowelStrings = function (n) {
   }
   return sum;
 };
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const countVowelStrings = function (n) {
+  const dp = Array.from({ length: n + 1 }, () => Array(5))
+  recur(n, 0)
+  return dp[n][0]
+  function recur(r, i) {
+    if(r === 0) return 1
+    if(i === 5) return 0
+    if(dp[r][i] != null) return dp[r][i]
+    let res = recur(r, i + 1)
+    res += recur(r - 1, i)
+    return dp[r][i] = res
+  }
+};
