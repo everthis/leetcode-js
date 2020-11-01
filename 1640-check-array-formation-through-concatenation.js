@@ -4,10 +4,18 @@
  * @return {boolean}
  */
 const canFormArray = function(arr, pieces) {
-  const str = arr.join('-')
-  for(let i = 0, len = pieces.length; i < len; i++) {
-    const tmp = pieces[i].join('-')
-    if(str.indexOf(tmp) === -1) return false
+  const m = new Map()
+  for(let i = 0, len = arr.length; i < len; i++) {
+    m.set(arr[i], i)
+  }
+  for(let p of pieces) {
+    let idx = m.get(p[0])
+    console.log(idx)
+    if(idx == null) return false
+    for(let i = 1, len = p.length; i < len; i++) {
+      console.log(m.has(p[i]))
+      if(!m.has(p[i]) || arr[++idx] !== p[i]) return false
+    }
   }
   return true
 };
