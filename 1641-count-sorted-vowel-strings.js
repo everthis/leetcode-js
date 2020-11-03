@@ -3,6 +3,16 @@
  * @return {number}
  */
 const countVowelStrings = function (n) {
+  return (n + 4) * (n + 3) * (n + 2) * (n + 1) / 24
+};
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const countVowelStrings = function (n) {
   let mem = [1, 1, 1, 1, 1];
   for (let i = 1; i < n; ++i) {
     const next = [0, 0, 0, 0, 0];
