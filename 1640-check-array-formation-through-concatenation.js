@@ -10,7 +10,6 @@ const canFormArray = function(arr, pieces) {
   }
   for(let p of pieces) {
     let idx = m.get(p[0])
-    console.log(idx)
     if(idx == null) return false
     for(let i = 1, len = p.length; i < len; i++) {
       console.log(m.has(p[i]))
