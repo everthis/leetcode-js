@@ -4,30 +4,19 @@
  * @param {number} ladders
  * @return {number}
  */
-const furthestBuilding = function (heights, bricks, ladders) {
-  const queue = new PriorityQueue()
-  for (let i = 1; i < heights.length; ++i) {
-    if (heights[i] > heights[i - 1]) {
-      let diff = heights[i] - heights[i - 1]
-      if (diff <= bricks) {
-        bricks -= diff
-        queue.push(diff)
-      } else if (ladders > 0) {
-        let max = queue.isEmpty() ? 0 : queue.pop()
-        --ladders
-        if (max > diff) {
-          bricks = bricks + max - diff
-          queue.push(diff)
-        } else {
-          queue.push(max)
-        }
-      } else {
-        return i - 1
-      }
+const furthestBuilding = function(heights, bricks, ladders) {
+  const pq = new PriorityQueue((a, b) => a < b)
+  const len = heights.length
+  for(let i = 0; i < len - 1; i++) {
+    const diff = heights[i + 1] - heights[i]
+    if(diff > 0) pq.push(diff)
+    if(pq.size() > ladders) {
+      bricks -= pq.pop()
     }
+    if(bricks < 0) return i
   }
-  return heights.length - 1
-}
+  return len - 1
+};
 class PriorityQueue {
   constructor(comparator = (a, b) => a > b) {
     this.heap = []
