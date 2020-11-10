@@ -3,6 +3,41 @@
  * @param {number} orders
  * @return {number}
  */
+function maxProfit(inventory, orders) {
+  inventory.sort((a, b) => a - b)
+  inventory = inventory.map(e => BigInt(e))
+  let ans = 0n, n = inventory.length - 1, count = 1n
+  const mod = BigInt(10 ** 9 + 7)
+  orders = BigInt(orders)
+  while(orders > 0n) {
+    if(n > 0 && inventory[n] > inventory[n - 1] && orders >= count * (inventory[n] - inventory[n - 1])) {
+      ans += count * sum(inventory[n - 1], inventory[n])
+      orders -= count * (inventory[n] - inventory[n - 1])
+    } else if(n === 0 || inventory[n] > inventory[n - 1]) {
+      const num = orders / count
+      ans += count * sum(inventory[n] - num, inventory[n])
+      const remain = orders % count
+      ans += remain * (inventory[n] - num)
+      orders = 0n
+    }
+    ans %= mod
+    n--
+    count++
+  }
+  return ans
+}
+
+function sum(lo, hi) {
+  return (hi - lo) * (lo + hi + 1n) / 2n
+}
+
+// another
+
+/**
+ * @param {number[]} inventory
+ * @param {number} orders
+ * @return {number}
+ */
 const maxProfit = function (inventory, orders) {
   let Max = 1e9 + 7,
     Min = 0
