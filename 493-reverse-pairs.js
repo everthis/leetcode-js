@@ -48,7 +48,7 @@ function merge(A, start, mid, end) {
 
 function mergesort_and_count(A, start, end) {
   if (start < end) {
-    let mid = ((start + end) >> 1)
+    let mid = start + ((end - start) >> 1)
     let count =
       mergesort_and_count(A, start, mid) + mergesort_and_count(A, mid + 1, end)
     let j = mid + 1
