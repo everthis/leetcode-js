@@ -4,7 +4,7 @@
  * @param {number} upper
  * @return {number}
  */
-const countRangeSum = function(nums, lower, upper) {
+const countRangeSum = function (nums, lower, upper) {
   if (nums.length === 0) return 0
   const sums = [nums[0]]
   for (let i = 1; i < nums.length; i++) {
@@ -14,7 +14,7 @@ const countRangeSum = function(nums, lower, upper) {
     if (hi - lo === 1) {
       return sums[lo] >= lower && sums[lo] <= upper ? 1 : 0
     }
-    const mid = Math.floor((lo + hi) / 2)
+    const mid = lo + Math.floor((hi - lo) / 2)
     let counter = merge_sort(A, lo, mid) + merge_sort(A, mid, hi)
     let m = mid,
       n = mid
