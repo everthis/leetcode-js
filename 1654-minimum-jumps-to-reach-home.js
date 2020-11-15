@@ -21,7 +21,7 @@ const minimumJumps = function (forbidden, a, b, x) {
       state = pair[2]
     if (pos == x) return level
     if (state >= 0) {
-      if (pos <= 10000 && !set.has(pos + a + ',0') && !bad.has(pos + a)) {
+      if (pos <= 4000 && !set.has(pos + a + ',0') && !bad.has(pos + a)) {
         set.add(pos + a + ',0')
         q.push([pos + a, level + 1, 0])
       }
@@ -30,7 +30,7 @@ const minimumJumps = function (forbidden, a, b, x) {
         q.push([pos - b, level + 1, -1])
       }
     } else if (state < 0) {
-      if (pos <= 10000 && !set.has(pos + a + ',0') && !bad.has(pos + a)) {
+      if (pos <= 4000 && !set.has(pos + a + ',0') && !bad.has(pos + a)) {
         set.add(pos + a + ',0')
         q.push([pos + a, level + 1, 0])
       }
