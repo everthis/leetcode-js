@@ -8,6 +8,39 @@ const canDistribute = function (nums, quantity) {
   for (let x of nums) {
     mp[x] = (mp[x] || 0) + 1
   }
+  const values = Object.values(mp)
+  quantity.sort((a, b) => b - a)
+  let res = false
+  dfs(0)
+  return res
+
+  function dfs(idx) {
+    if(idx === quantity.length || res) {
+      res = true
+      return
+    }
+    for(let i = 0, len = values.length; i < len; i++) {
+      if(values[i] >= quantity[idx]) {
+        values[i] -= quantity[idx]
+        dfs(idx + 1)
+        values[i] += quantity[idx]
+      }
+    }
+  }
+}
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number[]} quantity
+ * @return {boolean}
+ */
+const canDistribute = function (nums, quantity) {
+  const mp = {}
+  for (let x of nums) {
+    mp[x] = (mp[x] || 0) + 1
+  }
   const a = []
   for (let p in mp) a.push(mp[p])
   const b = quantity
