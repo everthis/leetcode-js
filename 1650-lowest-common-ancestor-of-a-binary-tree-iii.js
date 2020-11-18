@@ -28,3 +28,28 @@ const lowestCommonAncestor = function(p, q) {
     return up(node.parent, target, arr)
   }
 };
+
+// another
+
+/**
+ * // Definition for a Node.
+ * function Node(val) {
+ *    this.val = val;
+ *    this.left = null;
+ *    this.right = null;
+ *    this.parent = null;
+ * };
+ */
+
+/**
+ * @param {Node} node
+ * @return {Node}
+ */
+const lowestCommonAncestor = function(p, q) {
+  let a = p, b = q;
+	while (a !== b) {
+		a = a == null? q : a.parent;
+		b = b == null? p : b.parent;    
+	}
+	return a;
+};
