@@ -5,47 +5,48 @@
  * @param {number} extrovertsCount
  * @return {number}
  */
-const getMaxGridHappiness = function (m, n, introvertsCount, extrovertsCount) {
-  const grid = Array.from({ length: m }, () => Array(n).fill(0))
-  return dfs(grid, 0, 0, introvertsCount, extrovertsCount, 0)
-
-  function dfs(grid, row, col, int, ex, happy) {
-    const M = grid.length,
-      N = grid[0].length
-    if (row == M - 1 && col == N) return happy
-    if (col == N) {
-      col = 0
-      ++row
-    }
-    let res = dfs(grid, row, col + 1, int, ex, happy)
-    if (int > 0) {
-      grid[row][col] = 1
-      let h = happy + 120
-      if (row > 0 && grid[row - 1][col] != 0) {
-        if (grid[row - 1][col] == 1) h += -30 - 30
-        else h += 20 - 30
-      }
-      if (col > 0 && grid[row][col - 1] != 0) {
-        if (grid[row][col - 1] == 1) h += -30 - 30
-        else h += 20 - 30
-      }
-      res = Math.max(res, dfs(grid, row, col + 1, int - 1, ex, h))
-      grid[row][col] = 0
-    }
-    if (ex > 0) {
-      grid[row][col] = 2
-      let h = happy + 40
-      if (row > 0 && grid[row - 1][col] != 0) {
-        if (grid[row - 1][col] == 1) h += 20 - 30
-        else h += 20 + 20
-      }
-      if (col > 0 && grid[row][col - 1] != 0) {
-        if (grid[row][col - 1] == 1) h += 20 - 30
-        else h += 20 + 20
-      }
-      res = Math.max(res, dfs(grid, row, col + 1, int, ex - 1, h))
-      grid[row][col] = 0
-    }
-    return res
+const getMaxGridHappiness = (m, n, introvertsCount, extrovertsCount) => {
+  const state = '0'.repeat(n)
+  const memo = new Map()
+  return helper(state, 0, n, m, introvertsCount, extrovertsCount, memo)
+}
+function helper(state, idx, n, m, inCount, exCount, memo) {
+  if ((inCount === 0 && exCount === 0) || idx === m * n) return 0
+  let key = idx + state + inCount + exCount
+  if (memo.has(key)) return memo.get(key)
+  const r = (idx / n) >> 0,
+    c = idx % n
+  let best = 0
+  if (inCount !== 0) {
+    let score = 120
+    if (r > 0) score = calc(state.charAt(0) - '0', 1, score)
+    if (c !== 0) score = calc(state.charAt(state.length - 1) - '0', 1, score)
+    best =
+      score +
+      helper(state.slice(1) + '1', idx + 1, n, m, inCount - 1, exCount, memo)
   }
+  if (exCount !== 0) {
+    let score = 40
+    if (r > 0) score = calc(state.charAt(0) - '0', 2, score)
+    if (c !== 0) score = calc(state.charAt(state.length - 1) - '0', 2, score)
+    best = Math.max(
+      best,
+      score +
+        helper(state.slice(1) + '2', idx + 1, n, m, inCount, exCount - 1, memo)
+    )
+  }
+  best = Math.max(
+    best,
+    helper(state.slice(1) + '0', idx + 1, n, m, inCount, exCount, memo)
+  )
+  memo.set(key, best)
+  return best
+}
+
+function calc(p1, p2, score) {
+  if (p1 === 1 && p2 === 1) return score - 60
+  else if (p1 === 2 && p2 === 2) return score + 40
+  else if (p1 === 1 && p2 === 2) return score - 10
+  else if (p1 === 2 && p2 === 1) return score - 10
+  return score
 }
