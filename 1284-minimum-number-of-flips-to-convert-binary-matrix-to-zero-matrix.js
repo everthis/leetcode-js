@@ -38,9 +38,7 @@ const minFlips = function (mat) {
       mask.push(bit)
     }
   }
-  if (state === 0) {
-    return 0
-  }
+  if (state === 0) return 0
   const set = new Set()
   const q = [{ state: state, moves: 0 }]
   while (q.length !== 0) {
