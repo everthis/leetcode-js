@@ -22,3 +22,25 @@ const lengthOfLIS = function(nums) {
     return maxans
 };
 
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const lengthOfLIS = function(nums) {
+  const n = nums.length
+  const tails = []
+  let res = 0
+  for(let e of nums) {
+    let i = 0, j = res
+    while(i !== j) {
+      const mid = (i + j) >> 1
+      if(tails[mid] < e) i = mid + 1
+      else j = mid
+    }
+    tails[i] = e
+    if(i === res) res++
+  }
+  return res
+};
