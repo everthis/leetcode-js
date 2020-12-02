@@ -34,25 +34,17 @@ const removeKdigits = function(num, k) {
  * @return {string}
  */
 const removeKdigits = function(num, k) {
-  const len = num.length
-  if(k === len) return '0'
-  const stack = []
+  const n = num.length, stack = []
+  if(n === k) return '0'
   let i = 0
-  while(i < len) {
+  while(i < n) {
     while(k > 0 && stack.length && stack[stack.length - 1] > num[i]) {
-      stack.pop()
       k--
+      stack.pop()
     }
-    stack.push(num[i])
-    i++
+    stack.push(num[i++])
   }
-  while(k > 0) {
-    stack.pop()
-    k--
-  }
-  let res = ''
-  while(stack.length) res += stack.pop()
-  res = res.split('').reverse()
-  while(res.length > 1 && res[0] === '0') res.shift()
-  return res.join('')
+  while(k-- > 0) stack.pop()
+  while(stack[0] === '0') stack.shift()
+  return stack.length ? stack.join('') : '0'
 };
