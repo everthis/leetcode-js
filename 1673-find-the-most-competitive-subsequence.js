@@ -19,3 +19,27 @@ const mostCompetitive = function (nums, k) {
   }
   return res
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
+ */
+const mostCompetitive = function (nums, k) {
+  const stack = [],
+    n = nums.length
+  let i = 0
+  while (i < n) {
+    while (
+      stack.length &&
+      stack[stack.length - 1] > nums[i] &&
+      n - i + stack.length > k
+    )
+      stack.pop()
+    if (stack.length < k) stack.push(nums[i])
+    i++
+  }
+  return stack
+}
