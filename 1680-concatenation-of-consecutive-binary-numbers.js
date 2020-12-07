@@ -14,3 +14,22 @@ const concatenatedBinary = function(n) {
 function dec2bin(dec){
   return (dec >>> 0).toString(2);
 }
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const concatenatedBinary = function (n) {
+  const mod = BigInt(1e9 + 7)
+  let res = 0n
+  for (let i = 1n, shift = 0n; i <= n; i++) {
+    let singleBit = (i & (i - 1n)) == 0
+    if (singleBit) shift++
+    res <<= shift
+    res += i
+    res %= mod
+  }
+  return res
+}
