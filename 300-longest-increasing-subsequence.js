@@ -35,7 +35,7 @@ const lengthOfLIS = function(nums) {
   for(let e of nums) {
     let i = 0, j = res
     while(i !== j) {
-      const mid = (i + j) >> 1
+      const mid = i + ((j - i) >> 1)
       if(tails[mid] < e) i = mid + 1
       else j = mid
     }
