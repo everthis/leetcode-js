@@ -5,6 +5,7 @@
  */
 const videoStitching = function (clips, T) {
   clips.sort((a, b) => a[0] - b[0])
+  if(T === 0) return 0
   let laststart = -1,
     curend = 0,
     count = 0
