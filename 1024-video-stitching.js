@@ -23,3 +23,23 @@ const videoStitching = function (clips, T) {
   }
   return -1
 }
+
+// another
+
+/**
+ * @param {number[][]} clips
+ * @param {number} T
+ * @return {number}
+ */
+const videoStitching = function (clips, T) {
+  clips.sort((a, b) => a[0] - b[0])
+  let res = 0
+  for(let i = 0, start = 0, end = 0, len = clips.length; start < T; start = end, res++) {
+    for(; i < len && clips[i][0] <= start; i++) {
+      end = Math.max(end, clips[i][1])
+    }
+    if(start === end) return -1
+  }
+  return res
+}
+
