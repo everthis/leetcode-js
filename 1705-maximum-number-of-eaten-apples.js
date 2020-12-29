@@ -3,6 +3,35 @@
  * @param {number[]} days
  * @return {number}
  */
+const eatenApples = function (apples, days) {
+  let totalDays = 0
+  if (apples.length === 1) {
+    if (days[0] > apples[0]) return apples[0]
+    else return days[0]
+  }
+  let i = 0
+  let applesAvail = 0
+  for (; i < apples.length; i++) {
+    if (apples[i] !== 0) {
+      totalDays++
+      applesAvail = Math.max(totalDays, i + days[i], applesAvail)
+    } else {
+      if (applesAvail > i) totalDays++
+    }
+  }
+  if (applesAvail > i) return totalDays + (applesAvail - i)
+  else return totalDays
+}
+
+
+// another
+
+
+/**
+ * @param {number[]} apples
+ * @param {number[]} days
+ * @return {number}
+ */
 const eatenApples = function(apples, days) {
 
     let ans = 0, n = apples.length;
