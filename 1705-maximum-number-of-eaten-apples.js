@@ -4,64 +4,25 @@
  * @return {number}
  */
 const eatenApples = function (apples, days) {
-  let totalDays = 0
-  if (apples.length === 1) {
-    if (days[0] > apples[0]) return apples[0]
-    else return days[0]
-  }
-  let i = 0
-  let applesAvail = 0
-  for (; i < apples.length; i++) {
-    if (apples[i] !== 0) {
-      totalDays++
-      applesAvail = Math.max(totalDays, i + days[i], applesAvail)
-    } else {
-      if (applesAvail > i) totalDays++
+  const n = apples.length
+  let fin = 0,
+    i = 0
+  const q = new PriorityQueue()
+  while (i < n || !q.isEmpty()) {
+    if (i < n && apples[i] > 0) q.push([i + days[i], apples[i]])
+    while (!q.isEmpty() && (q.peek()[0] <= i || q.peek()[1] === 0)) q.pop()
+    if (!q.isEmpty()) {
+      q.peek()[1] -= 1
+      if(q.peek()[1] <= 0) q.pop()
+      fin += 1
     }
+    i += 1
   }
-  if (applesAvail > i) return totalDays + (applesAvail - i)
-  else return totalDays
+  return fin
 }
 
-
-// another
-
-
-/**
- * @param {number[]} apples
- * @param {number[]} days
- * @return {number}
- */
-const eatenApples = function(apples, days) {
-
-    let ans = 0, n = apples.length;
-    const que = new PriorityQueue();
-    for (let i = 0; i < n; i++) {
-        while (!que.isEmpty() && que.peek().exp <= i) que.pop();
-        if (que.isEmpty()) {
-            if (apples[i] == 0 && days[i] == 0) continue;
-        } 
-        que.push({cnt: apples[i], exp: i + days[i]});
-        ans++;
-        let temp = que.peek();
-        que.pop();
-        if (--temp.cnt) que.push(temp);
-    }
-    let day = n;
-    while (!que.isEmpty()) {
-        while (!que.isEmpty() && que.peek().exp <= n) que.pop();
-        if (que.isEmpty()) break;
-        ans++;
-        n++;
-        let temp = que.peek();
-        que.pop();
-        if (--temp.cnt) que.push(temp);
-    }
-    return ans;
-};
-
 class PriorityQueue {
-  constructor(comparator = (a, b) => a.exp < b.exp) {
+  constructor(comparator = (a, b) => a[0] < b[0]) {
     this.heap = []
     this.top = 0
     this.comparator = comparator
