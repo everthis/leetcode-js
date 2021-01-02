@@ -11,6 +11,7 @@ const maxBoxesInWarehouse = function(boxes, warehouse) {
     if(boxes[m - i - 1] <= warehouse[j]) {
       j++
     }
+    if(j === n) return n
   }
   return j
 };
