@@ -3,7 +3,7 @@
  * @return {number}
  */
 const lengthOfLIS = function(nums) {
-  const stack = [], n = nums.length
+  const stack = []
   for(let e of nums) {
     if(stack.length === 0 || e > stack[stack.length - 1]) {
       stack.push(e)
