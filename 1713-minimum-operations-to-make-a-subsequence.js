@@ -44,3 +44,34 @@ const minOperations = function (target, arr) {
     return length
   }
 }
+
+// another
+
+/**
+ * @param {number[]} target
+ * @param {number[]} arr
+ * @return {number}
+ */
+const minOperations = function(target, arr) {
+  const map = new Map()
+  for(let i = 0, len = target.length; i < len; i++) {
+    map.set(target[i], i)
+  }
+  const stack = []
+  for(let a of arr) {
+    if(!map.has(a)) continue
+    if(stack.length === 0 || map.get(a) > stack[stack.length - 1]) {
+      stack.push(map.get(a))
+      continue
+    }
+    let left = 0, right = stack.length - 1, mid
+    while(left < right) {
+      mid = left + ((right - left) >> 1)
+      if(stack[mid] < map.get(a)) left = mid + 1
+      else right = mid
+    }
+    stack[left] = map.get(a)
+  }
+
+  return target.length - stack.length
+};
