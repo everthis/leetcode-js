@@ -35,3 +35,33 @@ const minDeletionSize = function (A) {
   }
   return res
 }
+
+// another
+
+/**
+ * @param {string[]} A
+ * @return {number}
+ */
+const minDeletionSize = function (A) {
+  const set = new Set()
+  const m = A.length
+  let res = 0
+  if(m === 0) return 0
+  const n = A[0].length
+  for(j = 0; j < n; j++) {
+    if(set.size === m - 1) return res
+    for(i = 0; i < m - 1; i++) {
+      if(!set.has(i) && A[i][j] > A[i + 1][j]) {
+        res++
+        break
+      }
+    }
+    if(i < m - 1) continue
+    for(i = 0; i < m - 1; i++) {
+      if(A[i][j] < A[i + 1][j]) set.add(i)
+    }
+  }
+  
+  return res
+}
+
