@@ -14,3 +14,25 @@ const findLongestChain = function(pairs) {
   }
   return res;
 };
+
+// another
+
+/**
+ * @param {number[][]} pairs
+ * @return {number}
+ */
+const findLongestChain = function (pairs) {
+  pairs.sort((a, b) => a[0] - b[0])
+  let out = 0
+  let prevEnd = Number.MIN_SAFE_INTEGER
+  for (let i = 0; i < pairs.length; i++) {
+    const cur = pairs[i]
+    if (prevEnd < cur[0]) {
+      prevEnd = cur[1]
+      out += 1
+    } else {
+      prevEnd = Math.min(cur[1], prevEnd)
+    }
+  }
+  return out
+}
