@@ -1,0 +1,36 @@
+/**
+ * @param {string} s
+ * @param {number} x
+ * @param {number} y
+ * @return {number}
+ */
+const maximumGain = function (s, x, y) {
+  return Math.max(go(s, x, y, 'a', 'b'), go(s, y, x, 'b', 'a'))
+}
+
+function go(s, x, y, a, b) {
+  let n = s.length
+  const st = new Array(n)
+  let sc = 0
+  let p = 0
+  for (let c of s) {
+    if (p - 1 >= 0 && st[p - 1] == a && c == b) {
+      sc += x
+      p--
+    } else {
+      st[p++] = c
+    }
+  }
+  const st2 = new Array(p)
+  let q = 0
+  for (let u = 0; u < p; u++) {
+    let c = st[u]
+    if (q - 1 >= 0 && st2[q - 1] == b && c == a) {
+      sc += y
+      q--
+    } else {
+      st2[q++] = c
+    }
+  }
+  return sc
+}
