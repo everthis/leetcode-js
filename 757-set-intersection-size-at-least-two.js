@@ -52,3 +52,32 @@ const intersectionSizeTwo = function(intervals) {
   }
   return count;
 };
+
+// another
+
+/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+const intersectionSizeTwo = function (intervals) {
+  if (intervals.length === 1) return 2
+  intervals.sort((a, b) => (a[1] !== b[1] ? a[1] - b[1] : b[0] - a[0]))
+  let right = intervals[0][1]
+  let left = right - 1
+  let result = 2
+  for (let i = 1, len = intervals.length; i < len; i++) {
+    const curr = intervals[i]
+    if (curr[0] <= right && curr[0] > left) {
+      result++
+      left = right
+      right = curr[1]
+    } else if (curr[0] > right) {
+      result += 2
+      left = curr[1] - 1
+      right = curr[1]
+    }
+  }
+
+  return result
+}
+
