@@ -5,6 +5,39 @@
  * @return {number}
  */
 const jobScheduling = function (startTime, endTime, profit) {
+  const n = startTime.length
+  const items = Array.from({ length: startTime.length }, () => Array(3).fill(0))
+  for (let i = 0; i < startTime.length; i++) {
+    items[i] = [startTime[i], endTime[i], profit[i]]
+  }
+  items.sort((a1, a2) => a1[1] - a2[1])
+  const dpProfit = [0]
+  for (let i = 0; i < n; i++) {
+    const [s, e, p] = items[i]
+    let prevIdx = -1
+    for(let j = i - 1; j >= 0; j--) {
+      if(items[j][1] <= items[i][0]) {
+        prevIdx = j
+        break
+      }
+    }
+    const curProfit = (prevIdx === -1 ? 0 : dpProfit[prevIdx]) + p
+    dpProfit[i] = Math.max(dpProfit[dpProfit.length - 1], curProfit)
+  }
+  return dpProfit[dpProfit.length - 1]
+}
+
+
+// another
+
+
+/**
+ * @param {number[]} startTime
+ * @param {number[]} endTime
+ * @param {number[]} profit
+ * @return {number}
+ */
+const jobScheduling = function (startTime, endTime, profit) {
   const items = Array.from({ length: startTime.length }, () => Array(3).fill(0))
   for (let i = 0; i < startTime.length; i++) {
     items[i] = [startTime[i], endTime[i], profit[i]]
