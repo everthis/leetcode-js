@@ -19,7 +19,7 @@ const jobScheduling = function (startTime, endTime, profit) {
       e = item[1],
       p = item[2]
     // find previous endTime index
-    let prevIdx = binarySearch(dpEndTime, 0, dpEndTime.length - 1, s)
+    const prevIdx = binarySearch(dpEndTime, 0, dpEndTime.length - 1, s)
     const currProfit = dpProfit[prevIdx] + p,
       maxProfit = dpProfit[dpProfit.length - 1]
     if (currProfit > maxProfit) {
