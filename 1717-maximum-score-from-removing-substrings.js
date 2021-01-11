@@ -9,12 +9,12 @@ const maximumGain = function (s, x, y) {
 }
 
 function go(s, x, y, a, b) {
-  let n = s.length
+  const n = s.length
   const st = new Array(n)
   let sc = 0
   let p = 0
   for (let c of s) {
-    if (p - 1 >= 0 && st[p - 1] == a && c == b) {
+    if (p - 1 >= 0 && st[p - 1] === a && c === b) {
       sc += x
       p--
     } else {
@@ -25,7 +25,7 @@ function go(s, x, y, a, b) {
   let q = 0
   for (let u = 0; u < p; u++) {
     let c = st[u]
-    if (q - 1 >= 0 && st2[q - 1] == b && c == a) {
+    if (q - 1 >= 0 && st2[q - 1] === b && c === a) {
       sc += y
       q--
     } else {
