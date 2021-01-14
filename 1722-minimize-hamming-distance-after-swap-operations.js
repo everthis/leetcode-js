@@ -36,28 +36,28 @@ class UnionFind {
  * @return {number}
  */
 const minimumHammingDistance = function (source, target, allowedSwaps) {
-  let n = target.length
-  const u = new UnionFind(n)
+  const n = target.length
+  const uf = new UnionFind(n)
   for (let A of allowedSwaps) {
-    let i = A[0],
+    const i = A[0],
       j = A[1]
-    u.union(i, j)
+    uf.union(i, j)
   }
   const M = {}
   for (let i = 0; i < n; i++) {
-    let j = u.find(i)
+    const j = uf.find(i)
     if (M[j] == null) M[j] = {}
     if (M[j][source[i]] == null) M[j][source[i]] = 0
     M[j][source[i]]++
   }
-  let rest = 0
+  let res = 0
   for (let i = 0; i < n; i++) {
-    let j = u.find(i)
+    const j = uf.find(i)
     if (M[j][target[i]]) {
       if (!--M[j][target[i]]) {
         delete M[j][target[i]]
       }
-    } else rest++
+    } else res++
   }
-  return rest
+  return res
 }
