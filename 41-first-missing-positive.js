@@ -23,20 +23,20 @@ const firstMissingPositive = function(nums) {
  * @return {number}
  */
 function firstMissingPositive(nums) {
-  const A = nums
   const n = nums.length
   for (let i = 0; i < n; i++) {
-    while (A[i] > 0 && A[i] <= n && A[A[i] - 1] !== A[i]) swap(A, i, A[i] - 1)
+    while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] !== nums[i])
+      swap(nums, i, nums[i] - 1)
   }
 
   for (let i = 0; i < n; i++) {
-    if (A[i] !== i + 1) return i + 1
+    if (nums[i] !== i + 1) return i + 1
   }
   return n + 1
 }
 
 function swap(arr, i, j) {
-  let tmp = arr[i]
+  const tmp = arr[i]
   arr[i] = arr[j]
   arr[j] = tmp
 }
