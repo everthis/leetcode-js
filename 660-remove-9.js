@@ -10,3 +10,13 @@ const newInteger = function (n) {
   }
   return parseInt(res, 10)
 }
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const newInteger = function (n) {
+  return +(n).toString(9)
+}
