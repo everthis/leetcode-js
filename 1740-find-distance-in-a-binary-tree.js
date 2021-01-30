@@ -61,3 +61,63 @@ const findDistance = function (root, p, q) {
     return -1
   }
 }
+
+// another
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} p
+ * @param {number} q
+ * @return {number}
+ */
+const findDistance = function (root, p, q) {
+  let lca = lowestCommonAncestor(root, p, q)
+
+  const queue = []
+  queue.push(lca)
+  let dp = -1,
+    dq = -1
+  let d = 0
+  while (queue.length && (dp == -1 || dq == -1)) {
+    for (let k = queue.length; k > 0; k--) {
+      let node = queue.shift()
+      if (node.val == p) {
+        dp = d
+      }
+
+      if (node.val == q) {
+        dq = d
+      }
+
+      if (node.left != null) {
+        queue.push(node.left)
+      }
+
+      if (node.right != null) {
+        queue.push(node.right)
+      }
+    }
+    d++
+  }
+
+  return dp + dq
+
+  function lowestCommonAncestor(root, p, q) {
+    if (root == null || root.val == p || root.val == q) {
+      return root
+    }
+    let left = lowestCommonAncestor(root.left, p, q)
+    let right = lowestCommonAncestor(root.right, p, q)
+
+    return left == null ? right : right == null ? left : root
+  }
+}
+
