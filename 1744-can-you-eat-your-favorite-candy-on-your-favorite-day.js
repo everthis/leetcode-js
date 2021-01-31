@@ -1,15 +1,23 @@
-function canEat(candiesCount: number[], queries: number[][]): boolean[] {
-    const acc = Array(candiesCount.length);
-    acc[0] = candiesCount[0];
-    for (let i = 1; i < candiesCount.length; i++) {
-      acc[i] = acc[i - 1] + candiesCount[i]
-    }
+/**
+ * @param {number[]} candiesCount
+ * @param {number[][]} queries
+ * @return {boolean[]}
+ */
+const canEat = function(candiesCount, queries) {
+  const n = candiesCount.length
+  const pre = Array(n).fill(0)
+  for(let i = 1; i < n; i++) {
+    pre[i] = pre[i - 1] + candiesCount[i - 1]
+  }
+  return queries.map((e, i) => {
+    const [t, d, c] = e
+    const num = candiesCount[t]
+    const min = d, max = (d + 1) * c
 
-    return queries.map(([typ, day, cap]) => {
-        let candyMin = typ === 0 ? 1 : acc[typ - 1] + 1;
-        let candyMax = acc[typ];
-        let eatMin = day + 1;
-        let eatMax = (day + 1) * cap;
-        return (candyMax < eatMin || eatMax < candyMin) ? false : true;
-    })
+    if(pre[t] + num > min && pre[t] < max) {
+       return true
+    } else {
+       return false
+    }
+  })
 };
