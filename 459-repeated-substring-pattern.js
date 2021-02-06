@@ -54,3 +54,20 @@ const repeatedSubstringPattern = function (s) {
     return prefix
   }
 }
+
+// another
+
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+const repeatedSubstringPattern = function(s) {
+    let i = 1, j = 0, n = s.length;
+    const dp = Array(n + 1).fill(0);
+    while( i < s.length ){
+        if( s[i] === s[j] ) dp[++i] = ++j;
+        else if( j === 0 ) i++;
+        else j = dp[j];
+    }
+    return dp[n] && (dp[n] % (n - dp[n]) === 0);   
+};
