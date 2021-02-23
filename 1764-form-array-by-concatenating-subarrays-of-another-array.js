@@ -4,32 +4,30 @@
  * @return {boolean}
  */
 const canChoose = function(groups, nums) {
-    const m = groups.length;
-    let gi = 0;
-    let ni = 0;
-    while (ni < nums.length && gi < m)
-    {
-        let check = true;
-        for (let i = 0; i < groups[gi].length; i++)
-        {
-            if (ni + i >= nums.length || groups[gi][i] != nums[ni + i])
-            {
-                check = false;
-                break;
-            }
-        }
-
-        if (check)
-        {
-            ni += groups[gi].length;
-            gi++;
-        }
-        else
-        {
-            ni++;
-        }
+  let gi = 0, ni = 0
+  const n = groups.length, m = nums.length
+  while(gi < n && ni < m) {
+    const len = groups[gi].length
+    let pass = true
+    if(nums[ni] !== groups[gi][0]) {
+      ni++
+      continue
     }
+    for(let i = 1; i < len; i++) {
+      if(nums[ni + i] !== groups[gi][i]) {
+        pass = false
+        break
+      }
+    }
+    if(pass) {
+      gi++
+      ni += len
+    } else {
+      ni++
+    }
+  }
+  if(gi >= n) return true
 
-    return gi >= m;
+  return false
+
 };
-
