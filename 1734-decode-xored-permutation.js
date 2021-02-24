@@ -2,21 +2,17 @@
  * @param {number[]} encoded
  * @return {number[]}
  */
-const decode = function(A) {
-    let i;
-    let n = A.length + 1;
-    let f = 0;
-    const res = [];
-    for(i=1;i<n+1;i++){
-      f ^= i;
-    }
-    for(i=1;i<n-1;i+=2){
-      f ^= A[i];
-    }
-    res.push(f);
-    for(i=1;i<n;i++){
-      f ^= A[i-1];
-      res.push(f);
-    }
-    return res;    
+const decode = function(encoded) {
+  let a = 0
+  const n = encoded.length + 1
+  for(let i = 0; i <= n; i++) {
+    a ^= i
+    if(i < n && i % 2 === 1) a ^= encoded[i]
+  }
+  const res = [a]
+  for(let i = 0; i < n - 1; i++) {
+    res[i + 1] = res[i] ^ encoded[i]
+  }
+  
+  return res
 };
