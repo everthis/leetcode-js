@@ -2,6 +2,37 @@
  * @param {number[][]} cars
  * @return {number[]}
  */
+const getCollisionTimes = function(cars) {
+  const n = cars.length;
+  const stack = [];
+  const res = Array(n)
+  for(let i = n - 1; i >= 0; i--) {
+    const [p, s] = cars[i]
+    res[i] = -1
+    while(stack.length) {
+      const j = stack[stack.length - 1]
+      const [p2, s2] = cars[j]
+      if(s2 >= s || res[j] > 0 && (p2 - p) / (s - s2) >= res[j]) stack.pop()
+      else break
+    }
+    if(stack.length) {
+      const j = stack[stack.length - 1]
+      const [p2, s2] = cars[j]
+      res[i] = (p2 - p) / (s - s2)
+    }
+    stack.push(i)
+  }
+  
+  return res
+};
+
+// another
+
+
+/**
+ * @param {number[][]} cars
+ * @return {number[]}
+ */
 var getCollisionTimes = function(cars) {
   //这道题必须想清楚一点，那就是如果ans[i]有正值，那么一定是cars[i]和某个cars[j]（j>i且speed[j]<speed[i]）
   //相撞之后，所谓的融合，其实可以理解为cars[i]消失了，cars[j]状态不变
