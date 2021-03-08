@@ -3,16 +3,12 @@
  * @return {number}
  */
 const maxArea = function(height) {
-  const arr = [];
-  const arr_len = height.length;
-  for (let i = 0, j = arr_len - 1; i < j; ) {
-    arr.push(Math.abs(j - i) * Math.min(height[i], height[j]));
-    if (height[i] < height[j]) {
-      i++;
-    } else {
-      j--;
-    }
+  let res = 0, l = 0, r = height.length - 1
+  while(l < r) {
+    const tmp = (r - l) * Math.min(height[l], height[r])
+    if(tmp > res) res = tmp
+    if(height[l] < height[r]) l++
+    else r--
   }
-
-  return Math.max.apply(Math, arr);
+  return res
 };
