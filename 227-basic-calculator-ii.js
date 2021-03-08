@@ -3,24 +3,20 @@
  * @return {number}
  */
 const calculate = function(s) {
-  if (!s || !s.length) return 0
-  let n = 0
-  let op = '+'
-  const stack = []
-  for (let i = 0; i < s.length; i++) {
-    let c = s.charAt(i)
-    let isNumber = '0' <= c && c <= '9'
-    if (isNumber) {
-      n = n * 10 + +c
-    }
-    if ((!isNumber && c !== ' ') || i == s.length - 1) {
-      if (op === '+') stack.push(n)
-      else if (op === '-') stack.push(-n)
-      else if (op === '*') stack.push(stack.pop() * n)
-      else if (op === '/') stack.push(~~(stack.pop() / n))
-      op = c
-      n = 0
+  const stack = [], n = s.length
+  let op = '+', num = 0
+  for(let i = 0; i < n; i++) {
+    const isNumber = s[i] >= '0' && s[i] <= '9'
+    if(isNumber) num = num * 10 + (+s[i])
+    if((!isNumber && s[i] !== ' ') || i === n - 1) {
+      if(op === '+') stack.push(num)
+      else if(op === '-') stack.push(-num)
+      else if(op === '*') stack.push(stack.pop() * num)
+      else if(op === '/') stack.push(~~(stack.pop() / num))
+      op = s[i]
+      num = 0
     }
   }
-  return stack.reduce((a, b) => a + b, 0)
-}
+  
+  return stack.reduce((ac, e) => ac + e, 0)
+};
