@@ -52,29 +52,19 @@ const trap = function(height) {
  * @return {number}
  */
 const trap = function(height) {
-  const len = height.length
-  if(len === 0) return 0
-  let left = 0
-  let right = len - 1
-  let leftMax = 0
-  let rightMax = 0
-  let res = 0
-  while(left < right) {
-    if(height[left] < height[right]) {
-      if(height[left] <= leftMax) {
-        res += leftMax - height[left]
-      } else {
-        leftMax = height[left]
-      }
-      left++
+  const n = height.length
+  let l = 0, r = n - 1, res = 0, leftMax = 0, rightMax = 0
+  while(l <= r) {
+    if(height[l] <= height[r]) {
+      if(height[l] >= leftMax) leftMax = height[l]
+      else res += leftMax - height[l]
+      l++
     } else {
-      if(height[right] <= rightMax) {
-         res += rightMax - height[right]
-      } else {
-        rightMax = height[right]
-      }
-      right--
+      if(height[r] >= rightMax) rightMax = height[r]
+      else res += rightMax - height[r]
+      r--
     }
   }
   return res
-};  
+};
+
