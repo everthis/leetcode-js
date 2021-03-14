@@ -4,28 +4,23 @@
  * @return {number}
  */
 const maximumScore = function(nums, k) {
-  const n = nums.length
-  let minVal = nums[k]
-  let len = 1, ans = minVal * len, l = k - 1, r = k + 1
-  while(l >= 0 || r < n) {
-    len++
-    let i = 0
-    if(l < 0) {
-      i = r
-      r++
-    } else if(r === n) {
-      i = l
-      l--
-    } else if(nums[l] < nums[r]) {
-      i = r
-      r++
+  const n = nums.length, {min, max} = Math
+  let mini = nums[k];
+  let ans = mini;
+  let i = k;
+  let j = k;
+
+  while (i > 0 || j < n - 1) {
+    if (i == 0 || (j+1 < n && nums[i-1] <= nums[j+1])) {
+      j++;
+      mini = min(mini, nums[j]);
+      ans = max(ans, mini * (j - i + 1));
     } else {
-      i = l
-      l--
+      i--;
+      mini = min(mini, nums[i]);
+      ans = max(ans, mini * (j - i + 1));
     }
-    minVal = Math.min(minVal, nums[i])
-    const tmp = minVal * len
-    if(tmp > ans) ans = tmp
   }
-  return ans
+
+  return ans;
 };
