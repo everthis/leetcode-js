@@ -3,6 +3,16 @@
  * @return {number}
  */
 const findCenter = function(edges) {
+  return edges[0][0] === edges[1][0] || edges[0][0] === edges[1][1] ? edges[0][0] : edges[0][1]
+};
+
+// another
+
+/**
+ * @param {number[][]} edges
+ * @return {number}
+ */
+const findCenter = function(edges) {
   const map = {}
   for(let e of edges) {
     const [u, v] = e
