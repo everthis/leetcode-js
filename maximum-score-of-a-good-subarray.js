@@ -11,15 +11,14 @@ const maximumScore = function(nums, k) {
   let j = k;
 
   while (i > 0 || j < n - 1) {
-    if (i == 0 || (j+1 < n && nums[i-1] <= nums[j+1])) {
+    if (i === 0 || (j + 1 < n && nums[i - 1] <= nums[j + 1])) {
       j++;
       mini = min(mini, nums[j]);
-      ans = max(ans, mini * (j - i + 1));
     } else {
       i--;
       mini = min(mini, nums[i]);
-      ans = max(ans, mini * (j - i + 1));
     }
+    ans = max(ans, mini * (j - i + 1));
   }
 
   return ans;
