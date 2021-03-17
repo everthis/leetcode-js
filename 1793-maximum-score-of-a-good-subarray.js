@@ -23,3 +23,26 @@ const maximumScore = function(nums, k) {
 
   return ans;
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const maximumScore = function(nums, k) {
+  const n = nums.length, { max, min } = Math
+  let l = k, r = k, mi = nums[k]
+  let res = nums[k]
+  while(l > 0 || r < n - 1) {
+    if(l === 0) r++
+    else if(r === n - 1) l--
+    else if(nums[l - 1] < nums[r + 1]) r++
+    else l--
+    mi = min(mi, nums[l], nums[r])
+    res = max(res, mi * (r - l + 1))
+  }
+  
+  return res
+};
