@@ -14,6 +14,6 @@ const areAlmostEqual = function(s1, s2) {
   
   if(arr.length === 1) return false
   const [i1, i2] = arr
-  if(s1[i2] === s2[i1]) return true
+  if(s1[i2] === s2[i1] && s1[i1] === s2[i2]) return true
   return false
 };
