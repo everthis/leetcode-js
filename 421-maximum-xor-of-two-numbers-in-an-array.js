@@ -74,3 +74,48 @@ const findMaximumXOR = function(nums) {
   }
   return maxResult
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const findMaximumXOR = function (nums) {
+  if (nums == null || nums.length == 0) {
+    return 0
+  }
+  const root = new Trie()
+  for (let num of nums) {
+    let curNode = root
+    for (let i = 31; i >= 0; i--) {
+      let curBit = (num >>> i) & 1
+      if (curNode.children[curBit] == null) {
+        curNode.children[curBit] = new Trie()
+      }
+      curNode = curNode.children[curBit]
+    }
+  }
+  let max = Number.MIN_VALUE
+  for (let num of nums) {
+    let curNode = root
+    let curSum = 0
+    for (let i = 31; i >= 0; i--) {
+      let curBit = (num >>> i) & 1
+      if (curNode.children[curBit ^ 1] != null) {
+        curSum += 1 << i
+        curNode = curNode.children[curBit ^ 1]
+      } else {
+        curNode = curNode.children[curBit]
+      }
+    }
+    max = Math.max(curSum, max)
+  }
+  return max
+}
+
+class Trie {
+  constructor() {
+    this.children = {}
+  }
+}
