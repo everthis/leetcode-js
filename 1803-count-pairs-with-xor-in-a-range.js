@@ -33,8 +33,8 @@ class Trie {
     let node = this.root
     for (let i = 14; i >= 0; i--) {
       if (!node) break
-      let bit = (val >> i) & 1
-      let cmp = (high >> i) & 1
+      const bit = (val >> i) & 1
+      const cmp = (high >> i) & 1
       if (cmp) {
         if (node[bit]) ans += node[bit]['cnt']
         node = node[1 ^ bit]
