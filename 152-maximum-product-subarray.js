@@ -64,3 +64,29 @@ const maxProduct = function(nums) {
   }
   return res
 };
+
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const maxProduct = function (nums) {
+  if(nums == null || nums.length === 0) return 0
+  const n = nums.length
+  let res = nums[0]
+  for(let i = 1, min = res, max = res; i < n; i++) {
+    if(nums[i] < 0) {
+      let tmax = max, tmin = min
+      min = Math.min(nums[i], tmax * nums[i])
+      max = Math.max(nums[i], tmin * nums[i])
+    } else {
+      min = Math.min(nums[i], min * nums[i])
+      max = Math.max(nums[i], max * nums[i])
+    }
+    res = Math.max(res, max)
+  }
+  
+  return res
+}
