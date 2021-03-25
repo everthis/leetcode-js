@@ -26,5 +26,4 @@ const canJump = function(nums) {
     max = Math.max(max, i + nums[i])
     if(max >= n - 1) return true
   }
-  return max >= n - 1
 };
