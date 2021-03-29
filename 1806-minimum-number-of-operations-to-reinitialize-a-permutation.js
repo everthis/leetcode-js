@@ -32,3 +32,18 @@ const reinitializePermutation = function(n) {
     return true
   }
 };
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const reinitializePermutation = function(n) {
+  let res = 0, i = 1;
+  while (res === 0 || i > 1) {
+    i = i * 2 % (n - 1);
+    res++;
+  }
+  return res;
+};
