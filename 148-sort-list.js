@@ -48,53 +48,51 @@ function partition(head, tail) {
 
 /**
  * Definition for singly-linked list.
- * function ListNode(val) {
- *     this.val = val;
- *     this.next = null;
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
  * }
  */
 /**
  * @param {ListNode} head
  * @return {ListNode}
  */
-
-const sortList = function(head) {
-    if (!head || !head.next) return head;
-    let fast = head;
-    let slow = head;
-    let pre = null;
-    while (fast && fast.next) {
-        pre = slow;
-        fast = fast.next.next;
-        slow = slow.next;
-    }
-    pre.next = null;
-    const left = sortList(head);
-    const right = sortList(slow);
-    return merge(left, right);
+function sortList(head) {
+  if(head == null || head.next == null) return head
+  let slow = head, fast = head, pre = null
+  while(fast && fast.next) {
+    pre = slow
+    slow = slow.next
+    fast = fast.next.next
+  }
+  pre.next = null
+  const left = sortList(head)
+  const right = sortList(slow)
+  return merge(left, right)
 }
 
-
 function merge(left, right) {
-    const dummy = new ListNode(0);
-    let list = dummy
-    while (left && right) {
-        if (left.val < right.val) {
-            list.next = left;
-            left = left.next;
-        } else {
-            list.next = right;
-            right = right.next;
-        }
-        list = list.next;
+  const dummy = new ListNode()
+  let cur = dummy
+  while(left && right) {
+    if (left.val <= right.val) {
+      cur.next = left
+      left = left.next
+    } else {
+      cur.next = right
+      right = right.next
     }
-    if (left) {
-        list.next = left;
-    }
-    if (right) {
-        list.next = right;
-    }
-    return dummy.next;
+    cur = cur.next
+  }
+  if(left) {
+    cur.next = left
+  }
+
+  if(right) {
+    cur.next = right
+  }
+
+  return dummy.next
 }
 
 
