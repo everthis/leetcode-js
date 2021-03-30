@@ -22,6 +22,23 @@ const myPow = function(x, n) {
  * @param {number} n
  * @return {number}
  */
+const myPow = function(x, n) {
+  if(n === 0) return 1
+  if(n === 1) return x
+  if(n < 0) {
+    x = 1 / x
+    n = -n
+  }
+  return n % 2 === 1 ? myPow(x, ~~(n / 2)) ** 2 * x : myPow(x, ~~(n / 2)) ** 2
+};
+
+// another
+
+/**
+ * @param {number} x
+ * @param {number} n
+ * @return {number}
+ */
 const myPow = function (x, n) {
   if (n === 0) return 1
   if (n < 0) {
