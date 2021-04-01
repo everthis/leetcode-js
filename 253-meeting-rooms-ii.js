@@ -20,20 +20,20 @@ Output: 1
  * @return {number}
  */
 const minMeetingRooms = function(intervals) {
-  const len = intervals.length
-  const starts = new Array(len)
-  const ends = new Array(len)
-  for (let i = 0; i < len; i++) {
-    starts[i] = intervals[i][0]
-    ends[i] = intervals[i][1]
+  const n = intervals.length
+  const start = Array(n), end = Array(n)
+  for(let i = 0; i < n; i++) {
+    start[i] = intervals[i][0]
+    end[i] = intervals[i][1]
   }
-  starts.sort((a, b) => a - b)
-  ends.sort((a, b) => a - b)
-  let rooms = 0
-  let endsItr = 0
-  for (let i = 0; i < len; i++) {
-    if (starts[i] < ends[endsItr]) rooms++
-    else endsItr++
+  start.sort((a, b) => a - b)
+  end.sort((a, b) => a - b)
+
+  let res = 0, endIdx = 0
+  for(let i = 0; i < n; i++) {
+    if(start[i] < end[endIdx]) res++
+    else endIdx++
   }
-  return rooms
+
+  return res
 }
