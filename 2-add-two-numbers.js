@@ -76,3 +76,45 @@ function single(l1, l2, res) {
     }
   }
 }
+
+// another
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+const addTwoNumbers = function(l1, l2) {
+  let extra = false
+  const dummy = new ListNode()
+  let cur = dummy
+  while(l1 || l2) {
+    let val = 0
+    if(l1) val += l1.val
+    if(l2) val += l2.val
+    if(extra) val += 1
+      
+    if(val > 9) {
+      extra = true
+      val = val % 10
+    } else {
+      extra = false
+    }
+    cur.next = new ListNode(val)
+    cur = cur.next
+    if(l1) l1 = l1.next
+    if(l2) l2 = l2.next
+  }
+
+  if(extra) cur.next = new ListNode(1)
+  return dummy.next
+};
+
+
