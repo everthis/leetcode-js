@@ -2,8 +2,8 @@
  * Initialize your data structure here.
  */
 const RandomizedSet = function () {
+  this.arr = []
   this.map = new Map()
-  this.array = []
 }
 
 /**
@@ -12,10 +12,11 @@ const RandomizedSet = function () {
  * @return {boolean}
  */
 RandomizedSet.prototype.insert = function (val) {
-  const { array, map } = this
-  if (map.has(val)) return false
-  array.push(val)
-  map.set(val, array.length - 1)
+  const {arr, map} = this
+  if(map.has(val)) return false
+  const size = arr.length
+  arr.push(val)
+  map.set(val, size)
   return true
 }
 
@@ -25,12 +26,12 @@ RandomizedSet.prototype.insert = function (val) {
  * @return {boolean}
  */
 RandomizedSet.prototype.remove = function (val) {
-  const { array, map } = this
-  if (!map.has(val)) return false
-  const [last, index] = [array[array.length - 1], map.get(val)]
-  array[index] = last
-  map.set(last, index)
-  array.pop()
+  const {arr, map} = this
+  if(!map.has(val)) return false
+  const idx = map.get(val), last = arr[arr.length - 1]
+  arr[idx] = last
+  map.set(last, idx)
+  arr.pop()
   map.delete(val)
   return true
 }
@@ -40,9 +41,7 @@ RandomizedSet.prototype.remove = function (val) {
  * @return {number}
  */
 RandomizedSet.prototype.getRandom = function () {
-  const { array } = this
-  const r = Math.floor(array.length * Math.random())
-  return array[r]
+  return this.arr[~~(this.arr.length * Math.random())]
 }
 
 /**
