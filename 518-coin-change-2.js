@@ -34,3 +34,31 @@ const change = function (amount, coins) {
   }
   return dp[amount]
 }
+
+// another
+
+// another
+
+const change = function(amount,coins) {
+  const n = coins.length
+  const dp = Array.from({ length: n + 1 }, () => Array(amount + 1))
+  dp[0][0] = 1
+  for(let i = 0; i < n; i++) dp[i][0] = 1
+  helper(0, amount)
+  return dp[0][amount] === undefined ? 0 : dp[0][amount]
+  
+  function helper(i, rem) {
+    if(dp[i][rem] != null) return dp[i][rem]
+    if(rem < 0) return 0
+    if(rem === 0) return 1
+    if(i >= coins.length) return 0
+    let res = 0
+    
+    res += helper(i, rem - coins[i])
+    res += helper(i + 1, rem)
+    
+    dp[i][rem] = res
+      
+    return res
+  } 
+}
