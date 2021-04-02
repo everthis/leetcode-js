@@ -31,3 +31,38 @@ const topKFrequent = function(nums, k) {
   return res
 };
 
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
+ */
+const topKFrequent = function(nums, k) {
+  const hash = {}
+  for(let n of nums) {
+    if(hash[n] == null) hash[n] = 0
+    hash[n]++
+  }
+  const entries = Object.entries(hash)
+  let min = Infinity, max = -Infinity
+  const reverse = {}
+  for(let [k, freq] of entries) {
+    if(freq < min) min = freq
+    if(freq > max) max = freq
+    if(reverse[freq] == null) reverse[freq] = []
+    reverse[freq].push(k)
+  }
+  const n = max - min + 1
+  const arr = Array(n)
+  let res = []
+  let limit = max
+  while(limit) {
+    if(reverse[limit]) res.push(...reverse[limit])
+    limit--
+    if(res.length >= k) break
+  }
+  res.splice(k)
+  return res
+};
+
