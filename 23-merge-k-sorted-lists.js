@@ -49,6 +49,50 @@ function merge(lists, l, r) {
  */
 const mergeKLists = function(lists) {
   if(lists == null || lists.length === 0) return null
+  if(lists.length === 1) return lists[0]
+  if(lists.length === 2) return mergeTwo(lists[0], lists[1])
+  const left = mergeKLists(lists.slice(0, ~~(lists.length / 2)))
+  const right = mergeKLists(lists.slice(~~(lists.length / 2)))
+  
+  return mergeTwo(left, right)
+};
+
+function mergeTwo(l1, l2) {
+  const dummy = new ListNode()
+  let cur = dummy
+  while(l1 && l2) {
+    if(l1.val < l2.val) {
+      cur.next = l1
+      l1 = l1.next
+    } else {
+      cur.next = l2
+      l2 = l2.next
+    }
+    cur = cur.next
+  }
+  if(l1) cur.next = l1
+  if(l2) cur.next = l2
+  
+  
+  return dummy.next
+}
+
+
+// another
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode[]} lists
+ * @return {ListNode}
+ */
+const mergeKLists = function(lists) {
+  if(lists == null || lists.length === 0) return null
   const dummy = new ListNode()
   let head = dummy
   const pq = new PriorityQueue((a, b) => a.val < b.val)
