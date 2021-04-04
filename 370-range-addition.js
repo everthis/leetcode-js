@@ -26,7 +26,6 @@ After applying operation [0,2,-2]:
 [-2,0,3,5,3]
 
 */
-
 /**
  * @param {number} length
  * @param {number[][]} updates
@@ -35,9 +34,7 @@ After applying operation [0,2,-2]:
 const getModifiedArray = function(length, updates) {
   const res = new Array(length).fill(0)
   for (let update of updates) {
-    let value = update[2]
-    let start = update[0]
-    let end = update[1]
+    const [start, end, value] = update
     res[start] += value
     if (end < length - 1) res[end + 1] -= value
   }
