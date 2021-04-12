@@ -3,6 +3,7 @@
  */
 const BrowserHistory = function(homepage) {
   this.idx = 0
+  this.last = 0
   this.arr = [homepage]
 };
 
@@ -11,9 +12,9 @@ const BrowserHistory = function(homepage) {
  * @return {void}
  */
 BrowserHistory.prototype.visit = function(url) {
-  const n = this.arr.length
-  this.arr.splice(this.idx + 1, n - this.idx - 1, url)
   this.idx++
+  this.arr[this.idx] = url
+  this.last = this.idx
 };
 
 /** 
@@ -37,7 +38,7 @@ BrowserHistory.prototype.back = function(steps) {
  * @return {string}
  */
 BrowserHistory.prototype.forward = function(steps) {
-  const n = this.arr.length
+  const n = this.last + 1
   let tmp = this.idx + steps
   if(tmp >= n) {
     this.idx  = n - 1
@@ -47,11 +48,3 @@ BrowserHistory.prototype.forward = function(steps) {
     return this.arr[tmp]
   }
 };
-
-/** 
- * Your BrowserHistory object will be instantiated and called as such:
- * var obj = new BrowserHistory(homepage)
- * obj.visit(url)
- * var param_2 = obj.back(steps)
- * var param_3 = obj.forward(steps)
- */
