@@ -2,32 +2,43 @@
  * @param {number[][]} matrix
  * @return {number}
  */
-const longestIncreasingPath = function(matrix) {
-  if (matrix.length === 0) return 0
-  let max = 1
-  const rows = matrix.length
-  const cols = matrix[0].length
-  const cache = Array.from({ length: rows }, () => new Array(cols).fill(0))
-  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      let len = dfs(matrix, i, j, rows, cols, cache, dirs)
-      max = Math.max(max, len)
+const longestIncreasingPath = function (matrix) {
+  const dirs = [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ]
+  const m = matrix.length,
+    n = matrix[0].length
+  let res = 1
+  const memo = Array.from({ length: m }, () => Array(n).fill(0))
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      const tmp = dfs(matrix, i, j, m, n, memo, dirs)
+      res = Math.max(tmp, res)
     }
   }
-  return max
+  return res
 }
 
-function dfs(matrix, i, j, rows, cols, cache, dirs) {
-  if (cache[i][j] !== 0) return cache[i][j]
-  let max = 1
-  for (let dir of dirs) {
-    let ii = i + dir[0]
-    let jj = j + dir[1]
-    if (ii < 0 || ii >= rows || jj < 0 || jj >= cols || matrix[ii][jj] <= matrix[i][j]) continue
-    let len = 1 + dfs(matrix, ii, jj, rows, cols, cache, dirs)
-    max = Math.max(len, max)
+function dfs(matrix, i, j, m, n, memo, dirs) {
+  if (memo[i][j] !== 0) return memo[i][j]
+  let res = 1
+  for (let [dx, dy] of dirs) {
+    const nx = i + dx,
+      ny = j + dy
+    if (
+      nx < 0 ||
+      nx >= m ||
+      ny < 0 ||
+      ny >= n ||
+      matrix[nx][ny] <= matrix[i][j]
+    )
+      continue
+    const tmp = 1 + dfs(matrix, nx, ny, m, n, memo, dirs)
+    res = Math.max(res, tmp)
   }
-  cache[i][j] = max
-  return max
+  memo[i][j] = res
+  return res
 }
