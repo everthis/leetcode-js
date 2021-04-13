@@ -63,3 +63,39 @@ const cleanRoom = function(robot) {
     }
   }
 }
+
+// another
+
+/**
+ * @param {Robot} robot
+ * @return {void}
+ */
+const cleanRoom = function(robot) {
+  const dirs = [
+    [-1, 0],
+    [0, 1],
+    [1, 0],
+    [0, -1]
+  ]
+  const visited = new Set()
+  clean(0, 0, 0)
+  function clean( x, y, curDirection) {
+    robot.clean()
+    visited.add(`${x},${y}`)
+    for(let i = curDirection; i < curDirection + 4; i++) {
+      const nx = dirs[i % 4][0] + x
+      const ny = dirs[i % 4][1] + y
+      if(!visited.has(`${nx},${ny}`) && robot.move()) {
+        clean(nx, ny, i % 4)
+      }
+      robot.turnRight()
+    }
+    robot.turnRight()
+    robot.turnRight()
+    robot.move()
+    robot.turnRight()
+    robot.turnRight()
+    
+  }
+};
+
