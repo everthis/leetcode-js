@@ -94,6 +94,6 @@ const topKFrequent = function(nums, k) {
     if(freq[i] != null) res.push(...freq[i])
     if(res.length >= k) break
   }
-  if(res.length > k) res.slice(k)
+  if(res.length > k) res.splice(k)
   return res
 };
