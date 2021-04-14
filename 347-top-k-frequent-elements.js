@@ -66,3 +66,34 @@ const topKFrequent = function(nums, k) {
   return res
 };
 
+// another
+
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
+ */
+ const topKFrequent = function(nums, k) {
+  const n = nums.length
+  const freq = Array(n + 1).fill(null)
+  const hash = {}
+  for(let e of nums) {
+    if(hash[e] == null) hash[e] = 0
+    hash[e]++
+  }
+  for(let k in hash) {
+    if(hash.hasOwnProperty(k)) {
+      const v = hash[k]
+      if(freq[v] == null) freq[v] = []
+      freq[v].push(k)
+    }
+  }
+  const res = []
+  for(let i = n; i >= 0; i--) {
+    if(freq[i] != null) res.push(...freq[i])
+    if(res.length >= k) break
+  }
+  if(res.length > k) res.slice(k)
+  return res
+};
