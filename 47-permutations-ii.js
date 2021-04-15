@@ -29,3 +29,36 @@ function permuteUniqueHelper(m, l, p, i, r) {
     }
   }
 }
+
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+const permuteUnique = function(nums) {
+  const set = new Set()
+  const used = new Set()
+  bt(nums, 0, [], used, set)
+  const res = []
+  for(let item of set) {
+    res.push(item.split(','))
+  }
+  return res
+};
+
+function bt(nums, i, cur, used, set) {
+  if(i === nums.length) {
+    set.add(cur.slice().join(','))
+    return
+  }
+  for(let idx = 0; idx < nums.length; idx++) {
+    if(used.has(idx)) continue
+    cur.push(nums[idx])
+    used.add(idx)
+    bt(nums, i + 1, cur, used, set)
+    used.delete(idx)
+    cur.pop()
+  }
+}
