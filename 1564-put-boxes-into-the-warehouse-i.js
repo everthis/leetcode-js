@@ -36,3 +36,24 @@ const maxBoxesInWarehouse = function(boxes, warehouse) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} boxes
+ * @param {number[]} warehouse
+ * @return {number}
+ */
+const maxBoxesInWarehouse = function(boxes, warehouse) {
+  if(warehouse == null || warehouse.length === 0) return 0
+  const m = boxes.length, n = warehouse.length
+  boxes.sort((a, b) => a - b)
+  let i = m - 1, res = 0
+  for(let house of warehouse) {
+    while(i >= 0 && boxes[i] > house) i--
+    if(i === -1) return res
+    res++
+    i--
+  }
+  return res
+};
