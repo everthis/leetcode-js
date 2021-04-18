@@ -1,3 +1,6 @@
+// On every bit XOR acts as modulo 2 addition and AND acts as modulo 2 multiplication.
+// The set {0,1} with modulo 2 addition and multiplication is the field GF(2) and the distributive property holds in every field.
+
 /**
  * @param {number[]} arr1
  * @param {number[]} arr2
