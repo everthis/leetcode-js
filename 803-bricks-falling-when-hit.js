@@ -157,3 +157,42 @@ class DisjointSet {
   }
 }
 
+// another
+
+/**
+ * @param {number[][]} grid
+ * @param {number[][]} hits
+ * @return {number[]}
+ */
+const hitBricks = function(grid, hits) {
+  const res = Array(hits.length).fill(0), dirs = [-1, 0, 1, 0, -1]
+  for(let [r, c] of hits) {
+    grid[r][c] -= 1
+  }
+  for(let i = 0; i < grid[0].length; i++) {
+    dfs(0, i, grid)
+  }
+  for(let i = hits.length - 1; i >= 0; i--) {
+    const [r, c] = hits[i]
+    grid[r][c] += 1
+    if(grid[r][c] === 1 && isConnected(r, c, grid, dirs)) {
+      res[i] = dfs(r, c, grid) - 1
+    }
+  }
+  return res
+}
+function dfs(i, j, grid) {
+  if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] !== 1) return 0
+  grid[i][j] = 2
+  return 1 + dfs(i + 1, j, grid) + dfs(i - 1, j, grid) + dfs(i, j + 1, grid) + dfs(i, j - 1, grid)
+}
+function isConnected(i, j, grid, dirs) {
+  if(i === 0) return true
+  for(let k = 1; k < dirs.length; k++) {
+    const r = i + dirs[k - 1], c = j + dirs[k]
+    if(r >= 0 && r < grid.length && c >= 0 && c < grid[0].length && grid[r][c] === 2) {
+      return true
+    }
+  }
+  return false
+}
