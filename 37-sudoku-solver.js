@@ -47,26 +47,19 @@ const solveSudoku = function(board) {
 };
 
 function helper(board, row, col) {
-  for(let i = row, m = board.length; i < m; i++, col = 0) {
-    for(let j = col, n = board[0].length; j < n; j++) {
-      if(board[i][j] !== '.') continue
-      for(let k = 1; k <= 9; k++) {
-        const ch = `${k}`
-        const res = valid(board, i, j, ch)
-        if(res) {
-          board[i][j] = ch
-          if(helper(board, i, j + 1)) return true
-          else {
-            board[i][j] = '.'
-          }
-        }
-      }
-      return false
+  if(row >= 9) return true
+  if(col >= 9) return helper(board, row + 1, 0)
+  if(board[row][col] !== '.') return helper(board, row, col + 1)
+  for(let i = 1; i <= 9; i++) {
+    const ch = `${i}`
+    if(valid(board, row, col, ch)) {
+      board[row][col] = ch
+      if(helper(board, row, col + 1)) return true
+      board[row][col] = '.'
     }
   }
-  return true
+  return false
 }
-
 
 function valid(board, row, col, ch) {
   const blkRow = ~~(row / 3), blkCol = ~~(col / 3)
