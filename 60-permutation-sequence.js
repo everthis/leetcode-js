@@ -28,28 +28,24 @@ const getPermutation = function (n, k) {
  * @return {string}
  */
 const getPermutation = function(n, k) {
-  let pos = 0
-  const numbers = []
-  const factorial = Array(n + 1).fill(0)
-  let str = ''
-
-  let sum = 1
+  const factorial = []
+  const nums = []
+  let res = ''
   factorial[0] = 1
-
-  for(let i = 1; i <= n; i++) {
+  for(let i = 1, sum = 1; i <= n; i++) {
     sum *= i
     factorial[i] = sum
   }
   for(let i = 1; i <= n; i++) {
-    numbers.push(i)
+    nums.push(i)
   }
   k--
-  for(let i = 1; i <= n; i++) {
+  for(let i = 0; i <= n; i++) {
     const idx = ~~(k / factorial[n - i])
-    str += numbers[idx]
-    numbers.splice(idx, 1)
+    res += nums[idx]
+    nums.splice(idx, 1)
     k -= idx * factorial[n - i]
   }
 
-  return str
+  return res
 };
