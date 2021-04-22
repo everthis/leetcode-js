@@ -98,3 +98,44 @@ When Largest sum of sub-arrays is in range [6, 15], we can always find a way to 
 However, when Largest sum of sub-arrays is in range [5, 5], there is no way to do this.
 This mapped this problem into the second sub-problem. Bool array B here is [5:false, 6:true, 7:true, 8:true, ..., 15:true]. We want to find the index i of the first true in B, which is the answer of this entire question, and by solving the first sub-problem, we have an API that can tell us given an i (Largest sum of sub-arrays), whether B[i] is true (whether we can find a way to cut A to satisfy the constraint). 
  */
+
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} m
+ * @return {number}
+ */
+const splitArray = (nums, m) => {
+  let max = -Infinity, sum = 0
+  for(let num of nums) {
+    sum += num
+    max = Math.max(max, num)
+  }
+  if (m === 1) return sum
+  let l = max, r = sum
+  while(l < r) {
+    let mid = l + ((r - l) >> 1)
+    if(valid(mid, nums, m)) {
+      r = mid
+    } else {
+      l = mid + 1
+    }
+  }
+  return l
+}
+
+function valid(target, nums, m) {
+  let cnt = 1, sum = 0
+  for(let num of nums) {
+    sum += num
+    if(sum > target) {
+      cnt++
+      sum = num
+      if(cnt > m) return false
+    }
+  }
+
+  return true
+}
