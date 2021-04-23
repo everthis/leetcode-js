@@ -209,3 +209,33 @@ class PriorityQueue {
     }
   }
 }
+
+// another
+/**
+ * @param {number[][]} tasks
+ * @return {number[]}
+ */
+const getOrder = function(tasks) {
+  const n = tasks.length
+  const pq = new PriorityQueue((a, b) => a[0] === b[0] ? a[1] < b[1] : a[0] < b[0])
+  tasks.forEach((e, i) => e.push(i))
+  tasks.sort((a, b) => a[0] - b[0])
+  let idx = 0, time = 0
+  const res = []
+
+  while(idx < n || !pq.isEmpty()) {
+    while(idx < n && tasks[idx][0] <= time) {
+      pq.push([tasks[idx][1], task[idx][2]])
+      idx++
+    }
+    if(!pq.isEmpty()) {
+      const tmp = pq.pop()
+      time += tmp[0]
+      res.push(tmp[1])
+    } else if(idx < n) {
+      time = tasks[idx][0]
+    }
+  }
+  return res
+
+};
