@@ -40,3 +40,16 @@ const getXORSum = function(arr1, arr2) {
     return res;
 };
 
+// another
+
+/**
+ * @param {number[]} arr1
+ * @param {number[]} arr2
+ * @return {number}
+ */
+const getXORSum = function(arr1, arr2) {
+  let x1 = arr1[0], x2 = arr2[0]
+  for(let i = 1; i < arr1.length; i++) x1 ^= arr1[i]
+  for(let i = 1; i < arr2.length; i++) x2 ^= arr2[i]
+  return x1 & x2
+};
