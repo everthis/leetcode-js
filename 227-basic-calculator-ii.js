@@ -20,3 +20,43 @@ const calculate = function(s) {
   
   return stack.reduce((ac, e) => ac + e, 0)
 };
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const calculate = function(s) {
+  if(s == null || s.length === 0) return 0
+  let sum = 0, num = 0, op = '+', tmp = 0
+  const stack = []
+  for(let i = 0; i < s.length; i++) {
+    const ch = s[i]
+    const isInt = ch => ch >= '0' && ch <= '9'
+    if(isInt(ch)) {
+      num = num * 10 + (+ch)
+    }
+    if((!isInt(ch) && ch !== ' ') || i === s.length - 1) {
+      if(op === '+') {
+        sum += tmp
+        tmp = num
+      }
+      else if(op === '-') {
+        sum += tmp
+        tmp = - num
+      }
+      else if(op === '*') {
+        tmp *= num
+      }
+      else if(op === '/') {
+        tmp = ~~(tmp / num)
+      }
+      op = ch
+      num = 0
+    }
+
+  }
+
+  return sum + tmp
+}
