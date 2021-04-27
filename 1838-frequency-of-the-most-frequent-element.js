@@ -17,3 +17,24 @@ const maxFrequency = function(nums, k) {
   } 
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const maxFrequency = function(nums, k) {
+  nums.sort((a, b) => a - b)
+  let i = 0, sum = 0, res = 1
+  for(let j = 0; j < nums.length; j++) {
+    sum += nums[j]
+    while(sum + k < (j - i + 1) * nums[j]) {
+      sum -= nums[i]
+      i++
+    }
+    res = Math.max(res, j - i + 1)
+  }
+  return res
+};
