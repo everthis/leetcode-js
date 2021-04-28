@@ -39,6 +39,44 @@ const findAllConcatenatedWordsInADict = function (words) {
  * @param {string[]} words
  * @return {string[]}
  */
+
+const findAllConcatenatedWordsInADict = function (words) {
+  const set = new Set(words)
+  const res = []
+  const map = new Map()
+
+  for(let word of words) {
+    if(dfs(word, 0)) res.push(word)
+  }
+  return res
+  function dfs(word, idx) {
+    if(map.has(word)) return map.get(word)
+    if(idx > 0 && set.has(word)) return true
+    let tmp = false
+    for(let i = 1; i < word.length; i++) {
+      const prefix = word.slice(0, i), suffix = word.slice(i)
+      if(set.has(prefix) && set.has(suffix)) {
+        tmp = true
+        break
+      }
+      if(set.has(prefix) && dfs(suffix, idx + 1)) {
+        tmp = true
+        break
+      }
+    }
+    
+    map.set(word, tmp)
+    return tmp
+  }
+}
+
+
+// another
+
+/**
+ * @param {string[]} words
+ * @return {string[]}
+ */
 const findAllConcatenatedWordsInADict = function(words) {
   let res = []
   if (words === null || words.length == 0) return res
