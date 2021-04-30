@@ -24,6 +24,36 @@ function longestBeautifulSubstring(word) {
   return res
 }
 
+// another
+
+/**
+ * @param {string} word
+ * @return {number}
+ */
+function longestBeautifulSubstring(word) {
+  let res = 0, cur = 'a', cnt = 0
+  const set = new Set()
+  for (let ch of word) {
+    if (ch >= cur) {
+      cnt++
+      cur = ch
+      set.add(ch)
+    } else {
+      set.clear()
+      cnt = 0
+      cur = 'a'
+      if(ch === cur) {
+        set.add(ch)
+        cnt++
+      }
+    }
+    if (set.size === 5) {
+      res = Math.max(res, cnt)
+    }
+  }
+
+  return res
+}
 
 // another
 
