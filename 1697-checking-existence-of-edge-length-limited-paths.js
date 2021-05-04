@@ -16,13 +16,11 @@ const distanceLimitedPathsExist = function (n, edgeList, queries) {
   for (let i of order) {
     const limit = queries[i][2]
     while (idx < edgeList.length && edgeList[idx][2] < limit) {
-      const u = edgeList[idx][0],
-        v = edgeList[idx][1]
+      const [u, v] = edgeList[idx]
       uf.union(u, v)
       idx++
     }
-    const u0 = queries[i][0],
-      v0 = queries[i][1]
+    const [u0, v0] = queries[i]
     if (uf.find(u0) === uf.find(v0)) ans[i] = true
   }
   return ans
