@@ -17,10 +17,10 @@ const maximizeXor = function (nums, queries) {
       if (m < nums[mid])r = mid
       else l = mid + 1
     }
-    r -= 1
+    r--
     l = 0
     let ans = x & ~maxMask
-    for (let bit = numOfBits - 1; bit >= 0; bit -= 1) {
+    for (let bit = numOfBits - 1; bit >= 0; bit--) {
       const mask = 1 << bit
       if (x & mask) {
         if ((nums[l] & mask) === 0) {
@@ -45,6 +45,7 @@ const maximizeXor = function (nums, queries) {
     return l
   }
 }
+
 
 // another
 
