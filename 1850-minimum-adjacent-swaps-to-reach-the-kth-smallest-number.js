@@ -3,7 +3,7 @@
  * @param {number} k
  * @return {number}
  */
-const getMinSwaps = function (num, k) {
+ const getMinSwaps = function (num, k) {
   const temp = num.split('')
   for (let i = 0; i < k; i++) nextPermutation(temp)
   return count(num.split(''), temp, temp.length)
@@ -16,7 +16,7 @@ function nextPermutation(a) {
   //If we found an element
   if (i >= 0) {
     // Find the rightmost element such that a[j] > a[i]
-    let j = bSearch(a, i + 1, a.length - 1, a[i])
+    const j = bSearch(a, i + 1, a.length - 1, a[i])
     // swap a[i] and a[j]
     a[i] = a[i] ^ a[j] ^ (a[j] = a[i])
   }
@@ -26,8 +26,7 @@ function nextPermutation(a) {
 
 function bSearch(a, i, j, key) {
   while (i <= j) {
-    let mid = (i + j) >>> 1
-
+    const mid = (i + j) >>> 1
     if (key < a[mid]) i = mid + 1
     else j = mid - 1
   }
@@ -45,11 +44,9 @@ function count(s1, s2, n) {
 
   while (i < n) {
     j = i
-
     while (s1[j] != s2[i]) j++
-
     while (i < j) {
-      let temp = s1[j]
+      const temp = s1[j]
       s1[j] = s1[j - 1]
       s1[j-- - 1] = temp
       ++res
