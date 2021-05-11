@@ -28,3 +28,41 @@ function isMatch(str, i, pat, j, map, set) {
   }
   return false
 }
+
+// another
+
+/**
+ * @param {string} pattern
+ * @param {string} s
+ * @return {boolean}
+ */
+const wordPatternMatch = function(pattern, s) {
+  const obj = { res: false }
+  const hash = {}
+  helper(pattern, s, 0, 0, hash, obj)
+  return obj.res
+};
+
+function helper(p, s, i, j, hash, obj) {
+  if(obj.res) return
+  if(i === p.length && j === s.length) {
+    obj.res = true
+    return
+  }
+  if(i >= p.length || j >= s.length) return
+  for(let m = j; m < s.length && obj.res === false; m++) {
+    const tmp = s.slice(j, m + 1)
+    if(hash[p[i]]) {
+      if(tmp === hash[p[i]]) {
+        helper(p, s, i + 1, m + 1, hash, obj)
+      }
+    } else {
+      const set = new Set(Object.values(hash))
+      if (!set.has(tmp)) {
+        hash[p[i]] = tmp
+        helper(p, s, i + 1, m + 1, hash, obj)
+        delete hash[p[i]]
+      }
+    }
+  }
+}
