@@ -15,6 +15,7 @@ const sumSubarrayMins = function(arr) {
   
   for(let i = n - 1; i >= 0; i--) {
     let cnt = 1
+    // use ">=" to deal with duplicate elements
     while(s2.length && s2[s2.length - 1][0] >= arr[i]) {
       cnt += s2.pop()[1]
     }
