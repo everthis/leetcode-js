@@ -44,3 +44,50 @@ function bigint_max(...args){
     args.forEach(a=>{if (a > m) {m = a}});
     return m;
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const maxSumMinProduct = function(nums) {
+  const n = nums.length, s1 = [], s2 = [],
+    left = Array(n), right = Array(n), mod = BigInt(1e9 + 7)
+  for(let i = 0; i < n; i++) {
+    while(s1.length && nums[s1[s1.length - 1]] >= nums[i]) s1.pop()
+    if(s1.length) left[i] = s1[s1.length - 1] + 1
+    else left[i] = 0
+    s1.push(i)
+  }
+  
+  for(let i = n - 1; i >= 0; i--) {
+    while(s2.length && nums[s2[s2.length - 1]] >= nums[i]) s2.pop()
+    if(s2.length) right[i] = s2[s2.length - 1] - 1
+    else right[i] = n - 1
+    s2.push(i)
+  }
+  
+  const preSum = Array(n)
+  for(let i = 0; i < n; i++) {
+    preSum[i] = (i === 0 ? 0n : preSum[i - 1]) + BigInt(nums[i])
+  }
+  let res = 0n
+  for(let i = 0; i < n; i++) {
+    res = max(res, getSum(preSum, left[i], right[i]) * BigInt(nums[i]))
+  }
+  return res % mod
+  
+};
+
+function getSum(arr, l, r) {
+  return arr[r] - (l === 0 ? 0n : arr[l - 1])
+}
+
+function max(...args) {
+  let res = -Infinity
+  for(let e of args) {
+    if(e > res) res = e
+  }
+  return res
+}
