@@ -26,7 +26,7 @@ const largestPathValue = function (colors, edges) {
   while (q.length) {
     const u = q[0]
     q.shift()
-    let val = Math.max(...cnt[u])
+    const val = Math.max(...cnt[u])
     res = Math.max(res, val)
     seen++
     if (graph[u] == null) continue
