@@ -13,13 +13,13 @@ const isPrintable = function (targetGrid) {
     for (let j = 0; j < n; j++) {
       let c = targetGrid[i][j]
       colorSet.add(c)
-      posMin[c][0] = Math.min(posMin[c][0], i) // Up
-      posMin[c][1] = Math.min(posMin[c][1], j) // Left
-      posMax[c][0] = Math.max(posMax[c][0], i) // Down
-      posMax[c][1] = Math.max(posMax[c][1], j) // Right
+      posMin[c][0] = Math.min(posMin[c][0], i) //Up
+      posMin[c][1] = Math.min(posMin[c][1], j) //Left
+      posMax[c][0] = Math.max(posMax[c][0], i) //Down
+      posMax[c][1] = Math.max(posMax[c][1], j) //Right
     }
   }
-  while (colorSet.size > 0) {
+  while (colorSet.size) {
     const tmp = new Set()
     for (let color of colorSet) {
       if (!isRect(targetGrid, color)) {
@@ -45,6 +45,7 @@ const isPrintable = function (targetGrid) {
         A[i][j] = 0
       }
     }
+
     return true
   }
 }
