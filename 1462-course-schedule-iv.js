@@ -5,6 +5,7 @@
  * @return {boolean[]}
  */
 const checkIfPrerequisite = function(numCourses, prerequisites, queries) {
+  // https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
   const n = numCourses
   const connected = Array.from({ length: n }, () => Array(n).fill(false))
   for(let p of prerequisites) connected[p[0]][p[1]] = true
