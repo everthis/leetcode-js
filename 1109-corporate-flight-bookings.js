@@ -12,3 +12,23 @@ const corpFlightBookings = function(bookings, n) {
   for (let i = 1; i < n; ++i) res[i] += res[i - 1]
   return res
 }
+
+// another
+
+/**
+ * @param {number[][]} bookings
+ * @param {number} n
+ * @return {number[]}
+ */
+const corpFlightBookings = function(bookings, n) {
+  const arr = Array(n + 2).fill(0)
+  for(let [s, e, num] of bookings) {
+    arr[s] += num
+    arr[e + 1] -= num
+  }
+  for(let i = 1; i <= n; i++) {
+    if(arr[i] !== 0) arr[i] += arr[i - 1]
+    else arr[i] = arr[i - 1]
+  }
+  return arr.slice(1, n + 1)
+};
