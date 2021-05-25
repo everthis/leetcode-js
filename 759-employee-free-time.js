@@ -113,3 +113,35 @@ const employeeFreeTime = function(schedule) {
   }
   return res
 }
+
+// another
+
+/**
+ * // Definition for an Interval.
+ * function Interval(start, end) {
+ *    this.start = start;
+ *    this.end = end;
+ * };
+ */
+
+/**
+ * @param {Interval[][]} schedule
+ * @return {Interval[]}
+ */
+const employeeFreeTime = function (schedule) {
+  const res = [], timeLine = []
+  schedule.forEach(e => timeLine.push(...e))
+  timeLine.sort((a, b) => a.start - b.start)
+  let tmp = timeLine[0]
+  for(let i = 1, n = timeLine.length; i < n; i++) {
+    const el = timeLine[i]
+    if(el.start > tmp.end) {
+      res.push(new Interval(tmp.end, el.start))
+      tmp = el
+    } else {
+      tmp = el.end > tmp.end ? el : tmp
+    }
+  }
+  return res
+}
+
