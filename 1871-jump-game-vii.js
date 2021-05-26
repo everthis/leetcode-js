@@ -52,3 +52,25 @@ const canReach = function(s, minJump, maxJump) {
   }
   return check[n];
 };
+
+// another
+
+/**
+ * @param {string} s
+ * @param {number} minJump
+ * @param {number} maxJump
+ * @return {boolean}
+ */
+const canReach = function(s, minJump, maxJump) {
+  const n = s.length, dp = Array(n).fill(0)
+  dp[0] = 1
+  let pre = 0
+  for(let i = 1; i < n; i++) {
+    if(i >= minJump) {
+      pre += dp[i - minJump]
+    }
+    if(i > maxJump) pre -= dp[i - maxJump - 1]
+    dp[i] = pre > 0 && s[i] === '0' ? 1 : 0
+  }
+  return dp[n - 1]
+};
