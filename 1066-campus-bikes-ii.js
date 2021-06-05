@@ -3,6 +3,35 @@
  * @param {number[][]} bikes
  * @return {number}
  */
+const assignBikes = function(workers, bikes) {
+  const n = workers.length, m = bikes.length
+  const dp = Array(1 << m).fill(Infinity)
+  return dfs(0, 0)
+ 
+  function dfs(i, mask) {
+    if(i >= workers.length) return 0
+    if(dp[mask] !== Infinity) return dp[mask]
+    for(let j = 0; j < bikes.length; j++) {
+      if((mask & (1 << j)) === 0) {
+         dp[mask] = Math.min(dp[mask], dist(i, j) + dfs(i + 1, mask + (1 << j)))
+      }
+    }
+    
+    return dp[mask]
+  }
+  
+  function dist(j, i) {
+    return Math.abs(bikes[i][0] - workers[j][0]) + Math.abs(bikes[i][1] - workers[j][1])
+  }
+};
+
+// another
+
+/**
+ * @param {number[][]} workers
+ * @param {number[][]} bikes
+ * @return {number}
+ */
 const assignBikes = function (workers, bikes) {
   const n = workers.length
   const m = bikes.length
