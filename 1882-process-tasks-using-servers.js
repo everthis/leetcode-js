@@ -116,3 +116,56 @@ class PriorityQueue {
     }
   }
 }
+
+// another
+
+/**
+ * @param {number[]} servers
+ * @param {number[]} tasks
+ * @return {number[]}
+ */
+const assignTasks = function(servers, tasks) {
+  const freePQ = new PriorityQueue((a, b) => {
+    if(a.w < b.w) return true
+    else if(a.w > b.w) return false
+    else {
+      if(a.idx < b.idx) return true
+      return false
+    }
+  })
+  const runningPQ = new PriorityQueue((a, b) => {
+    return a.end === b.end ? (a.w === b.w ? a.idx < b.idx : a.w < b.w) : a.end < b.end
+  })
+  const res = []
+  for(let i = 0; i < servers.length; i++) {
+    freePQ.push({
+      w: servers[i],
+      idx: i
+    })
+  }
+  for(let i = 0, n = tasks.length; i < n; i++) {
+    const cur = tasks[i]
+    while(runningPQ.size() && runningPQ.peek().end <= i) {
+      const el = runningPQ.pop()
+      freePQ.push({
+        w: el.w,
+        idx: el.idx,
+      })
+    }
+    
+    if(freePQ.isEmpty()) {
+      const el = runningPQ.pop()
+      res[i] = el.idx
+      el.end += cur
+      runningPQ.push(el)
+    } else {
+      const el = freePQ.pop()
+      res[i] = el.idx
+      el.end = i + cur
+      runningPQ.push(el)
+    }
+  }
+
+  return res
+};
+
