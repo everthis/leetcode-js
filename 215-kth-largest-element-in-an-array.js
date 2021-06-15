@@ -66,42 +66,38 @@ function quickselect(arr, lo, hi, k) {
  * @param {number} k
  * @return {number}
  */
-const findKthLargest = function(list, k) {
-  const len = list.length
-  let lo = 0
-  let hi = len - 1
-  let pivot = 0
-  let t = len - k
-  while(lo < hi) {
-    pivot = partition(list, lo, hi)
-    if(pivot === t) {
-      break
-    } else if(pivot < t) {
-      lo = pivot + 1
-    } else if(pivot > t) {
-      hi = pivot - 1
+const findKthLargest = function(nums, k) {
+  const n = nums.length
+  let l = 0, r = n - 1, t = n - k
+  while(l < r) {
+    const mid = partition(nums, l, r)
+    if(mid < t) {
+      l = mid + 1
+    } else {
+      if(mid === t) break
+      else r = mid - 1
     }
   }
-  
-  return list[t]
-}
+  return nums[t]
+};
 
-function partition(arr, s, e) {
-  let t = arr[e]
-  let i = s
-  for(let j = s; j <= e - 1; j++) {
-    if(arr[j] <= t) {
+function partition(arr, left, right) {
+  let pivot = arr[right]
+  let l = left, r = right - 1, j = left
+  for(let i = left; i < right; i++) {
+    if(arr[i] <= pivot) {
       swap(arr, i, j)
-      i++
+      j++
     }
   }
-  swap(arr, i, e) 
-  return i
+  swap(arr, j, right)
+  return j
 }
 
 function swap(arr, i, j) {
-  let tmp = arr[i]
+  const tmp = arr[i]
   arr[i] = arr[j]
   arr[j] = tmp
 }
+
 
