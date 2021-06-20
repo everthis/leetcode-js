@@ -239,3 +239,46 @@ const getOrder = function(tasks) {
   return res
 
 };
+
+// another
+
+/**
+ * @param {number[][]} tasks
+ * @return {number[]}
+ */
+const getOrder = function (tasks) {
+  tasks = tasks.map((e, idx) => [e[0], e[1], idx])
+  tasks.sort((a, b) => a[0] - b[0])
+  const pq = new PriorityQueue(compare)
+  const res = []
+  let i = 0,
+    t = 0
+  while (i < tasks.length) {
+    while (i < tasks.length && tasks[i][0] <= t) {
+      let [ent, pt, ind] = tasks[i]
+      i += 1
+      pq.push([pt, ind])
+    }
+    if (pq.size() == 0) {
+      if (i < tasks.length) t = tasks[i][0]
+      continue
+    }
+    let [pt, ind] = pq.pop()
+    res.push(ind)
+    t += pt
+  }
+  while (pq.size()) {
+    let [pt, index] = pq.pop()
+    res.push(index)
+  }
+  return res
+}
+
+function compare(a, b) {
+  if (a[0] < b[0]) return true
+  else if (a[0] > b[0]) return false
+  else {
+    return a[1] < b[1]
+  }
+}
+
