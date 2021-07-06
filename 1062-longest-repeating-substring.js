@@ -49,3 +49,6 @@ const longestRepeatingSubstring = function(s) {
     }
     return res;
 };
+
+// non-overlap version
+// http://nriverwang.blogspot.com/2013/04/longest-repeated-substring.html
