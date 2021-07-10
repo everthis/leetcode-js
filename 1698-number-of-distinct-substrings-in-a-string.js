@@ -12,3 +12,31 @@ const countDistinct = function(s) {
   
   return set.size
 };
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const countDistinct = function (s, count = 0) {
+  const root = new Trie()
+  const N = s.length
+  for (let i = 0; i < N; i++) {
+    let node = root
+    for (let j = i; j < N; j++) {
+      const c = s[j]
+      if (!node.children.has(c)) {
+        node.children.set(c, new Trie())
+        count++
+      }
+      node = node.children.get(c)
+    }
+  }
+  return count
+}
+class Trie {
+  constructor() {
+    this.children = new Map()
+  }
+}
