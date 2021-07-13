@@ -4,6 +4,30 @@
  * @return {string}
  */
 const findLongestWord = function(s, dictionary) {
+  let res = ''
+  for(let d of dictionary) {
+    let j = 0
+    for(let i = 0, n = s.length; i < n; i++) {
+      if(d[j] === s[i]) j++
+      if(j === d.length && j >= res.length) {
+        if(j > res.length || d < res) {
+          res = d
+        }
+        break
+      }
+    }
+  }
+  return res
+};
+
+// another
+
+/**
+ * @param {string} s
+ * @param {string[]} dictionary
+ * @return {string}
+ */
+const findLongestWord = function(s, dictionary) {
   dictionary.sort((a, b) => a.length === b.length ? cmp(a, b) : b.length - a.length)
   let res = ''
   for(let d of dictionary) {
