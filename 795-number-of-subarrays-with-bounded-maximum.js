@@ -21,3 +21,27 @@ const numSubarrayBoundedMax = function(A, L, R) {
     }
     return res
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} left
+ * @param {number} right
+ * @return {number}
+ */
+const numSubarrayBoundedMax = function(nums, left, right) {
+  let prev = -1, dp = 0, res = 0
+  for(let i = 0, n = nums.length; i < n; i++) {
+    const cur = nums[i]
+    if(cur < left) res += dp
+    else if(cur > right) {
+      dp = 0
+      prev = i
+    } else {
+      dp = i - prev
+      res += dp
+    }
+  }
+  return res
+};
