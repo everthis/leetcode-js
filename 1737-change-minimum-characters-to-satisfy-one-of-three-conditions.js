@@ -63,3 +63,34 @@ function method3(str1, str2) {
   return str1.length + str2.length - Math.max(...cnt1) - Math.max(...cnt2)
 }
 
+// another
+
+/**
+ * @param {string} a
+ * @param {string} b
+ * @return {number}
+ */
+const minCharacters = function (a, b) {
+  const m = a.length, n = b.length
+  let res = m + n
+  const cnt1 = Array(26).fill(0), cnt2 = Array(26).fill(0)
+  const ac = 'a'.charCodeAt(0)
+  for(let ch of a) cnt1[ch.charCodeAt(0) - ac]++
+  for(let ch of b) cnt2[ch.charCodeAt(0) - ac]++
+  const c3 = res - Math.max(...cnt1) - Math.max(...cnt2)
+  for(let i = 0; i < 26; i++) {
+    if(i > 0) {
+      cnt1[i] += cnt1[i - 1]
+      cnt2[i] += cnt2[i - 1]      
+    }
+
+    if(i < 25) {
+      res = Math.min(res, m - cnt1[i] + cnt2[i])
+      res = Math.min(res, n - cnt2[i] + cnt1[i])
+    }
+  }
+  
+  return Math.min(res, c3)
+}
+
+
