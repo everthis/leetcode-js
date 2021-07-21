@@ -60,7 +60,6 @@ function method3(str1, str2) {
   const cnt1 = Array(26).fill(0), cnt2 = Array(26).fill(0)
   for(let ch of str1) cnt1[ch.charCodeAt(0) - a]++
   for(let ch of str2) cnt2[ch.charCodeAt(0) - a]++
-  let res = 0
-  for(let i = 0; i < 26; i++) res = Math.max(res, cnt1[i] + cnt2[i])
-  return str1.length + str2.length - res
+  return str1.length + str2.length - Math.max(...cnt1) - Math.max(...cnt2)
 }
+
