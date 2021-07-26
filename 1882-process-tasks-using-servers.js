@@ -4,6 +4,41 @@
  * @return {number[]}
  */
 const assignTasks = function(servers, tasks) {
+  const freePQ = new PriorityQueue((a, b) => a.w === b.w ? a.i < b.i : a.w < b.w)
+  const runningPQ = new PriorityQueue((a, b) => a.e === b.e ? (a.w === b.w ? a.i < b.i : a.w < b.w) : a.e < b.e)
+  const m = servers.length, n = tasks.length
+  for(let i = 0; i < m; i++) freePQ.push({w: servers[i], i, e: 0})
+  const res = []
+  for(let i = 0; i < n; i++) {
+    const cur = tasks[i]
+    while(!runningPQ.isEmpty() && runningPQ.peek().e <= i) {
+      const tmp = runningPQ.pop()
+      tmp.e = i
+      freePQ.push(tmp)
+    }
+    if(freePQ.isEmpty()) {
+      const tmp = runningPQ.pop()
+      res[i] = tmp.i
+      tmp.e += cur
+      runningPQ.push(tmp)
+    } else {
+      const tmp = freePQ.pop()
+      res[i] = tmp.i
+      tmp.e = i + cur
+      runningPQ.push(tmp)
+    }
+  }
+  return res
+};
+
+// another
+
+/**
+ * @param {number[]} servers
+ * @param {number[]} tasks
+ * @return {number[]}
+ */
+const assignTasks = function(servers, tasks) {
   let i = 0
   const freePQ = new PriorityQueue((a, b) => {
     if(a.w < b.w) return true
