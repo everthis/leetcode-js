@@ -1,27 +1,26 @@
 /**
  * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
  * }
  */
 /**
  * @param {TreeNode} root
  * @return {TreeNode[]}
  */
-const findDuplicateSubtrees = function (root) {
-  const obj = {},
-    res = []
-  preOrder(root, obj, res)
+const findDuplicateSubtrees = function(root) {
+  const hash = {}, res = []
+  pre(root, hash, res)
   return res
-}
+};
 
-function preOrder(root, map, res) {
-  if (root === null) return '#'
-  const str =
-    root.val + preOrder(root.left, map, res) + preOrder(root.right, map, res)
-  if (!map[str]) map[str] = 0
-  map[str]++
-  if (map[str] === 2) res.push(root)
+function pre(node, hash, res) {
+  if(node == null) return '#'
+  const str = `${node.val},${pre(node.left, hash, res)},${pre(node.right, hash, res)}`
+  if(hash[str] == null) hash[str] = 0
+  hash[str]++
+  if(hash[str] === 2) res.push(node)
   return str
 }
