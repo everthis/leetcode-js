@@ -15,3 +15,20 @@ const numberOfWeeks = function(milestones) {
 
     return sum - cantWork;
 };
+
+// another
+
+/**
+ * @param {number[]} milestones
+ * @return {number}
+ */
+const numberOfWeeks = function(milestones) {
+  const max = Math.max(...milestones)
+  let sum = 0
+  for(let i = 0; i < milestones.length; i++) {
+    sum += milestones[i]
+  }
+  const res = sum - max
+  
+  return Math.min(sum, res * 2 + 1)
+};
