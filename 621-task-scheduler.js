@@ -39,3 +39,32 @@ const leastInterval = function(tasks, n) {
   }
   return Math.max((max - 1) *  (n + 1)  +  count, tasks.length)
 };
+
+// another
+
+/**
+ * @param {character[]} tasks
+ * @param {number} n
+ * @return {number}
+ */
+const leastInterval = function(tasks, n) {
+  let max = 0, maxCnt = 0
+  const len = tasks.length, cnt = Array(26).fill(0), A = 'A'.charCodeAt(0)
+  
+  for(let ch of tasks) {
+    const idx = ch.charCodeAt(0) - A
+    cnt[idx]++
+    if(max === cnt[idx]) maxCnt++
+    else if(max < cnt[idx]) {
+      max = cnt[idx]
+      maxCnt = 1
+    }
+  }
+  
+  const maxSlots = max * maxCnt
+  const avaiSlots = (max - 1) * (n - (maxCnt - 1))
+  const rem = len - maxSlots
+  const emptySlots = Math.max(0, avaiSlots - rem)
+  
+  return len + emptySlots
+};
