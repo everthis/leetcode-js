@@ -20,3 +20,24 @@ const minSwaps = function(s) {
   // console.log(num)
   return Math.ceil(num / 2)
 };
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const minSwaps = function(s) {
+  let num = 0
+  for(let e of s) {
+    if(e === '[') {
+      num++
+    }
+    if(e === ']') {
+      if(num > 0) {
+        num--
+      }
+    }
+  }
+  return Math.ceil(num / 2)
+};
