@@ -123,3 +123,78 @@ RangeModule.prototype.removeRange = function(left, right) {
  * var param_2 = obj.queryRange(left,right)
  * obj.removeRange(left,right)
  */
+
+
+// another
+
+const RangeModule = function () {
+  this.intervals = []
+}
+
+/**
+ * @param {number} left
+ * @param {number} right
+ * @return {void}
+ */
+RangeModule.prototype.addRange = function (left, right) {
+  const n = this.intervals.length
+  const tmp = []
+  for (let i = 0; i <= n; i++) {
+    const cur = this.intervals[i]
+
+    if (i == n || cur[0] > right) {
+      tmp.push([left, right])
+      while (i < n) tmp.push(this.intervals[i++])
+    } else if (cur[1] < left) tmp.push(cur)
+    else {
+      left = Math.min(left, cur[0])
+      right = Math.max(right, cur[1])
+    }
+  }
+  this.intervals = tmp
+}
+
+/**
+ * @param {number} left
+ * @param {number} right
+ * @return {boolean}
+ */
+RangeModule.prototype.queryRange = function (left, right) {
+  const n = this.intervals.length
+  let l = 0,
+    r = n - 1
+  while (l <= r) {
+    let m = ~~(l + (r - l) / 2)
+    if (this.intervals[m][0] >= right) r = m - 1
+    else if (this.intervals[m][1] <= left) l = m + 1
+    else return this.intervals[m][0] <= left && this.intervals[m][1] >= right
+  }
+  return false
+}
+
+/**
+ * @param {number} left
+ * @param {number} right
+ * @return {void}
+ */
+RangeModule.prototype.removeRange = function (left, right) {
+  const n = this.intervals.length
+  const tmp = []
+  for (let i = 0; i < n; i++) {
+    const cur = this.intervals[i]
+    if (cur[1] <= left || cur[0] >= right) tmp.push(cur)
+    else {
+      if (cur[0] < left) tmp.push([cur[0], left])
+      if (cur[1] > right) tmp.push([right, cur[1]])
+    }
+  }
+  this.intervals = tmp
+}
+
+/**
+ * Your RangeModule object will be instantiated and called as such:
+ * var obj = new RangeModule()
+ * obj.addRange(left,right)
+ * var param_2 = obj.queryRange(left,right)
+ * obj.removeRange(left,right)
+ */
