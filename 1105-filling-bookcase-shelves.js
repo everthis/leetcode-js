@@ -18,3 +18,24 @@ const minHeightShelves = function(books, shelf_width) {
   }
   return dp[books.length]
 };
+
+// another
+
+/**
+ * @param {number[][]} books
+ * @param {number} shelf_width
+ * @return {number}
+ */
+const minHeightShelves = function(books, shelf_width) {
+  const n = books.length, dp = Array(1001).fill(Infinity)
+  dp[0] = 0
+  for(let i = 0; i < n; i++) {
+    let sum = 0, mx = 0
+    for(let j = i; j >= 0 && sum + books[j][0] <= shelf_width; j--) {
+      sum += books[j][0]
+      mx = Math.max(mx, books[j][1])
+      dp[i + 1] = Math.min(dp[i + 1], dp[j] + mx)
+    }
+  }
+  return dp[n]
+};
