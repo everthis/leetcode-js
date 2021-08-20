@@ -15,3 +15,29 @@ const maxSumAfterPartitioning = function(A, K) {
   }
   return dp[N - 1];
 };
+
+// another
+
+/**
+ * @param {number[]} arr
+ * @param {number} k
+ * @return {number}
+ */
+const maxSumAfterPartitioning = function(arr, k) {
+  const n = arr.length, memo = Array(n + 1)
+  memo[0] = 0
+  return dp(n)
+  
+  function dp(i) {
+    if(i === 0) return 0
+    if(memo[i] != null) return memo[i]
+    
+    let sum = 0, max = 0, res = 0
+    for(let j = i; j > 0 && i - j < k; j--) {
+      max = Math.max(max, arr[j - 1])
+      sum = (i - j + 1) * max
+      res = Math.max(res, dp(j - 1) + sum)
+    }
+    return memo[i] = res
+  }
+};
