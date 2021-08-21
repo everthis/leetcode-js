@@ -68,3 +68,34 @@ const lengthOfLIS = function(nums) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const lengthOfLIS = function(nums) {
+  const n = nums.length, stack = []
+  let res = 0
+  stack.push(nums[0])
+  for(let i = 1; i < n; i++) {
+    const cur = nums[i]
+    if(cur > stack[stack.length - 1]) {
+      stack.push(cur)
+    } else {
+      let l = 0, r = stack.length - 1
+      while(l < r) {
+        let mid = ~~((l + r) / 2)
+        if(stack[mid] < cur) {
+          l = mid + 1
+        } else {
+          r = mid
+        }
+      }
+      stack[l] = cur
+    }
+  }
+  
+  return stack.length
+};
