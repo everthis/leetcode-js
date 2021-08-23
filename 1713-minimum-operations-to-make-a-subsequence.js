@@ -75,3 +75,41 @@ const minOperations = function(target, arr) {
 
   return target.length - stack.length
 };
+
+// another
+
+/**
+ * @param {number[]} target
+ * @param {number[]} arr
+ * @return {number}
+ */
+const minOperations = function(target, arr) {
+  const hash = {}
+  for(let i = 0, n = target.length; i < n; i++) {
+    hash[target[i]] = i
+  }
+  const stack = []
+  
+  for(let e of arr) {
+    if(hash[e] == null) continue
+    const cur = hash[e]
+    if(stack.length && cur > stack[stack.length - 1]) {
+      stack.push(cur)
+      continue
+    }
+    
+    let l = 0, r = stack.length - 1
+    
+    while(l < r) {
+      const mid = ~~((l + r) / 2)
+      if(stack[mid] < cur) {
+        l = mid + 1
+      } else r = mid
+    }
+    
+    stack[l] = cur
+    
+  }
+  
+  return target.length - stack.length
+};
