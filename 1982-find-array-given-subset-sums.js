@@ -41,3 +41,51 @@ function bs(arr, e) {
   
   return arr[l] === e
 }
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[]} sums
+ * @return {number[]}
+ */
+const recoverArray = function(n, sums) {
+  const res = []
+  sums.sort((a, b) => a - b)
+  
+  while(res.length < n) {
+    const visited = Array(sums.length).fill(false)
+    const a1 = [], a2 = []
+    const d = sums[1] - sums[0]
+    for(let i = 0, j = 1; i < sums.length; i++, j++) {
+      while(i < sums.length && visited[i]) i++
+      if(i === sums.length) break
+      while(j <= i || sums[j] !== sums[i] + d) j++
+      a1.push(sums[i])
+      a2.push(sums[j])
+      visited[i] = visited[j] = true
+    }
+    
+    if(bs(a1, 0)) {
+      sums = a1
+      res.push(d)
+    } else {
+      sums = a2
+      res.push(-d)
+    }
+  }
+  
+  return res
+};
+
+function bs(arr, val) {
+  let l = 0, r = arr.length - 1
+  while(l < r) {
+    const mid = ~~((l + r) / 2)
+    if(arr[mid] < val) l = mid + 1
+    else r = mid
+  }
+  
+  return arr[l] === val
+}
+
