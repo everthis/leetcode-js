@@ -47,3 +47,24 @@ function chk(ch, grid) {
   
   return false
 }
+
+// another
+
+/**
+ * @param {number[][]} moves
+ * @return {string}
+ */
+const tictactoe = function(moves) {
+  const aRow = Array(3).fill(0), aCol = Array(3).fill(0), bRow= Array(3).fill(0), bCol =Array(3).fill(0)
+  let ad = 0, ads = 0, bd = 0, bds = 0
+  for(let i = 0; i < moves.length; i++) {
+    const [r, c] = moves[i]
+    if(i % 2===0) {
+      if(++aRow[r] === 3 || ++aCol[c] === 3 || r === c && ++ad === 3 || r + c === 2&& ++ads === 3 ) return 'A'
+    }else {
+      if(++bRow[r] === 3 || ++bCol[c] === 3 || r === c && ++bd === 3 || r + c === 2&& ++bds === 3 ) return 'B'
+    }
+  }
+  
+  return moves.length >= 9 ? 'Draw' : 'Pending'
+};
