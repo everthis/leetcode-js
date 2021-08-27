@@ -196,3 +196,58 @@ function isConnected(i, j, grid, dirs) {
   }
   return false
 }
+
+// another
+
+/**
+ * @param {number[][]} grid
+ * @param {number[][]} hits
+ * @return {number[]}
+ */
+const hitBricks = function (grid, hits) {
+  const m = grid.length,
+    n = grid[0].length,
+    res = Array(hits.length).fill(0),
+    dirs = [
+      [-1, 0],
+      [1, 0],
+      [0, 1],
+      [0, -1],
+    ];
+  for (let [r, c] of hits) grid[r][c] -= 1;
+
+  for (let i = 0; i < n; i++) dfs(grid, 0, i, m, n, dirs);
+
+  for (let i = hits.length - 1; i >= 0; i--) {
+    const [r, c] = hits[i];
+    grid[r][c] += 1;
+    if (grid[r][c] === 1 && connected(grid, r, c, m, n, dirs)) {
+      res[i] = dfs(grid, r, c, m, n, dirs) - 1;
+    }
+  }
+
+  return res;
+};
+
+function dfs(grid, i, j, m, n, dirs) {
+  if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] !== 1) return 0;
+  grid[i][j] = 2;
+  let res = 1;
+  for (let [dr, dc] of dirs) {
+    res += dfs(grid, i + dr, j + dc, m, n, dirs);
+  }
+  return res;
+}
+
+function connected(grid, i, j, m, n, dirs) {
+  if (i === 0) return true;
+  for (let [dr, dc] of dirs) {
+    const nr = i + dr,
+      nc = j + dc;
+    if (nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] === 2)
+      return true;
+  }
+
+  return false;
+}
+
