@@ -14,3 +14,17 @@ const destCity = function(paths) {
     if(hash[k]) return k
   }
 };
+
+// another
+
+/**
+ * @param {string[][]} paths
+ * @return {string}
+ */
+const destCity = function(paths) {
+  const set = new Set()
+  for(let [s, e] of paths) set.add(e)
+  for(let [s, e] of paths) set.delete(s)
+  
+  return set[Symbol.iterator]().next().value
+};
