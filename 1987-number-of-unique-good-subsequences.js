@@ -50,3 +50,25 @@ const numberOfUniqueGoodSubsequences = function (binary) {
     return (dp[index] = result)
   }
 }
+
+// another
+
+/**
+ * @param {string} binary
+ * @return {number}
+ */
+const numberOfUniqueGoodSubsequences = function (binary) {
+  const n = binary.length,
+    mod = 1e9 + 7
+  let hasZero = 0, ends1 = 0, ends0 = 0
+  for(let ch of binary) {
+    if(ch === '1') {
+      ends1 = (ends1 + ends0 + 1) % mod
+    } else {
+      ends0 = (ends1 + ends0) % mod
+      hasZero = 1
+    }
+  }
+  return (ends1 + ends0 + hasZero) % mod
+}
+
