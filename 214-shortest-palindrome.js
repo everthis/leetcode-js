@@ -50,3 +50,37 @@ function getFail(s) {
   return table
 }
 
+// another
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+const shortestPalindrome = function(s) {
+  const tmp = `${s}#${reverse(s)}`
+  const table = kmp(tmp)
+  return `${reverse(s.slice(table[table.length - 1]))}${s}`
+};
+function reverse(str) {
+  return [...str].reverse().join('')
+}
+
+function kmp(s) {
+  const n = s.length, table = Array(n).fill(0)
+  let idx = 0
+  for(let i = 1; i < n; ) {
+    if(s[i] === s[idx]) {
+      idx++
+      table[i] = idx
+      i++
+    } else {
+      if(idx > 0) {
+        idx = table[idx - 1]
+      } else {
+        idx = 0
+        i++
+      }
+    }
+  }
+  return table
+}
