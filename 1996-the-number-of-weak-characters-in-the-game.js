@@ -1,0 +1,25 @@
+/**
+ * @param {number[][]} properties
+ * @return {number}
+ */
+const numberOfWeakCharacters = function(properties) {
+    if (properties == null || properties.length == 0) {
+        return 0;
+    }
+    properties.sort((o1, o2) => {
+        if (o1[0] == o2[0]) {
+            return o1[1] - o2[1];
+        }
+        return o1[0] - o2[0];
+    });
+  const { max } = Math
+    let mmax = Array(1e5 + 10).fill( 0);
+    let ans = 0;
+    let n = properties.length;
+    for (let i = n - 1; i >= 0; i--) mmax[properties[i][0]] = max(properties[i][1], mmax[properties[i][0]]);
+    for (let i = 1e5; i >= 1; i--) mmax[i] = max(mmax[i], mmax[i + 1]);
+    for (let i = 0; i < n; i++) {
+        if (mmax[properties[i][0] + 1] > properties[i][1]) ans++;
+    }
+    return ans;
+};
