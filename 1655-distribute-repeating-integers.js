@@ -70,3 +70,44 @@ const canDistribute = function (nums, quantity) {
     return (dp[idx][mask] = ans)
   }
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number[]} quantity
+ * @return {boolean}
+ */
+const canDistribute = function(nums, quantity) {
+  const freq = {}
+  for(let e of nums) freq[e] = (freq[e] || 0) + 1
+  const fArr = Object.values(freq)
+
+  const m = quantity.length, n = fArr.length
+  const dp = Array.from({ length: n }, () => Array(1 << m).fill(-1))
+  
+  return solve(0, 0)
+  
+  function solve(idx, mask) {
+    if(mask === (1 << m) - 1) return 1
+    if(idx === n) return 0
+    if(dp[idx][mask] !== -1) return dp[idx][mask]
+    
+    let res = solve(idx + 1, mask)
+    for(let i = 0; i < (1 << m); i++) {
+      if(mask !== (mask & i)) continue
+      let tmp = mask
+      let sum = 0
+      for(let j = 0; j < m; j++) {
+        if(mask & (1 << j)) continue
+        if(i & (1 << j)) {
+          sum += quantity[j]
+          tmp |= (1 << j)
+        }
+      }
+      if(sum <= fArr[idx]) res |= solve(idx + 1, tmp)
+    }
+    
+    return dp[idx][mask] = res
+  }
+};
