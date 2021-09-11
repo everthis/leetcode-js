@@ -23,3 +23,21 @@ const numberOfWeakCharacters = function(properties) {
     }
     return ans;
 };
+
+// another
+
+/**
+ * @param {number[][]} properties
+ * @return {number}
+ */
+const numberOfWeakCharacters = function(properties) {
+  properties.sort((a, b) => a[0] === b[0] ? b[1] - a[1] : a[0] - b[0])
+  let max = -Infinity, res = 0
+  for(let n = properties.length, i = n - 1; i >= 0; i--) {
+    const [a, d] = properties[i]
+    if(d < max) res++
+    max = Math.max(max, d)
+  }
+  
+  return res
+};
