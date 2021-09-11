@@ -3,6 +3,27 @@
  * @return {number}
  */
 const numberOfWeakCharacters = function(properties) {
+  properties.sort((a, b) => a[0] - b[0] || b[1] - a[1])
+  let stack = [], res = 0
+
+  for(let i = 0, n = properties.length; i < n; i++) {
+    while(stack.length && stack[stack.length - 1] < properties[i][1]) {
+      stack.pop()
+      res++
+    }
+    stack.push(properties[i][1])
+  }
+  
+  return res
+};
+
+// another
+
+/**
+ * @param {number[][]} properties
+ * @return {number}
+ */
+const numberOfWeakCharacters = function(properties) {
     if (properties == null || properties.length == 0) {
         return 0;
     }
