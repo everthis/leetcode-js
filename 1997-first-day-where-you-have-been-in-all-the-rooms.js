@@ -16,3 +16,21 @@ const firstDayBeenInAllRooms = function(nextVisit) {
 
         return f[n - 1];
 };
+
+// another
+
+/**
+ * @param {number[]} nextVisit
+ * @return {number}
+ */
+const firstDayBeenInAllRooms = function(nextVisit) {
+  const mod = 1e9 + 7
+  const n = nextVisit.length
+  const dp = Array(n).fill(0)
+  for(let i = 1; i < n; i++) {
+    // i - 1 ---> nextVisit[i - 1] ---> i - 1 ---> i
+    dp[i] = (dp[i - 1] + 1 + dp[i - 1] - dp[nextVisit[i - 1]] + 1 + mod) % mod
+  }
+  
+  return dp[n - 1]
+};
