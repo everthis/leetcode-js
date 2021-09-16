@@ -35,3 +35,21 @@ const majorityElement = function(nums) {
   }
   return candidate
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const majorityElement = function(nums) {
+  let cnt = 1, candidate = nums[0]
+  for(let i = 1, n = nums.length; i < n; i++) {
+    if(cnt === 0) {
+      cnt = 1
+      candidate = nums[i]
+    }else if(candidate === nums[i]) cnt++
+    else cnt--
+  }
+  return candidate
+};
