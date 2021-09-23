@@ -100,4 +100,40 @@ function swap(arr, i, j) {
   arr[j] = tmp
 }
 
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const findKthLargest = function(nums, k) {
+  const n = nums.length
+  let l = 0, r = n - 1, t = n - k
+  while(l < r) {
+    const idx = partition(nums, l, r)
+    if (idx === t) return nums[t]
+    if (idx < t) l = idx + 1
+    else r = idx - 1
+  }
+  return nums[l]
+};
+
+function partition(arr, l, r) {
+  let tmp = l, pivot = arr[l]
+  while(l < r) {
+    while(l < r && arr[r] >= pivot) r--
+    while(l < r && arr[l] <= pivot) l++
+    swap(arr, l, r)
+  }
+  swap(arr, l, tmp)
+  return l
+}
+
+function swap(arr, i, j) {
+  const tmp = arr[i]
+  arr[i] = arr[j]
+  arr[j] = tmp
+}
+
 
