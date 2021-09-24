@@ -12,11 +12,14 @@ const minOperations = function(nums) {
   }
   
   let j = 0;
-  let ans = N;
+  let res = N;
   for(let i = 0; i < M; i++) {
+    // let `j` point to the first element that is out of range -- `> nums[i] + N - 1`.
     while(j < M && nums[j] <= N + nums[i] - 1) j++;
-    ans = Math.min(ans, N - (j - i));
+    // The length of this subarray is `j - i`. 
+    // We need to replace `N - (j - i)` elements to make it continuous.
+    res = Math.min(res, N - (j - i));
   }
   
-  return ans;
+  return res;
 };
