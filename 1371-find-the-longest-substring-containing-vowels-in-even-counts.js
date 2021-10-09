@@ -32,12 +32,12 @@ const findTheLongestSubstring = function(s) {
     return idx === -1 ? 0 : (1 << idx)
   }
   let res = 0
-  const arr = Array(n + 1).fill(0)
+  let mask = 0
   const hash = new Map([[0, 0]])
-  for(let i = 1; i <= n; i++) {
-    arr[i] = arr[i - 1] ^ ch2num(s[i - 1])
-    const first = hash.has(arr[i]) ? hash.get(arr[i]) : i
-    if (!hash.has(arr[i])) hash.set(arr[i], i)
+  for (let i = 1; i <= n; i++) {
+    mask ^= ch2num(s[i - 1])
+    const first = hash.has(mask) ? hash.get(mask) : i
+    if (!hash.has(mask)) hash.set(mask, i)
     res = Math.max(res, i - first)
   }
 
