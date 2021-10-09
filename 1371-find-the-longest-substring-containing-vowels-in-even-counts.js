@@ -18,3 +18,28 @@ var findTheLongestSubstring = function (s, V = 'aeiou', max = 0) {
   }
   return max
 }
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const findTheLongestSubstring = function(s) {
+  const n = s.length
+  const ch2num = ch => {
+    const idx = 'aeiou'.indexOf(ch)
+    return idx === -1 ? 0 : (1 << idx)
+  }
+  let res = 0
+  const arr = Array(n + 1).fill(0)
+  const hash = new Map([[0, 0]])
+  for(let i = 1; i <= n; i++) {
+    arr[i] = arr[i - 1] ^ ch2num(s[i - 1])
+    const first = hash.has(arr[i]) ? hash.get(arr[i]) : i
+    if (!hash.has(arr[i])) hash.set(arr[i], i)
+    res = Math.max(res, i - first)
+  }
+
+  return res
+};
