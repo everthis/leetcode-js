@@ -15,3 +15,27 @@ const longestAwesome = function (s) {
   }
   return res
 }
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const longestAwesome = function(s) {
+  const n = s.length, { max, min } = Math
+  const dp = Array(2 ** 10).fill(n)
+  let res = 0, mask = 0
+  dp[0] = -1
+  for(let i = 0; i < n; i++) {
+    mask ^= (1 << parseInt(s[i]))
+    res = max(res, i - dp[mask])
+    for(let j = 0; j <= 9; j++) {
+      const tmp = mask ^ (1 << j)
+      res = max(res, i - dp[tmp])
+    }
+    dp[mask] = min(i, dp[mask])
+  }
+  
+  return res
+};
