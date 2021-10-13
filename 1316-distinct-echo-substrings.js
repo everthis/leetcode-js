@@ -18,26 +18,3 @@ const distinctEchoSubstrings = function (text) {
   return set.size
 }
 
-// another
-
-/**
- * @param {string} s
- * @return {string}
- */
-const removeDuplicateLetters = function(s) {
-  const last = {}
-  for (let i = 0; i < s.length; i++) last[s.charAt(i)] = i
-  const added = {}
-  const stack = []
-  for (let i = 0; i < s.length; i++) {
-    const char = s.charAt(i)
-    if (added[char]) continue
-    while (stack.length && char < stack[stack.length - 1] && last[stack[stack.length - 1]] > i) {
-      added[stack[stack.length - 1]] = false
-      stack.pop()
-    }
-    stack.push(char)
-    added[char] = true
-  }
-  return stack.join('')
-}
