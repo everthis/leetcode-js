@@ -56,3 +56,26 @@ const smallestSubsequence = function(s) {
   return res.join('') 
 };
 
+// anoother
+
+
+/**
+ * @param {string} text
+ * @return {string}
+ */
+const smallestSubsequence = function(text) {
+  const n = text.length, stack = [], last = {}, visited = {}
+  for(let i = 0; i < n; i++) last[text[i]] = i
+  for(let i = 0; i < n; i++) {
+    const ch = text[i]
+    if (visited[ch]) continue
+    while(stack.length && stack[stack.length - 1] > ch && last[stack[stack.length - 1]] > i) {
+      visited[stack[stack.length - 1]] = 0
+      stack.pop()
+    }
+    visited[ch] = 1
+    stack.push(ch)
+  }
+
+  return stack.join('')
+};
