@@ -75,3 +75,31 @@ const minOperations = function(grid, x) {
   return res
 };
 
+// another
+
+/**
+ * @param {number[][]} grid
+ * @param {number} x
+ * @return {number}
+ */
+function minOperations(grid, x) {
+  const m = grid.length, n = grid[0].length, mn = m * n, arr = []
+  for(let i = 0; i < m; i++) {
+    for(let j = 0; j < n; j++) {
+      arr.push(grid[i][j])
+    }
+  }
+  arr.sort((a, b) => a - b)
+  const mid = arr[~~(mn / 2)]
+  let res = 0
+
+  for(let e of arr) {
+    if(e !== mid) {
+      const delta = Math.abs(e - mid)
+      if(delta % x !== 0) return -1
+      res += delta / x
+    }
+  }
+
+  return res
+};
