@@ -45,3 +45,41 @@ const minimumTimeRequired = function (jobs, k) {
   dfs(0)
   return minLongestWorkingTime
 }
+
+// another
+
+/**
+ * @param {number[]} jobs
+ * @param {number} k
+ * @return {number}
+ */
+const minimumTimeRequired = function(jobs, k) {
+  return solution(jobs, k)
+};
+
+function solution(jobs, k) {
+  const n = jobs.length
+  let res = Infinity, arr = Array(k).fill(0)
+
+  let start = 0
+  bt(0)
+  return res
+
+  function bt(idx) {
+   start++
+   if(idx === n) {
+     res = Math.min(res, Math.max(...arr))
+     return
+   }
+   const visited = new Set()
+   for(let j = start; j < start + k; j++) {
+     const i = j % k
+     if(visited.has(arr[i])) continue
+     if(arr[i] + jobs[idx] > res) continue
+     visited.add(arr[i])
+     arr[i] += jobs[idx]
+     bt(idx + 1)
+     arr[i] -= jobs[idx]
+   }
+  } 
+}
