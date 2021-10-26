@@ -32,9 +32,6 @@ const subarraySum = function(nums, k) {
 const subarraySum = function (nums, k) {
   const n = nums.length, hash = { 0: 1 }
   let pre = 0
-  if (nums.length === 1) {
-    return nums[0] === k ? 1 : 0
-  }
   let res = 0
   for (let i = 0; i < n; i++) {
     const cur = pre + nums[i]
