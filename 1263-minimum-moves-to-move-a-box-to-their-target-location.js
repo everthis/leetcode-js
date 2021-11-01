@@ -281,3 +281,86 @@ const minPushBox = function (grid) {
   }
 }
 
+// another
+
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+ const minPushBox = function (grid) {
+  const m = grid.length,
+    n = grid[0].length
+  let target, person, box
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === 'T') target = [i, j]
+      else if (grid[i][j] === 'B') box = [i, j]
+      else if (grid[i][j] === 'S') person = [i, j]
+    }
+  }
+
+  const valid = ([x, y]) => {
+    return x >= 0 && x < m && y >= 0 && y < n && grid[x][y] !== '#'
+  }
+
+  const check = (cur, dest, box) => {
+    const q = [cur]
+    const visited = new Set([`${box[0]},${box[1]}`])
+    const dirs = [
+      [-1, 0],
+      [1, 0],
+      [0, 1],
+      [0, -1],
+    ]
+
+    while (q.length) {
+      const pos = q.shift()
+      if (pos.join(',') === dest.join(',')) return true
+      const newPos = []
+      for (const [dx, dy] of dirs) newPos.push([pos[0] + dx, pos[1] + dy])
+      for (const [nx, ny] of newPos) {
+        const k = `${nx},${ny}`
+        if (valid([nx, ny]) && !visited.has(k)) {
+          visited.add(k)
+          q.push([nx, ny])
+        }
+      }
+    }
+
+    return false
+  }
+
+  const q = [[0, box, person]]
+  const vis = new Set([`${box.join(',')},${person.join(',')}`])
+  while (q.length) {
+    const [dist, box, person] = q.shift()
+    if (box.join(',') === target.join(',')) return dist
+
+    const bCoord = [
+      [box[0] + 1, box[1]],
+      [box[0] - 1, box[1]],
+      [box[0], box[1] + 1],
+      [box[0], box[1] - 1],
+    ]
+    const pCoord = [
+      [box[0] - 1, box[1]],
+      [box[0] + 1, box[1]],
+      [box[0], box[1] - 1],
+      [box[0], box[1] + 1],
+    ]
+
+    for (let i = 0; i < 4; i++) {
+      const [newBox, newPerson] = [bCoord[i], pCoord[i]]
+      const key = `${newBox.join(',')},${box.join(',')}`
+      if (valid(newBox) && !vis.has(key)) {
+        if (valid(newPerson) && check(person, newPerson, box)) {
+          vis.add(key)
+          q.push([dist + 1, newBox, box])
+        }
+      }
+    }
+  }
+
+  return -1
+}
+
