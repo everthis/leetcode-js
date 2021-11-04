@@ -29,3 +29,24 @@ const arraysIntersection = function(arr1, arr2, arr3) {
   
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} arr1
+ * @param {number[]} arr2
+ * @param {number[]} arr3
+ * @return {number[]}
+ */
+const arraysIntersection = function(arr1, arr2, arr3) {
+  let a=0,b=0,c=0;
+  const res = [];
+  while(a<arr1.length && b<arr2.length && c<arr3.length) {
+    let min = Math.min(arr1[a], Math.min(arr2[b],arr3[c]));
+    if(arr1[a] === min && arr2[b] === min && arr3[c] === min) res.push(min);
+    if(arr1[a] === min) a++;
+    if(arr2[b] === min) b++;
+    if(arr3[c] === min) c++;
+  }
+  return res;
+};
