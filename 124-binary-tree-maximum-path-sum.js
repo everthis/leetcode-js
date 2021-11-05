@@ -26,3 +26,35 @@ function traverse(node, obj) {
   return node.val + Math.max(left, right)
 }
 
+// another
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+const maxPathSum = function(root) {
+  let res = -Infinity
+  dfs(root)
+  return res
+
+  function dfs(node) {
+    if(node == null) return 0
+    let left = dfs(node.left), right = dfs(node.right)
+    res = Math.max(
+      res,
+      node.val,
+      node.val + left,
+      node.val + right,
+      node.val + left + right,
+    )
+    return Math.max(node.val, node.val + left, node.val + right)
+  }
+};
