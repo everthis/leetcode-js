@@ -4,6 +4,44 @@
  * @return {boolean}
  */
 const canFinish = function(numCourses, prerequisites) {
+  const [graph, inDegree] = buildGraph(numCourses, prerequisites)
+  
+  const q = []
+  for(let i = 0; i < numCourses; i++) {
+    if(inDegree.get(i) == null) q.push(i)
+  }
+  let num = 0
+  while(q.length) {
+    const pre = q.pop()
+    num++
+    for(const next of (graph.get(pre) || [])) {
+      inDegree.set(next, inDegree.get(next) - 1)
+      if(inDegree.get(next) === 0) q.push(next)
+    }
+  }
+  return num === numCourses
+  
+  
+  function buildGraph(n, arr) {
+    const res = new Map(), inDegree = new Map()
+    for(const [cur, pre] of arr) {
+      if(res.get(pre) == null) res.set(pre, new Set())
+      res.get(pre).add(cur)
+      if(inDegree.get(cur) == null) inDegree.set(cur, 0)
+      inDegree.set(cur, inDegree.get(cur) + 1)
+    }
+    return [res, inDegree]
+  }
+};
+
+// another
+
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+const canFinish = function(numCourses, prerequisites) {
   const seen = new Set()
   const seeing = new Set()
   const adj = [...Array(numCourses)].map(r => [])
