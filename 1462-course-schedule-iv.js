@@ -45,3 +45,41 @@ const checkIfPrerequisite = function (numCourses, prerequisites, queries) {
   for (let q of queries) res.push(connected[q[0]][q[1]])
   return res
 }
+
+// another
+
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @param {number[][]} queries
+ * @return {boolean[]}
+ */
+const checkIfPrerequisite = function (numCourses, prerequisites, queries) {
+  const graph = {},
+    connected = Array.from({ length: numCourses }, () =>
+      Array(numCourses).fill(-1)
+    )
+  for (const [u, v] of prerequisites) {
+    if (graph[u] == null) graph[u] = []
+    graph[u].push(v)
+    connected[u][v] = 1
+  }
+
+  const res = []
+  for (const [u, v] of queries) res.push(dfs(u, v))
+
+  return res
+
+  function dfs(u, v) {
+    if (connected[u][v] !== -1) return connected[u][v]
+    let res = false
+    for (const next of graph[u] || []) {
+      if (!res) {
+        res ||= dfs(next, v)
+      } else break
+    }
+    connected[u][v] = res
+    return res
+  }
+}
+
