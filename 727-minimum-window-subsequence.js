@@ -3,6 +3,45 @@
  * @param {string} s2
  * @return {string}
  */
+const minWindow = function (s1, s2) {
+  let n1 = s1.length,
+    n2 = s2.length,
+    s1Idx = 0,
+    s2Idx = 0,
+    start = -1,
+    len = n1 + 1
+  while (s1Idx < n1) {
+    if (s1[s1Idx] === s2[s2Idx]) {
+      if (s2Idx === n2 - 1) {
+        const end = s1Idx
+        while (s2Idx >= 0) {
+          while (s1[s1Idx] !== s2[s2Idx]) s1Idx--
+          s2Idx--
+          s1Idx--
+        }
+        const tmp = end - s1Idx
+        if (tmp < len) {
+          len = tmp
+          start = s1Idx + 1
+        }
+        s2Idx++
+        s1Idx += 2
+      } else {
+        s2Idx++
+        s1Idx++
+      }
+    } else s1Idx++
+  }
+  return start === -1 ? '' : s1.slice(start, start + len)
+}
+
+// another
+
+/**
+ * @param {string} s1
+ * @param {string} s2
+ * @return {string}
+ */
 const minWindow = function(s1, s2) {
   let res = '', n = s1.length, m = s2.length
   if(s1 === '' || s2 === '') return res
