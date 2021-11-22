@@ -3,11 +3,76 @@
  * @param {string} s2
  * @return {boolean}
  */
+const possiblyEquals = function(s1, s2) {
+  const n = s1.length
+  const m = s2.length
+  const memo = Array.from({ length: n + 1 }, () =>
+    Array.from({ length: m + 1 }, () => Array(1001).fill(null))
+  )
+  memo[0][0][1000] = true
+  
+  return dfs(0, 0, 0)
+
+  function dfs(i, j, diff) {
+    if(memo[i][j][diff] != null) return memo[i][j][diff]
+    let res = false
+    if (i == n && j == m) res = diff === 0
+    else if (i < n && isDigit(s1[i])) {
+      let ii = i
+      while (ii < n && isDigit( s1[ii] )) ii += 1
+      for (let x of helper(s1.slice(i, ii))) {
+        if (dfs(ii, j, diff-x)) res = true 
+      }
+    } else if (j < m && isDigit( s2[j] )) {
+      let jj = j 
+      while (jj < m && isDigit( s2[jj] )) jj += 1
+      for (let y of helper(s2.slice(j, jj))) {
+        if (dfs(i, jj, diff+y)) res = true 
+      }
+    } else if (diff == 0) {
+      if (i < n && j < m && s1[i] == s2[j]) res = dfs(i+1, j+1, 0)
+    }  else if (diff > 0) {
+      if (i < n) res = dfs(i+1, j, diff-1)
+    } else {
+      if (j < m) res = dfs(i, j+1, diff+1)
+    }
+
+    memo[i][j][diff] = res
+    return res
+  }
+
+  function isDigit(ch) {
+    return ch >= '0' && ch <= '9'
+  }
+
+  function helper(str) {
+    const ans = new Set()
+    ans.add(+str)
+    for(let i = 1, len = str.length; i < len; i++) {
+      const pre = helper(str.slice(0, i))
+      const post = helper(str.slice(i))
+      for(let p of pre) {
+        for(let n of post) {
+          ans.add(p + n)
+        }
+      }
+    }
+    return Array.from(ans)
+  }
+};
+
+// another
+
+/**
+ * @param {string} s1
+ * @param {string} s2
+ * @return {boolean}
+ */
 var possiblyEquals = function (s1, s2) {
   let n = s1.length
   let m = s2.length
-  const f = Array.from({ length: 41 }, () =>
-    Array.from({ length: 41 }, () => Array(1001).fill(false))
+  const f = Array.from({ length: n + 1 }, () =>
+    Array.from({ length: m + 1 }, () => Array(1001).fill(false))
   )
   f[0][0][1000] = true
 
