@@ -5,6 +5,34 @@
  * @return {number}
  */
 const maxValue = function(n, index, maxSum) {
+  maxSum -= n;
+  let level = 1;
+  let left = index;
+  let right = index;
+
+  while (maxSum - (right - left + 1) >= 0) {
+    if (left === 0 && right === n - 1) break
+    maxSum -= right - left + 1;
+    if (left - 1 >= 0) left--
+    if (right + 1 <= n - 1) right++;
+    level++;
+  }
+
+  if (maxSum) level += ~~(maxSum / n)
+
+  return level;
+}
+
+// another
+
+
+/**
+ * @param {number} n
+ * @param {number} index
+ * @param {number} maxSum
+ * @return {number}
+ */
+const maxValue = function(n, index, maxSum) {
   const { floor, sqrt } = Math
   maxSum -= n
   if(index < Math.floor(n / 2)) index = n - 1 - index
