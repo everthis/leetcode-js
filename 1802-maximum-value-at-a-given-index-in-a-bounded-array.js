@@ -5,6 +5,33 @@
  * @return {number}
  */
 const maxValue = function(n, index, maxSum) {
+  let res = 1, l = index, r = index
+  maxSum -= n
+
+  while(l > 0 || r < n - 1) {
+    const len = r - l + 1
+    if(maxSum >= len) {
+      maxSum -= len 
+      res++
+    } else break
+    if(l > 0) l--
+    if(r < n - 1) r++
+  }
+  res += ~~(maxSum / n)
+
+  return res
+}
+
+// another
+
+
+/**
+ * @param {number} n
+ * @param {number} index
+ * @param {number} maxSum
+ * @return {number}
+ */
+const maxValue = function(n, index, maxSum) {
   maxSum -= n;
   let level = 1;
   let left = index;
