@@ -12,7 +12,7 @@ const findAllPeople = function(n, meetings, firstPerson) {
   for(let i = 0, len = meetings.length; i < len; i++) {
     const [x,y,t] = meetings[i]
     if(i > 0 && t !== meetings[i - 1][2]) {
-      dfs(start, links, shared)
+      bfs(start, links)
       start = new Set()
       links = {}
     }
@@ -24,11 +24,10 @@ const findAllPeople = function(n, meetings, firstPerson) {
     links[y].push(x)
   }
   
-  
-  dfs(start, links, shared)
+  bfs(start, links)
   return Array.from(shared)
   
-  function dfs(start, links, shared) {
+  function bfs(start, links) {
     const visited = new Set()
     while(start.size) {
       const it = start[Symbol.iterator]()
@@ -42,5 +41,3 @@ const findAllPeople = function(n, meetings, firstPerson) {
     }
   }
 };
-
-    
