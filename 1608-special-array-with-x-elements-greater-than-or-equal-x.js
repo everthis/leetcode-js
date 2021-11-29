@@ -30,3 +30,21 @@ const specialArray = function(nums) {
   // larger or equal to i, which makes array not special.
   return left < nums.length && left === nums[left] ? -1 : left
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const specialArray = function(nums) {
+  const n = nums.length
+  nums.sort((a, b) => b - a)
+  let l = 0, r = n
+  while(l < r) {
+    const mid = l + ((r - l) >> 1)
+    if(nums[mid] > mid) l = mid + 1
+    else r = mid
+  }
+  return l < n && l === nums[l] ? -1 : l
+}
