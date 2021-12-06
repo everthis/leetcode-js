@@ -10,6 +10,60 @@
  * @return {void} Do not return anything, modify head in-place instead.
  */
 const reorderList = function(head) {
+  if (!head || !head.next) return head;
+
+  const reverse = head => {
+    if (!head || !head.next) return head;
+    const newHead = reverse(head.next);
+    head.next.next = head;
+    head.next = null;
+    return newHead;
+  };
+
+  const merge = (l1, l2) => {
+    if (!l1) return l2;
+    if (!l2) return l1;
+    while (l1 && l2) {
+      const next1 = l1.next;
+      const next2 = l2.next;
+      l1.next = l2;
+      if (next1 == null) break;
+      l2.next = next1;
+      l1 = next1;
+      l2 = next2;
+    }
+  };
+
+  let fast = head;
+  let slow = head;
+
+  while (fast && fast.next) {
+    fast = fast.next.next;
+    slow = slow.next;
+  }
+
+  fast = slow.next;
+  slow.next = null;
+
+  fast = reverse(fast);
+  merge(head, fast);
+};
+
+
+// another
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {void} Do not return anything, modify head in-place instead.
+ */
+const reorderList = function(head) {
   if (head == null || head.next == null) {
     return head;
   }
