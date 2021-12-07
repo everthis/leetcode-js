@@ -15,3 +15,20 @@ const maxScore = function(s) {
 
   return res
 };
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const maxScore = function(s) {
+  const n = s.length
+  let res = -Infinity, one = 0, zero = 0
+  for(let i = 0; i < n; i++) {
+    s[i] === '0' ? zero++ : one++
+    if(i !== n - 1) res = Math.max(res, zero - one)
+  }
+
+  return res + one
+};
