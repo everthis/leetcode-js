@@ -2,6 +2,28 @@
  * @param {number} n
  * @return {number}
  */
+const largestPalindrome = function (n) {
+  if (n === 1) return 9
+  for (let i = 2, limit = 9 * 10 ** (n - 1); i < limit; i++) {
+    let left = 10 ** n - i
+    let right = +('' + left).split('').reverse().join('')
+    if (i ** 2 - 4 * right < 0) continue
+    const tmp = (i ** 2 - 4 * right) ** 0.5
+    if (tmp === Math.floor(tmp)) {
+      return (
+        (BigInt(right) + 10n ** BigInt(n) * (10n ** BigInt(n) - BigInt(i))) %
+        1337n
+      )
+    }
+  }
+}
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
 const largestPalindrome = function(n) {
   if (n === 1) {
     return 9
