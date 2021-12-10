@@ -110,3 +110,46 @@ const isPalindromeInt = function (nr) {
 const isPalindrome = function (nr) {
   return nr === nr.split('').reverse().join('')
 }
+
+// another
+
+/**
+ * @param {string} left
+ * @param {string} right
+ * @return {number}
+ */
+ const superpalindromesInRange = function(left, right) {
+  const palindromes = []
+  let res = 0
+  for(let i = 1; i < 10; i++) {
+    palindromes.push(`${i}`)
+  }
+  for(let i = 1; i < 1e4; i++) {
+    let l = `${i}`, r = l.split('').reverse().join('')
+    palindromes.push(`${l}${r}`)
+    for(let j = 0; j < 10; j++) {
+      palindromes.push(`${l}${j}${r}`)
+    }
+  }
+
+  for(let p of palindromes) {
+    const square = BigInt(p) * BigInt(p)
+    if(!isPalindrome(`${square}`)) continue
+    if(BigInt(left) <= square && square <= BigInt(right)) res++ 
+  }
+
+  return res
+
+  function isPalindrome(str) {
+    let i = 0;
+    let j = str.length - 1;
+    while (i < j) {
+      if (str.charAt(i) !== str.charAt(j)) {
+        return false;
+      }
+      i++;
+      j--;
+    }
+    return true;
+  }
+};
