@@ -49,3 +49,27 @@ const minRemoveToMakeValid = function(s) {
   }
   return res.join('')
 };
+
+// another
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+const minRemoveToMakeValid = function(s) {
+  const stk = [], arr = s.split(''), n = s.length
+  for(let i = 0; i < n; i++) {
+    if(s[i] === '(') stk.push(i)
+    if(s[i] === ')') {
+      if(stk.length && stk[stk.length - 1] >= 0) stk.pop()
+      else stk.push(-(i + 1))
+    }
+  }
+  
+  while(stk.length) {
+    const tmp = stk.pop()
+    if(tmp < 0) arr[-tmp - 1] = ''
+    else arr[tmp] = ''
+  }
+  return arr.join('')
+};
