@@ -2,7 +2,7 @@
  * @param {number[][]} questions
  * @return {number}
  */
-var mostPoints = function (questions) {
+const mostPoints = function (questions) {
   let n = questions.length
   const temp = Array(n).fill(0)
 
@@ -12,7 +12,7 @@ var mostPoints = function (questions) {
     if (i + questions[i][1] + 1 <= n - 1)
       temp[i] = Math.max(
         temp[i + 1],
-        questions[i][0] + temp[Math.min(n - 1, i + questions[i][1] + 1)]
+        questions[i][0] + temp[i + questions[i][1] + 1]
       )
     else temp[i] = Math.max(temp[i + 1], questions[i][0])
   }
