@@ -36,3 +36,42 @@ const longestValidParentheses = function(s) {
 
   return longest
 }
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const longestValidParentheses = function (s) {
+  let res = 0,
+    stk = [],
+    n = s.length,
+    idxStk = []
+  for (let i = 0; i < n; i++) {
+    const ch = s[i]
+    if (stk.length && stk[stk.length - 1] === '(' && ch === ')')
+      stk.pop(), idxStk.pop()
+    else stk.push(ch), idxStk.push(i)
+    res = Math.max(res, i - (idxStk.length ? idxStk[idxStk.length - 1] : -1))
+  }
+  return res
+}
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const longestValidParentheses = function (s) {
+  let res = 0,
+    stk = [],
+    n = s.length,
+    idxStk = []
+  for (let i = 0; i < n; i++) {
+    const ch = s[i]
+    if (stk.length && stk[stk.length - 1] === '(' && ch === ')')
+      stk.pop(), idxStk.pop()
+    else stk.push(ch), idxStk.push(i)
+    res = Math.max(res, i - (idxStk.length ? idxStk[idxStk.length - 1] : -1))
+  }
+  return res
+}
