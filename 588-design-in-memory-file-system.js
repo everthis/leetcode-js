@@ -73,3 +73,77 @@ FileSystem.prototype.readContentFromFile = function (filePath) {
  * obj.addContentToFile(filePath,content)
  * var param_4 = obj.readContentFromFile(filePath)
  */
+
+// another
+
+const FileSystem = function () {
+  this.root = new Node()
+}
+
+/**
+ * @param {string} path
+ * @return {string[]}
+ */
+FileSystem.prototype.ls = function (path) {
+  const cur = this.find(path)
+  if(cur.content) {
+    const arr = path.split('/')
+    return [arr[arr.length - 1]]
+  }
+  return Object.keys(cur.children).sort()
+}
+
+/**
+ * @param {string} path
+ * @return {void}
+ */
+FileSystem.prototype.mkdir = function (path) {
+  this.find(path)
+}
+
+/**
+ * @param {string} filePath
+ * @param {string} content
+ * @return {void}
+ */
+FileSystem.prototype.addContentToFile = function (filePath, content) {
+  const cur = this.find(filePath)
+  cur.content += content
+}
+
+/**
+ * @param {string} filePath
+ * @return {string}
+ */
+FileSystem.prototype.readContentFromFile = function (filePath) {
+  const cur = this.find(filePath)
+  return cur.content
+}
+
+FileSystem.prototype.find = function (filePath) {
+  if(filePath.length === 1) return this.root
+  const arr = filePath.split('/').slice(1)
+  let cur = this.root
+  for(let e of arr) {
+    if (cur.children[e] == null) cur.children[e] = new Node()
+    cur = cur.children[e]
+  }
+  return cur
+}
+
+/**
+ * Your FileSystem object will be instantiated and called as such:
+ * var obj = new FileSystem()
+ * var param_1 = obj.ls(path)
+ * obj.mkdir(path)
+ * obj.addContentToFile(filePath,content)
+ * var param_4 = obj.readContentFromFile(filePath)
+ */
+
+class Node {
+  constructor() {
+    this.children = {}
+    this.content = ''
+  }
+}
+
