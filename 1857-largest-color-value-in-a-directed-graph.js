@@ -3,6 +3,50 @@
  * @param {number[][]} edges
  * @return {number}
  */
+ const largestPathValue = function(colors, edges) {
+  const graph = {}, n = colors.length, a = 'a'.charCodeAt(0)
+  const indegree = Array(n).fill(0)
+  for (const [from, to] of edges) {
+    if (graph[from] == null) graph[from] = []
+    graph[from].push(to)
+    indegree[to]++
+  }
+  const cnt = Array.from({ length: n }, () => Array(26).fill(0))
+  const code = idx => colors.charCodeAt(idx) - a
+  const q = []
+  for (let i = 0; i < n; i++) {
+    if(indegree[i] === 0) {
+      q.push(i)
+      cnt[i][code(i)] = 1
+    }
+  }
+  let res = 0, seen = 0
+
+  while(q.length) {
+    const u = q.pop()
+    const val = cnt[u][code(u)]
+    res = Math.max(res, val)
+    seen++
+    for(const next of (graph[u] || [])) {
+      for(let i = 0; i < 26; i++) {
+        cnt[next][i] = Math.max(cnt[next][i], cnt[u][i] + (i === code(next) ? 1 : 0))
+      }
+      if(--indegree[next] === 0) {
+        q.push(next)
+      }
+    }
+  }
+  return seen < n ? -1 : res
+};
+
+// another
+
+
+/**
+ * @param {string} colors
+ * @param {number[][]} edges
+ * @return {number}
+ */
 const largestPathValue = function (colors, edges) {
   const graph = {}
   const n = colors.length,
