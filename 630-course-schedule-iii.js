@@ -3,6 +3,29 @@
  * @return {number}
  */
 const scheduleCourse = function (courses) {
+  const queue = new MaxPriorityQueue({
+    priority: e => e[0]
+  })
+  courses.sort((a, b) => a[1] - b[1])
+  let time = 0
+  for(let e of courses) {
+    time += e[0]
+    queue.enqueue(e)
+    if(time > e[1]) {
+      const tmp = queue.dequeue().element
+      time -= tmp[0]
+    }
+  }
+  return queue.size()
+}
+
+// another
+
+/**
+ * @param {number[][]} courses
+ * @return {number}
+ */
+const scheduleCourse = function (courses) {
   courses.sort((c1, c2) => c1[1] - c2[1])
   let count = 0
   let time = 0
