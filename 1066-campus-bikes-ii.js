@@ -14,7 +14,7 @@ const assignBikes = function(workers, bikes) {
       return
     }
     for(let j = 0; j < m; j++) {
-      if(((mask >> j) ^ 1) % 2 == 1) {
+      if((mask & (1 << j)) === 0) {
         dfs(i + 1, mask | (1 << j), cur + calc(i, j))
       }
     }
