@@ -5,6 +5,37 @@
  */
 const assignBikes = function(workers, bikes) {
   const n = workers.length, m = bikes.length
+  let res = Infinity
+  dfs(0, 0, 0)
+  return res
+  function dfs(i, mask, cur) {
+    if(i === n) {
+      res = Math.min(res, cur)
+      return
+    }
+    for(let j = 0; j < m; j++) {
+      if(((mask >> j) ^ 1) % 2 == 1) {
+        dfs(i + 1, mask | (1 << j), cur + calc(i, j))
+      }
+    }
+  }
+
+  function calc(i, j) {
+    const a = workers[i], b = bikes[j]
+    return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1])
+  }
+
+};
+
+// another
+
+/**
+ * @param {number[][]} workers
+ * @param {number[][]} bikes
+ * @return {number}
+ */
+const assignBikes = function(workers, bikes) {
+  const n = workers.length, m = bikes.length
   const dp = Array(1 << m).fill(Infinity)
   return dfs(0, 0)
  
