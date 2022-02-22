@@ -28,3 +28,35 @@ const minSessions = function(tasks, sessionTime) {
     return dp[mask][consumed] = result;
   }
 };
+
+// another
+
+/**
+ * @param {number[]} tasks
+ * @param {number} sessionTime
+ * @return {number}
+ */
+function minSessions(tasks, sessionTime) {
+  const n = tasks.length
+  const memo = Array.from({ length: 1 << n }, () => Array(15))
+  return helper((1 << n) - 1, 0)
+
+  function helper(mask, remain) {
+    if(mask === 0) return 0
+    if(memo[mask][remain] != null) return memo[mask][remain]
+    let res = n
+    
+    for(let i = 0; i < n; i++) {
+      if((1 << i) & mask) {
+        const newMask = mask & (~(1 << i))
+        if(tasks[i] <= remain) {
+          res = Math.min(res, helper(newMask, remain - tasks[i]))
+        } else {
+          res = Math.min(res, helper(newMask, sessionTime - tasks[i]) + 1)
+        }
+      }
+    }
+
+    return memo[mask][remain] = res
+  }
+}
