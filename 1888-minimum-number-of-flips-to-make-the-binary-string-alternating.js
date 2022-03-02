@@ -76,5 +76,40 @@ const minFlips = function (s) {
   return res
 }
 
+// another
 
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const minFlips = function (s) {
+  const n = s.length
+  const ss = s + s
+  let s1 = '', s2 = ''
+  for(let i = 0; i < 2 * n; i++) {
+    if(i % 2 === 0) {
+      s1 += '0'
+      s2 += '1'
+    }else{
+      s1 += '1'
+      s2 += '0'
+    }
+  }
+
+  let res = Infinity, res1 = 0, res2 = 0
+
+  for (let i = 0; i < 2 * n; i++) {
+    if(ss[i] !== s1[i]) res1++
+    if(ss[i] !== s2[i]) res2++
+    if(i >= n) {
+      if(ss[i - n] !== s1[i - n]) res1--
+      if(ss[i - n] !== s2[i - n]) res2--
+    }
+    if(i >= n - 1) {
+      res = Math.min(res, res1, res2)
+    }
+  }
+
+  return res
+}
 
