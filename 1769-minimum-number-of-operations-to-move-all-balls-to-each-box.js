@@ -45,3 +45,27 @@ function helper(str, idx) {
   }
   return res
 }
+
+// another
+
+/**
+ * @param {string} boxes
+ * @return {number[]}
+ */
+ const minOperations = function(boxes) {
+  const n = boxes.length
+  const res = Array(n).fill(0)
+  let cnt = 0, sum = 0
+  for(let i = 0; i < n; i++) {
+    res[i] = sum
+    cnt += boxes[i] === '1' ? 1 : 0
+    sum += cnt
+  }
+  cnt = 0, sum = 0
+  for(let i = n - 1; i >= 0; i--) {
+    res[i] += sum
+    cnt += boxes[i] === '1' ? 1 : 0
+    sum += cnt
+  }
+  return res
+};
