@@ -19,6 +19,23 @@ const maxSubArray = function(nums) {
  * @return {number}
  */
 const maxSubArray = function(nums) {
+  const n = nums.length, dp = Array(n).fill(0)
+  dp[0] = nums[0]
+  let res = dp[0]
+  for(let i = 1; i < n; i++) {
+    dp[i] = Math.max(dp[i - 1], 0) + nums[i]
+    res = Math.max(res, dp[i])
+  }
+  return res
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const maxSubArray = function(nums) {
   return helper(nums, 0, nums.length - 1)
 };
 
