@@ -12,3 +12,26 @@ const increasingTriplet = function(nums) {
     }
     return false;
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+const increasingTriplet = function(nums) {
+  const n = nums.length, stk = []
+  for(let e of nums) {
+    let l = 0, r = stk.length
+    while(l < r) {
+      const mid = l + Math.floor((r - l) / 2)
+      if (e > stk[mid]) l = mid + 1
+      else r = mid 
+    }
+
+    stk[l] = e
+    if(stk.length > 2) return true
+  }
+
+  return false
+};
