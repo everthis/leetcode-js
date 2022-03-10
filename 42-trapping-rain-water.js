@@ -93,3 +93,27 @@ const trap = function(height) {
 
     return res
 };
+
+// another
+
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+const trap = function(height) {
+  const n = height.length, { max } = Math
+  let res = 0, l = 0, r = n - 1, leftMax = height[0], rightMax = height[n - 1]
+  while(l <= r) {
+    if(leftMax < rightMax) {
+      leftMax = max(leftMax, height[l])
+      res += leftMax - height[l]
+      l++
+    } else {
+      rightMax = max(rightMax, height[r])
+      res += rightMax - height[r]
+      r--
+    }
+  }
+
+  return res
+};
