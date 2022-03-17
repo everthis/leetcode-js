@@ -33,3 +33,34 @@ const minCost = function (grid) {
   }
   return dp[n - 1][m - 1]
 }
+
+// another
+
+function minCost(grid) {
+  const INF = 1e9, m = grid.length, n = grid[0].length
+  const dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]] // right, left, down, up
+  let cost = 0
+  const dp = Array.from({ length: m }, () => Array(n).fill(INF))
+  const q = []
+  dfs(0, 0, 0)
+  while(q.length) {
+    cost++
+    for (let size = q.length; size > 0; size--) {
+      const [r, c] = q.shift()
+      for(let [dx, dy] of dirs) {
+        dfs(r + dx, c + dy, cost)
+      }
+    }
+  }
+
+  return dp[m - 1][n - 1]
+  function dfs(r, c, cost) {
+    if(r < 0 || r >= m || c < 0 || c >= n || dp[r][c] !== INF) return
+    dp[r][c] = cost
+    q.push([r, c])
+    const nextDir = grid[r][c] - 1
+    const [dx, dy] = dirs[nextDir]
+    dfs(r + dx, c + dy, cost)
+  }
+}
+
