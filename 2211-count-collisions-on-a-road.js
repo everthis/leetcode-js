@@ -26,3 +26,18 @@ const countCollisions = function(directions) {
 
   return res
 };
+
+// another
+
+/**
+ * @param {string} directions
+ * @return {number}
+ */
+ const countCollisions = function(directions) {
+  let res = 0, n = directions.length
+  let left = 0, right = n - 1
+  while(left < n && directions[left] === 'L') left++
+  while(right >= 0 && directions[right] === 'R') right--
+  for(let i = left; i <= right; i++) res += directions[i] === 'S' ? 0 : 1
+  return res
+};
