@@ -116,3 +116,57 @@ class PriorityQueue {
     }
   }
 }
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {number}
+ */
+const countRestrictedPaths = function(n, edges) {
+  if (n === 1) return 0
+  const graph = {}
+  for(const [u, v, t] of edges) {
+    if(graph[u] == null) graph[u] = {}
+    if(graph[v] == null) graph[v] = {}
+    graph[u][v] = t
+    graph[v][u] = t
+  }
+  const dist = dijkstra(n, graph)
+  const memo = Array(n + 1).fill(null)
+  const res = dfs(1)
+  return res
+
+  function dijkstra(n, graph) {
+    const dist = Array(n + 1).fill(Infinity)
+    dist[n] = 0
+    const pq = new PriorityQueue((a, b) => a[0] < b[0])
+    pq.push([0, n])
+    while(!pq.isEmpty()) {
+      const [d, cur] = pq.pop()
+      if(d !== dist[cur]) continue
+      for(const next of Object.keys(graph[cur] || {})) {
+        const delta = graph[cur][next]
+        if(dist[next] > d + delta) {
+          dist[next] = d + delta
+          pq.push([d + delta, next])
+        } 
+      }
+    }
+    return dist
+  }
+
+  function dfs(src) {
+    if(memo[src] != null) return memo[src]
+    if(src === n) return 1
+    let res = 0
+    for(let next of Object.keys(graph[src] || {})) {
+      next = +next
+      if(dist[src] > dist[next]) {
+        res = ((res + dfs(next)) % (1e9 + 7))
+      }
+    }
+    return memo[src] = res
+  }
+}
