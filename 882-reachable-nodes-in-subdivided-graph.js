@@ -199,6 +199,9 @@ class PriorityQueue {
 
 // another
 
+// time complexity: 
+// Dijkstra + Heap is O(E log E)
+// worst case: O(N ^ 2 * log (N ^ 2))
 /**
  * @param {number[][]} edges
  * @param {number} M
