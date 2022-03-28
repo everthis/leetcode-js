@@ -57,3 +57,47 @@ function preprocess(tires) {
   }
   return res
 }
+
+// another
+
+/**
+ * @param {number[][]} tires
+ * @param {number} changeTime
+ * @param {number} numLaps
+ * @return {number}
+ */
+var minimumFinishTime = function (tires, changeTime, numLaps) {
+  let N = tires.length,
+    len = 0
+  const { max, min } = Math
+  const best = Array(numLaps).fill(Infinity),
+    dp = Array(numLaps + 1).fill(Infinity)
+  for (let i = 0; i < N; ++i) {
+    // We assume we also need `changeTime` time to use the first tire
+    // so that we don't need to treat the first tire as a special case
+    let f = tires[i][0],
+      r = tires[i][1],
+      sum = changeTime,
+      p = 1
+    for (let j = 0; j < numLaps; ++j) {
+      sum += f * p
+      // If using the same tire takes no less time than changing the tire,
+      // stop further using the current tire
+      if (f * p >= f + changeTime) break 
+      best[j] = min(best[j], sum)
+      len = max(len, j + 1)
+      p *= r
+    }
+  }
+  // dp[i + 1] is the minimum time to finish `numLaps` laps
+  dp[0] = 0 
+  for (let i = 0; i < numLaps; ++i) {
+    for (let j = 0; j < len && i - j >= 0; ++j) {
+      // try using the same tire in the last `j+1` laps
+      dp[i + 1] = min(dp[i + 1], dp[i - j] + best[j])
+    }
+  }
+  // minus the `changeTime` we added to the first tire
+  return dp[numLaps] - changeTime 
+}
+
