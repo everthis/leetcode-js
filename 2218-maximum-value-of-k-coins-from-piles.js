@@ -32,6 +32,9 @@ const maxValueOfCoins = function(piles, k) {
   const memo = Array.from({ length: n + 1 }, () => Array(k + 1).fill(null))
   return helper(0, k)
 
+  // TC: O(n * m)
+  // n: length of piles
+  // m: sum(piles[i]), total elements of all piles
   function helper(i, k) {
     if(k == 0 || i === n) return 0
     if(memo[i][k] != null) return memo[i][k]
