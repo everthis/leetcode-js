@@ -44,3 +44,30 @@ function isPrime(x) {
   }
   return true
 }
+
+// another
+
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const primePalindrome = function(n) {
+  if(n >= 8 && n <= 11) return 11
+
+  const rev = num => `${num}`.split('').reverse().join('')
+  for(let i = 1; i < 1e5; i++) {
+    let left = i, right = rev(left).slice(1)
+    const tmp = +(left + right)
+    if(tmp >= n && isPrime(tmp)) return tmp
+  }
+
+  function isPrime(num) {
+    if(num <= 2) return num === 2
+    if(num % 2 === 0) return false
+    for(let i = 3; i ** 2 <= num; i += 2) {
+      if(num % i === 0) return false
+    }
+    return true
+  }
+};
