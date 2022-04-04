@@ -4,14 +4,14 @@
  * @return {number}
  */
 const maximumCandies = function(candies, k) {
-  let max = 1e12;
+  let max = candies.reduce((ac, e) => ac + e, 0);
   let min = 0;
-  while (min != max) {
-    let mid = ~~((min + max + 1) / 2);
+  while (min < max) {
+    let mid = max - Math.floor((max - min) / 2);
     let cnt = 0;
     for (let cand of candies) {
       cnt += ~~(cand / mid);
-    }pnjj
+    }
     if (cnt < k) {
       max = mid - 1;
     } else {
