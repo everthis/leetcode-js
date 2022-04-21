@@ -32,3 +32,34 @@ function is_valid(s, p, removable, cnt) {
   }
   return ind2 == len2
 }
+
+// another
+
+/**
+ * @param {string} s
+ * @param {string} p
+ * @param {number[]} removable
+ * @return {number}
+ */
+const maximumRemovals = function(s, p, removable) {
+  let l = 0, r = removable.length
+  while(l < r) {
+    const mid = r - Math.floor((r - l) / 2)
+    if(valid(mid)) l = mid
+    else r = mid - 1
+  }
+  return l
+  
+  function valid(mid) {
+    let arr = s.split('')
+    for (let i = 0; i < mid; i++) arr[removable[i]] = null
+    arr = arr.filter(e => e !== null)
+    
+    for(let i = 0, j = 0; i < arr.length && j < p.length;) {
+      if(arr[i] === p[j]) i++, j++
+      else i++
+      if(j === p.length) return true
+    }
+    return false
+  }
+};
