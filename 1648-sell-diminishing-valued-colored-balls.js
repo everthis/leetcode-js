@@ -65,3 +65,34 @@ const maxProfit = function (inventory, orders) {
   
   return sum % mod
 }
+
+// another
+
+/**
+ * @param {number[]} inventory
+ * @param {number} orders
+ * @return {number}
+ */
+var maxProfit = function(inventory, orders) {
+    inventory.sort((a, b) => b - a)
+    const mod = BigInt(1e9 + 7), n = BigInt(inventory.length)
+    inventory = inventory.map(e => BigInt(e))
+    orders = BigInt(orders)
+    let cur = BigInt(inventory[0]), res = 0n, i = 0n
+    const min = (a, b) => a > b ? b : a
+    while(orders) {
+      while(i < n && inventory[i] === cur) i++
+      let next = i === n ? 0n : inventory[i]
+      let h = cur - next, r = 0n, cnt = min(orders, i * h)
+      if (orders < i * h) {
+        h = orders / i
+        r = orders % i
+      }
+      let val = cur - h
+      res = (res + (cur + val + 1n) * h / 2n * i + val * r) % mod
+      orders -= cnt
+      cur = next
+    }
+
+    return res
+};
