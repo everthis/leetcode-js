@@ -4,9 +4,10 @@
  * @return {number}
  */
 const maxProfit = function(inventory, orders) {
+  const bigIntMax = (...args) => args.reduce((m, e) => e > m ? e : m);
   inventory = inventory.map(e => BigInt(e))
   orders = BigInt(orders)
-  let l = 0n, r = BigInt(1e9 + 7)
+  let l = 0n, r = bigIntMax(...inventory)
   while(l < r) {
     const mid = l + (r - l) / 2n
     if(valid(mid)) l = mid + 1n
@@ -25,6 +26,7 @@ const maxProfit = function(inventory, orders) {
   res = (res + (orders - cnt) * t) % mod
   
   return res
+  
   function valid(mid) {
     let res = 0n
     for(const e of inventory) {
