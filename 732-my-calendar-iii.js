@@ -41,3 +41,80 @@ MyCalendarThree.prototype.book = function(start, end) {
  * var obj = new MyCalendarThree()
  * var param_1 = obj.book(start,end)
  */
+
+// another
+
+
+var MyCalendarThree = function() {
+    this.st = new SegmentTree(0, 10 ** 9);
+};
+
+/** 
+ * @param {number} start 
+ * @param {number} end
+ * @return {number}
+ */
+MyCalendarThree.prototype.book = function(start, end) {
+    this.st.add(start, end);    
+    return this.st.getMax();
+};
+
+/** 
+ * Your MyCalendarThree object will be instantiated and called as such:
+ * var obj = new MyCalendarThree()
+ * var param_1 = obj.book(start,end)
+ */
+
+class SegmentTree {
+    constructor(start, end) {
+        this.root = new TreeNode(start, end);
+    }
+    
+    add(qs, qe, node=this.root) {
+        
+        // completely outside of query range
+        if(qs > node.end || qe <= node.start) {
+            return node.val;
+        }
+        
+        // completely covered by query range
+        if(qs <= node.start && qe > node.end) {
+            node.booked += 1;
+            node.val += 1;
+            return node.val;
+        }
+
+        let mid = (node.start + node.end)/2 >> 0;
+
+        if(!node.left) {
+            node.left = new TreeNode(node.start, mid);
+        }
+
+        if(!node.right) {
+            node.right = new TreeNode(mid+1, node.end);
+        }
+
+        node.val = Math.max(
+            this.add(qs, qe, node.left),
+            this.add(qs, qe, node.right),
+        ) + node.booked;
+
+        return node.val;
+        
+    }
+    
+    getMax() {
+        return this.root.val;
+    }
+    
+}
+
+class TreeNode {
+    constructor(start, end) {
+        this.start = start;
+        this.end = end;
+        this.val = 0;
+        this.booked = 0;
+        this.left = this.right = null;
+    }
+}
