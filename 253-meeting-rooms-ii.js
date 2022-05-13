@@ -67,3 +67,25 @@ const minMeetingRooms = function(intervals) {
   
   return res
 }
+
+// another
+
+/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+const minMeetingRooms = function(intervals) {
+  intervals.sort((a, b) => a[0] - b[0] || a[1] - b[1])
+  const n = intervals.length
+  const pq = new MinPriorityQueue()
+  let res = 0
+  for(const [s, e] of intervals) {
+    while(!pq.isEmpty() && s >= pq.front().element) {
+       pq.dequeue()
+    }
+    pq.enqueue(e)
+    res = Math.max(res, pq.size())
+  }
+  
+  return res
+}
