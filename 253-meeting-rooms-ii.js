@@ -37,3 +37,33 @@ const minMeetingRooms = function(intervals) {
 
   return res
 }
+
+
+// another
+
+/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+const minMeetingRooms = function(intervals) {
+  let res = 0
+  const sArr = [], eArr = [], n = intervals.length
+  for(const [s, e] of intervals) {
+    sArr.push(s)
+    eArr.push(e)
+  }
+  sArr.sort((a, b) => a - b)
+  eArr.sort((a, b) => a - b)
+  for(let i = 0, j = 0; i < n && j < n;) {
+    const s = sArr[i], e = eArr[j]
+    if(s < e) {
+      res++
+      i++
+    } else {
+      j++
+      i++
+    }
+  }
+  
+  return res
+}
