@@ -145,3 +145,37 @@ const employeeFreeTime = function (schedule) {
   return res
 }
 
+// another
+
+/**
+ * // Definition for an Interval.
+ * function Interval(start, end) {
+ *    this.start = start;
+ *    this.end = end;
+ * };
+ */
+
+/**
+ * @param {Interval[][]} schedule
+ * @return {Interval[]}
+ */
+var employeeFreeTime = function(schedule) {
+  const arr = schedule.reduce((ac, e) => {
+    ac.push(...e)
+    return ac
+  }, [])
+  arr.sort((a, b) => a.start - b.start || b.end - a.end)
+  const n = arr.length
+  const res = []
+  let end = arr[0].end
+  for(let i = 1; i < n; i++) {
+    const cur = arr[i]
+    if(cur.start > end) {
+      res.push(new Interval(end, cur.start))
+    }
+    
+    end = Math.max(end, cur.end)
+  }
+  
+  return res
+};
