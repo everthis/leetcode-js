@@ -46,3 +46,34 @@ const maxSumRangeQuery = function (nums, requests) {
   }
   return res
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number[][]} requests
+ * @return {number}
+ */
+const maxSumRangeQuery = function (nums, requests) {
+  const n = nums.length
+
+  const arr = Array(n + 1).fill(0) 
+  for(const [s, e] of requests) {
+    arr[s] += 1
+    arr[e + 1] -= 1
+  }
+  for(let i = 1; i <= n; i++) {
+    arr[i] += arr[i - 1] 
+  }
+  arr.sort((a, b) => b - a)
+  nums.sort((a, b) => b - a)
+  let res = 0
+  const mod = 1e9 + 7
+  
+  for (let i = 0; i < n; i++) {
+    if(arr[i] <= 0) break
+    res = (res + nums[i] * arr[i]) % mod
+  }
+  
+  return res
+}
