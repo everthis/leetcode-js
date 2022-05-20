@@ -23,18 +23,18 @@ const averageHeightOfBuildings = function (buildings) {
   let h = 0,
     c = 0
   for (let i = 0; i < keys.length; i++) {
-    const p = keys[i],
-      hc = cnt[p]
-    if (h) res[res.length - 1][1] = p
-    h += hash[p]
-    c += cnt[p]
+    const k = keys[i],
+      hc = cnt[k]
+    if (h) res[res.length - 1][1] = k
+    h += hash[k]
+    c += cnt[k]
     if (
       h &&
       (res.length === 0 ||
-        res[res.length - 1][1] != p ||
-        res[res.length - 1][2] != ~~(h / c))
+        res[res.length - 1][1] !== k ||
+        res[res.length - 1][2] !== ~~(h / c))
     )
-      res.push([p, p, ~~(h / c)])
+      res.push([k, k, ~~(h / c)])
   }
 
   return res
