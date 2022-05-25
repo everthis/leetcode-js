@@ -56,3 +56,31 @@ const minMoves = function (nums, limit) {
   
   return res
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} limit
+ * @return {number}
+ */
+const minMoves = function (nums, limit) {
+  const n = nums.length, { min, max } = Math
+  const arr = Array(2 * limit + 2).fill(0)
+  for(let i = 0, r = n / 2; i < r; i++) {
+    const a = nums[i], b = nums[n - 1 - i]
+    arr[2] += 2
+    arr[min(a, b) + 1]--
+    arr[a + b]--
+    arr[a + b + 1]++
+    arr[max(a, b) + limit + 1]++
+  }
+  let res = Infinity, cur = 0
+  for(let i = 2, r = 2 * limit; i <= r; i++) {
+    cur += arr[i]
+    res = min(res, cur)
+  }
+  
+  return res
+}
+
