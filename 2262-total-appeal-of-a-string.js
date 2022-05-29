@@ -2,21 +2,22 @@
  * @param {string} s
  * @return {number}
  */
-var appealSum = function (s) {
-  const pos = Array(26).fill(-1)
-  let ans = 0
-  const n = s.length
+const appealSum = function (s) {
+  const n = s.length, pos = Array(26).fill(-1)
+  let res = 0
   const a = 'a'.charCodeAt(0)
-  for (let i = 0; i < n; i++) {
-    let tmp = n - i
-    if (pos[s.charCodeAt(i) - a] !== -1)
-      tmp += (i - pos[s.charCodeAt(i) - a] - 1) * (n - i)
-    else tmp += i * (n - i)
-    ans += tmp
-    pos[s.charCodeAt(i) - a] = i
+  for(let i = 0; i < n; i++) {
+    let tmp = n - i, idx = s.charCodeAt(i) - a
+    if(pos[idx] !== -1) {
+       tmp += (i - pos[idx] - 1) * (n - i)
+    } else tmp += i * (n - i)
+    res += tmp
+    pos[idx] = i
   }
-  return ans
+  
+  return res
 }
+
 
 // another
 
