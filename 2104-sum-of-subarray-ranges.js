@@ -16,3 +16,22 @@ const subArrayRanges = function(nums) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const subArrayRanges = function(nums) {
+  let res = 0, n = nums.length
+  for(let i = 0; i < n; i++) {
+    let max = nums[i], min = nums[i]
+    for(let j = i; j < n; j++) {
+      max = Math.max(max, nums[j])
+      min = Math.min(min, nums[j])
+      res += max - min
+    }
+  }
+  return res
+};
