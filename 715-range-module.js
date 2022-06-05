@@ -198,3 +198,87 @@ RangeModule.prototype.removeRange = function (left, right) {
  * var param_2 = obj.queryRange(left,right)
  * obj.removeRange(left,right)
  */
+
+// another
+
+const RangeModule = function () {
+  this.intervals = []
+}
+
+/**
+ * @param {number} left
+ * @param {number} right
+ * @return {void}
+ */
+RangeModule.prototype.addRange = function (left, right) {
+  const tmp = []
+  const n = this.intervals.length
+  for(let i = 0; i <= n; i++) {
+    const cur = this.intervals[i]
+    if(i === n || cur[0] > right) {
+      tmp.push([left, right])
+      while(i < n) tmp.push(this.intervals[i++])
+    }else if(cur[1] < left) {
+      tmp.push(cur)
+    }else {
+      //      cur[0] <=    right
+      // left      <= cur[1]
+      left = Math.min(left, cur[0])
+      right = Math.max(right, cur[1])
+    }
+  }
+    // console.log(tmp)
+  this.intervals = tmp
+}
+
+/**
+ * @param {number} left
+ * @param {number} right
+ * @return {boolean}
+ */
+RangeModule.prototype.queryRange = function (left, right) {
+  const n = this.intervals.length, arr = this.intervals
+  let l = 0, r = n - 1
+  while(l <= r) {
+    const mid = ~~(l + (r - l) / 2)
+    if(arr[mid][0] >= right) r = mid - 1
+    else if(arr[mid][1] <= left) l = mid + 1
+    else return arr[mid][0] <= left && arr[mid][1] >= right
+  }
+  
+  return false
+}
+
+/**
+ * @param {number} left
+ * @param {number} right
+ * @return {void}
+ */
+RangeModule.prototype.removeRange = function (left, right) {
+  const tmp = []
+  const n = this.intervals.length
+  
+  for(let i = 0; i < n; i++) {
+    const cur = this.intervals[i]
+    if(cur[1] < left) {
+      tmp.push(cur)
+    }else if(cur[0] > right) tmp.push(cur)
+    else {
+      // left <= cur[1]
+      //     cur[0]    <= right
+      if(left > cur[0]) tmp.push([cur[0], left])
+      if(right < cur[1]) tmp.push([right, cur[1]])
+    }
+  }
+  // console.log(tmp)
+  this.intervals = tmp
+}
+
+/**
+ * Your RangeModule object will be instantiated and called as such:
+ * var obj = new RangeModule()
+ * obj.addRange(left,right)
+ * var param_2 = obj.queryRange(left,right)
+ * obj.removeRange(left,right)
+ */
+
