@@ -1,3 +1,83 @@
+function binarySearch(l, r, fn) {
+  while (l <= r) {
+    const m = Math.floor((l + r) / 2)
+    if (fn(m)) {
+      l = m + 1
+    } else {
+      r = m - 1
+    }
+  }
+  return r
+}
+
+var CountIntervals = function () {
+  this.intervals = []
+  this.size = 0
+}
+
+/**
+ * @param {number} left
+ * @param {number} right
+ * @return {void}
+ */
+CountIntervals.prototype.add = function (left, right) {
+  const intervals = this.intervals
+  if (!intervals.length) {
+    intervals.push({ left, right })
+    this.size += right - left + 1
+  } else if (left > intervals[intervals.length - 1].right) {
+    intervals.push({ left, right })
+    this.size += right - left + 1
+  } else if (right < intervals[0].left) {
+    intervals.unshift({ left, right })
+    this.size += right - left + 1
+  } else {
+    const i = binarySearch(0, intervals.length - 1, (x) => {
+      return intervals[x].left < left
+    })
+    let j,
+      start,
+      end,
+      sum = 0
+    if (i < 0 || intervals[i].right < left) {
+      j = i + 1
+      start = left
+      end = right
+    } else {
+      j = i
+      start = intervals[j].left
+      end = right
+    }
+    let first = -1
+    while (j < intervals.length && right >= intervals[j].left) {
+      if (first < 0) first = j
+      end = Math.max(end, intervals[j].right)
+      sum += intervals[j].right - intervals[j].left + 1
+      j++
+    }
+    // delete [first, j)
+    // console.log('delete', j - first, '-', first, j)
+    this.size += end - start + 1 - sum
+    if (first < 0) {
+      this.intervals.splice(i + 1, 0, { left: start, right: end })
+    } else {
+      this.intervals.splice(first, j - first, { left: start, right: end })
+    }
+  }
+}
+
+/**
+ * @return {number}
+ */
+CountIntervals.prototype.count = function () {
+  return this.size
+}
+
+
+// another
+
+
+
 var CountIntervals = function () {
   this.root = new Node(1, 10 ** 9)
 }
