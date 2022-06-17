@@ -179,3 +179,37 @@ const hasPath = function(maze, start, destination) {
     }
   }
 };
+
+// another
+
+/**
+ * @param {number[][]} maze
+ * @param {number[]} start
+ * @param {number[]} destination
+ * @return {boolean}
+ */
+const hasPath = function(maze, start, destination) {
+  const m = maze.length, n = maze[0].length
+  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+  const visited = new Set()
+  const q = [start]
+  while(q.length) {
+    const [i, j] = q.pop()
+    if(i === destination[0] && j === destination[1]) return true
+    visited.add(`${i},${j}`)
+    for(const [dx, dy] of dirs) {
+      let ni = i, nj = j
+      while(valid(ni + dx, nj + dy)) {
+        ni += dx
+        nj += dy
+      }
+      if(!visited.has(`${ni},${nj}`)) q.push([ni, nj])
+    }
+  }
+  
+  return false
+  
+  function valid(i, j) {
+    return i >= 0 && i < m && j >= 0 && j < n && maze[i][j] === 0
+  }
+};
