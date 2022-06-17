@@ -138,3 +138,44 @@ function isValid(maze, row, col) {
     maze[row][col] !== 1
   )
 }
+
+// another
+
+/**
+ * @param {number[][]} maze
+ * @param {number[]} start
+ * @param {number[]} destination
+ * @return {boolean}
+ */
+const hasPath = function(maze, start, destination) {
+  const m = maze.length, n = maze[0].length
+  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+  const visited = new Set()
+  let res = false
+  dfs(start[0], start[1])
+  return res
+  
+  function dfs(i, j) {
+    if(i < 0 || i >= m || j < 0 || j >= n || maze[i][j] === 1 || visited.has(`${i},${j}`)) return
+    if(i === destination[0] && j === destination[1]) {
+      res = true
+      return
+    }
+    visited.add(`${i},${j}`)
+    const ib = i, jb = j
+    for(const [dx, dy] of dirs) {
+      let ii = i, jj = j
+      while(
+        ii + dx >= 0 &&
+        ii + dx < m &&
+        jj + dy >= 0 &&
+        jj + dy < n &&
+        maze[ii + dx][jj + dy] === 0
+      ) {
+          ii += dx
+          jj += dy
+      }
+      dfs(ii, jj)
+    }
+  }
+};
