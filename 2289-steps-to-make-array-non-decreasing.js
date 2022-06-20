@@ -40,3 +40,29 @@ const totalSteps = function(nums) {
    
    return res
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const totalSteps = function(nums) {
+  let res = 0
+  const stk = []
+  for(const e of nums) {
+    let steps = 1
+    while(stk.length && e >= stk[stk.length - 1][0]) {
+      const tmp = stk.pop()
+      steps = Math.max(tmp[1] + 1, steps)
+    }
+    if(stk.length === 0) steps = 0
+    else {
+      res = Math.max(res, steps)
+    }
+    stk.push([e, steps])
+  }
+  return res
+};
+
+
