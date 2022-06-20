@@ -15,3 +15,28 @@ var totalSteps = function(nums) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const totalSteps = function(nums) {
+  let res = 0, stk = []
+  stk.push([nums[0], 0])
+  for(let i = 1, n = nums.length; i < n; i++) {
+    let steps = 0
+    while(stk.length && stk[stk.length - 1][0] <= nums[i]) {
+      const peek = stk.pop() 
+      steps = Math.max(steps, peek[1])
+    }
+    if(stk.length === 0) steps = 0
+    else steps++
+    
+    res = Math.max(res, steps)
+    stk.push([nums[i], steps])
+  }  
+   
+   return res
+};
