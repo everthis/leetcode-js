@@ -3,33 +3,41 @@
  * @return {number}
  */
 const largestVariance = function (s) {
-  const se = new Set(s),
-    n = s.length
-  let res = 0
-  for (const x of se) {
-    // max
-    for (const y of se) {
-      // min
-      if (x != y) {
-        let pre = Array(n + 1).fill(0),
-          preX,
-          preY,
-          diff = 0
-        for (let i = 0; i < n; i++) {
-          if (s[i] == x) {
-            preX = i + 1
-            diff++
-          }
-          if (s[i] == y) {
-            preY = i + 1
-            diff--
-          }
-          pre[i + 1] = Math.min(pre[i], diff)
-          if (preX == undefined || preY == undefined) continue
-          res = Math.max(res, diff - pre[Math.min(preX, preY) - 1])
+  const freq = new Array(26).fill(0)
+  const ac = 'a'.charCodeAt(0)
+  for (let i = 0; i < s.length; i++) freq[s.charCodeAt(i) - ac]++
+
+  // console.log(freq)
+  let maxVariance = 0
+  for (let a = 0; a < 26; a++) {
+    for (let b = 0; b < 26; b++) {
+      let remainingA = freq[a]
+      let remainingB = freq[b]
+      if (a == b || remainingA == 0 || remainingB == 0) continue
+
+      // run kadanes on each possible character pairs (A & B)
+      let currBFreq = 0,
+        currAFreq = 0
+      for (let i = 0; i < s.length; i++) {
+        let c = s.charCodeAt(i) - ac
+
+        if (c == b) currBFreq++
+        if (c == a) {
+          currAFreq++
+          remainingA--
+        }
+        if (currAFreq > 0) {
+          maxVariance = Math.max(maxVariance, currBFreq - currAFreq)          
+        }
+
+
+        if (currBFreq < currAFreq && remainingA >= 1) {
+          currBFreq = 0
+          currAFreq = 0
         }
       }
     }
   }
-  return res
+
+  return maxVariance
 }
