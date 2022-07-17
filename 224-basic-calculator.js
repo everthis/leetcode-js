@@ -77,3 +77,49 @@ const calculate = function(s) {
   
   return res + op * num
 };
+
+// another
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const calculate = function(s) {
+  s = s.trim()
+  
+  let res = 0, num = 0, op = 1
+  const isDigit = ch => ch >= '0' && ch <= '9'
+  const stk = []
+  for(let i = 0, n = s.length; i < n; i++) {
+    
+    const e = s[i]
+    if(e === ' ') continue
+    if(isDigit(e)) num = num * 10 + (+e)
+    else {
+      
+      if(e === '(') {
+        stk.push(res)
+        stk.push(op)
+        
+        res = 0
+        num = 0
+        op = 1
+      } else if(e === ')') {
+        res += num * op
+        res *= stk.pop()
+        res += stk.pop()
+        op = 1
+        num = 0
+      } else if(e === '-') {
+        res += num * op
+        op = -1
+        num = 0
+      } else if(e === '+') {
+        res += num * op
+        op = 1
+        num = 0
+      }
+    }
+  }
+  
+  return res + num * op
+};

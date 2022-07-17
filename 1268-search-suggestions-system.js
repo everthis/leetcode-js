@@ -38,3 +38,69 @@ const suggestedProducts = function(products, searchWord) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {string[]} products
+ * @param {string} searchWord
+ * @return {string[][]}
+ */
+ const suggestedProducts = function (products, searchWord) {
+  products.sort()
+  const root = new Node()
+  for (const str of products) {
+    addProduct(str)
+  }
+
+  const res = []
+
+  let cur = root
+  for (const ch of searchWord) {
+    const tmp = []
+    if (cur == null) {
+      res.push(tmp)
+      continue
+    }
+    const map = cur.children.get(ch)
+    if (map != null) {
+      addThree(map.words.values(), tmp)
+    }
+
+    res.push(tmp)
+    cur = map
+  }
+
+  return res
+
+  function addThree(it, arr) {
+
+    for(let i = 0; i < 3; i++) {
+      const res = it.next()
+      if(res.value) arr.push(res.value)
+    }
+  }
+
+  function addProduct(str) {
+    let cur = root
+    for (const ch of str) {
+      let next = cur.children.get(ch)
+      if (next == null) {
+        next = new Node()
+        cur.children.set(ch, next)
+      }
+      next.words.add(str)
+      cur = next
+    }
+    cur.isWord = true
+  }
+}
+
+class Node {
+  constructor() {
+    this.children = new Map()
+    this.words = new Set()
+    this.isWord = false
+  }
+}
+

@@ -32,3 +32,34 @@ var maximumsSplicedArray = function(nums1, nums2) {
   }
   return Math.max(s2 + max1, s1 - min2);
 };
+
+// another
+
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+const maximumsSplicedArray = function (nums1, nums2) {
+  let sum1 = 0,
+    sum2 = 0,
+    max1 = 0,
+    max2 = 0,
+    ac1 = 0,
+    ac2 = 0
+  sum1 = nums1.reduce((ac, e) => ac + e, 0)
+  sum2 = nums2.reduce((ac, e) => ac + e, 0)
+  const { max } = Math
+  let res = max(sum1, sum2)
+  for (let i = 0, n = nums1.length; i < n; i++) {
+    ac1 += nums1[i] - nums2[i]
+    ac2 += nums2[i] - nums1[i] 
+    max1 = max(max1, ac1)
+    max2 = max(max2, ac2)
+    if(ac1 < 0) ac1 = 0
+    if(ac2 < 0) ac2 = 0
+  }
+  res = max(res, sum1 + max2, sum2 + max1)
+
+  return res
+}
