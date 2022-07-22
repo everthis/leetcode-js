@@ -20,7 +20,6 @@ const comb = (n, k) => {
 prerequisite:
 (number of factors)
 https://www.codechef.com/LTIME01/problems/NUMFACT
-my solution: https://www.codechef.com/viewsolution/67461009
 */
 const number_factor = (n) => {
     let m = new Map();
