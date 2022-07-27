@@ -4,6 +4,39 @@
  * @return {number}
  */
 const leastInterval = function(tasks, n) {
+    const counter = new Array(26).fill(0);
+    let max = 0;
+    let maxCount = 0;
+    const A = 'A'.charCodeAt(0)
+    for(let ch of tasks) {
+        const task = ch.charCodeAt(0)
+        counter[task - A]++;
+        if(max == counter[task - A]) {
+            maxCount++;
+        }
+        else if(max < counter[task - A]) {
+            max = counter[task - A];
+            maxCount = 1;
+        }
+    }
+
+    const partCount = max - 1;
+    const partLength = n - (maxCount - 1);
+    const emptySlots = partCount * partLength;
+    const availableTasks = tasks.length - max * maxCount;
+    const idles = Math.max(0, emptySlots - availableTasks);
+
+    return tasks.length + idles;
+};
+
+// another
+
+/**
+ * @param {character[]} tasks
+ * @param {number} n
+ * @return {number}
+ */
+const leastInterval = function(tasks, n) {
   const map = Array(26).fill(0);
   const ca = "A".charCodeAt(0);
   for (let c of tasks) map[c.charCodeAt(0) - ca]++;
