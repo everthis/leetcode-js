@@ -22,3 +22,26 @@ const strWithout3a3b = function(a, b) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @return {string}
+ */
+const strWithout3a3b = function (a, b, ac = 'a', bc = 'b') {
+  const delta = a - b
+  let res = ''
+  if (delta < 0) {
+    return strWithout3a3b(b, a, 'b', 'a')
+  } else {
+    while(a-- > 0) {
+      res += ac
+      if(a > b) res += ac, a--
+      if(b-- > 0) res += bc
+    }
+  }
+
+  return res
+}
