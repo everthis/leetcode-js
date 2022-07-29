@@ -53,3 +53,41 @@ function generate(a, b, c, ac, bc, cc) {
   );
 }
 
+// another
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @param {number} c
+ * @return {string}
+ */
+const longestDiverseString = function (a, b, c) {
+  const n = a + b + c
+  let res = ''
+  let A = 0, B = 0, C = 0
+  for(let i = 0; i < n; i++) {
+    if((a >= c && a >= b && A !== 2) || (B === 2 && a > 0) || (C === 2 && a > 0)) {
+      A++
+      res += 'a'
+      a--
+      B = 0
+      C = 0
+    } else if((b >= c && b >= a && B !== 2) || (A === 2 && b > 0) || (C === 2 && b)) {
+      B++
+      res += 'b'
+      b--
+      A = 0
+      C = 0
+    } else if((c >= a && c >= b && C !== 2) || (A === 2 && c) || (B === 2 && c)) {
+      C++
+      res += 'c'
+      c--
+      A = 0
+      B = 0
+    }
+  }
+  
+  return res
+};
+
+
