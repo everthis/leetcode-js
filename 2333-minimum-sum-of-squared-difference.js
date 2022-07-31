@@ -17,7 +17,7 @@ const minSumSquareDiff = function (nums1, nums2, k1, k2) {
     bucket[diff[i]]++
   }
   let k = k1 + k2
-  for (let i = M; i > 0; i--) {
+  for (let i = M; i > 0 && k; i--) {
     if (bucket[i] > 0) {
       const minus = Math.min(bucket[i], k)
       bucket[i] -= minus
