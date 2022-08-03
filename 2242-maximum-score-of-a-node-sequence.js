@@ -103,17 +103,16 @@ class Heap {
  */
 const maximumScore = (scores, edges) => {
   const n = scores.length
+  const top3 = new Array(n).fill().map(() => new Heap())
 
-  let top3 = new Array(n).fill().map(() => new Heap())
-
-  for (let [u, v] of edges) {
+  for (const [u, v] of edges) {
     top3[u].offer([v, scores[v]])
     if (top3[u].size() > 3) top3[u].poll()
     top3[v].offer([u, scores[u]])
     if (top3[v].size() > 3) top3[v].poll()
   }
 
-  let top3Array = new Array(n)
+  const top3Array = new Array(n)
 
   for (let i = 0; i < n; i++) {
     top3Array[i] = [...top3[i].data]
@@ -125,7 +124,7 @@ const maximumScore = (scores, edges) => {
       continue
     }
 
-    let score = scores[b] + scores[c]
+    const score = scores[b] + scores[c]
 
     for (let [a, scoreA] of top3Array[b]) {
       for (let [d, scoreD] of top3Array[c]) {
