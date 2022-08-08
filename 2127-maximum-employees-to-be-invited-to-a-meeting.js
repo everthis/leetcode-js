@@ -2,6 +2,57 @@
  * @param {number[]} favorite
  * @return {number}
  */
+const maximumInvitations = function (favorite) {
+  const n = favorite.length
+  const indegree = Array(n).fill(0)
+  for (let i = 0; i < n; i++) indegree[favorite[i]]++
+  const { max } = Math
+  let q = []
+  const visited = Array(n).fill(0)
+  const depth = Array(n).fill(1)
+  for (let i = 0; i < n; i++) {
+    if (indegree[i] === 0) {
+      depth[i] = 1
+      visited[i] = 1
+      q.push(i)
+    }
+  }
+
+  while (q.length) {
+    const cur = q.shift()
+    const nxt = favorite[cur]
+    indegree[nxt]--
+    if (indegree[nxt] == 0) {
+      q.push(nxt)
+      visited[nxt] = 1
+    }
+    depth[nxt] = depth[cur] + 1
+  }
+
+  let max_circle_size = 0
+  let max_link_size = 0
+  for (let i = 0; i < n; i++) {
+    if (visited[i] === 1) continue
+    let j = i
+    let count = 0
+    while (visited[j] == 0) {
+      count++
+      visited[j] = 1
+      j = favorite[j]
+    }
+    if (count > 2) max_circle_size = max(max_circle_size, count)
+    else if (count == 2) max_link_size += depth[i] + depth[favorite[i]]
+  }
+
+  return max(max_circle_size, max_link_size)
+}
+
+// another
+
+/**
+ * @param {number[]} favorite
+ * @return {number}
+ */
 var maximumInvitations = function(favorite) {
   const n = favorite.length, m = Array(n).fill(-1), r = Array.from({ length: n }, () => [])
   for(let i = 0; i < n; i++) r[favorite[i]].push(i)
