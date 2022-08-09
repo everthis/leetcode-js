@@ -54,3 +54,34 @@ const numMatchingSubseq = function(S, words) {
     return res
   };
 
+// another
+
+/**
+ * @param {string} s
+ * @param {string[]} words
+ * @return {number}
+ */
+const numMatchingSubseq = function(s, words) {
+  const hash = {}
+  for(const w of words) {
+    const ch = w[0], it = w[Symbol.iterator]()
+    if(hash[ch] == null) hash[ch] = []
+    hash[ch].push(it)
+    it.next()
+  }
+  let res = 0
+  for(const e of s) {
+    const arr = hash[e] || []
+    hash[e] = []
+    for(const it of arr) {
+      const { value, done } = it.next()
+      if(done) res++
+      else {
+        if(hash[value] == null) hash[value] = []
+        hash[value].push(it)
+      }
+    }
+  }
+  
+  return res
+};
