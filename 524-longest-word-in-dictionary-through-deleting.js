@@ -26,6 +26,38 @@
  * @param {string[]} dictionary
  * @return {string}
  */
+const findLongestWord = function (s, dictionary) {
+  const n = dictionary.length
+  const idxArr = Array(n).fill(0)
+  let res = ''
+  for (const ch of s) {
+    for (let i = 0; i < n; i++) {
+      const idx = idxArr[i]
+      if (idx >= dictionary[i].length) continue
+      if (ch === dictionary[i][idx]) {
+        idxArr[i]++
+      }
+
+      if (
+        idxArr[i] === dictionary[i].length &&
+        (dictionary[i].length > res.length ||
+          (dictionary[i].length === res.length && dictionary[i] < res))
+      ) {
+        res = dictionary[i]
+      }
+    }
+  }
+  return res
+}
+
+
+// another
+
+/**
+ * @param {string} s
+ * @param {string[]} dictionary
+ * @return {string}
+ */
 const findLongestWord = function(s, dictionary) {
   let res = ''
   for(let d of dictionary) {
