@@ -36,3 +36,46 @@ const platesBetweenCandles = function(s, queries) {
 
   return res
 }
+
+// another
+
+/**
+ * @param {string} s
+ * @param {number[][]} queries
+ * @return {number[]}
+ */
+const platesBetweenCandles = function (s, queries) {
+  const n = s.length
+  const leftArr = Array(n).fill(-1),
+    rightArr = Array(n).fill(n),
+    candleCnt = Array(n).fill(0)
+  let candle = -1
+  for (let i = 0; i < n; i++) {
+    if (s[i] === '|') candle = i
+    leftArr[i] = candle
+  }
+  candle = n
+  for (let i = n - 1; i >= 0; i--) {
+    if (s[i] === '|') candle = i
+    rightArr[i] = candle
+  }
+  let cnt = 0
+  for (let i = 0; i < n; i++) {
+    if (s[i] === '|') cnt++
+    candleCnt[i] = cnt
+  }
+  // console.log(leftArr, rightArr)
+  const res = []
+  for (const [s, e] of queries) {
+    const l = rightArr[s]
+    const r = leftArr[e]
+    const diff = r - l
+    if (diff > 1) {
+      const e = r - l + 1 - (candleCnt[r] - candleCnt[l] + 1)
+      res.push(e)
+    } else res.push(0)
+  }
+
+  return res
+}
+
