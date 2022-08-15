@@ -40,3 +40,23 @@ const countNumbersWithUniqueDigits = function(n) {
     return n === 0 ? 1 : helper(m, n - 1) * (m - n + 1)
   }
 };
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const countNumbersWithUniqueDigits = function(n) {
+  if(n === 0) return 1
+  let res = 10
+  let tmp = 9, digits = 9
+  while(n > 1 && digits > 0) {
+    tmp *= digits 
+    res += tmp
+    n--
+    digits--
+  }
+  
+  return res
+};
