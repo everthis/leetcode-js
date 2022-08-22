@@ -3,6 +3,34 @@
  * @param {number} k
  * @return {string}
  */
+const getPermutation = function(n, k) {
+  const factorial = Array(n + 1).fill(0)
+  factorial[0] = 1
+  for(let i = 1, pre = 1; i <= n; i++) {
+    factorial[i] = pre * i
+    pre = factorial[i]
+  }
+  const nums = Array.from({length: n}, (_, i) => i + 1)
+  
+  let res = ''
+  k--
+  for(let i = 1; i <= n; i++) {
+     const idx = ~~(k / factorial[n - i])
+     res += nums[idx]
+     nums.splice(idx, 1)
+     k -= idx * factorial[n - i]
+  }
+  
+  return res
+};
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {string}
+ */
 const getPermutation = function (n, k) {
   let sb = ''
   const num = []
