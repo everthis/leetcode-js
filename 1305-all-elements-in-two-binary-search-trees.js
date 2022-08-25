@@ -20,8 +20,8 @@ var getAllElements = function(root1, root2) {
   const it2 = set2[Symbol.iterator]()
   let { value: value1, done: done1 } = it1.next()
   let { value: value2, done: done2 } = it2.next()
-  while(done1 === false && done2 === false) {
-    if(value1 < value2) {
+  while(done1 === false || done2 === false) {
+    if(done2 || value1 < value2) {
       res.push(value1)
       const obj = it1.next()
       value1 = obj.value
@@ -34,19 +34,6 @@ var getAllElements = function(root1, root2) {
     }
   }
   
-  while(done1 === false) {
-      res.push(value1)
-      const obj = it1.next()
-      value1 = obj.value
-      done1 = obj.done
-  }
-  
-  while(done2 === false) {
-      res.push(value2)
-      const obj = it2.next()
-      value2 = obj.value
-      done2 = obj.done
-  }
   
   return res
   
