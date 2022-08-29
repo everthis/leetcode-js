@@ -26,6 +26,7 @@ const minimumTimeRequired = function(jobs, k) {
       workers[i] += e
       dfs(idx + 1)
       workers[i] -= e
+      if(workers[i] === 0) break
     }
   }
 };
