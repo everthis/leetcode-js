@@ -17,12 +17,12 @@ const distributeCookies = function(cookies, k) {
       return
     }
     const cur = cookies[idx]
-    // const visited = new Set()
+    const visited = new Set()
     for(let i = 0; i < k; i++) {
       const e = arr[i]
-      // if(visited.has(i)) continue
+      if(visited.has(arr[i])) continue
       if(cur + e >= res) continue
-      
+      visited.add(arr[i])
       arr[i] += cur
       bt(idx + 1)
       arr[i] -= cur
