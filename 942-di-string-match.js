@@ -19,3 +19,20 @@ const diStringMatch = function(S) {
   res.push(arr.pop())
   return res
 };
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number[]}
+ */
+const diStringMatch = function(s) {
+  const n = s.length
+  let l = 0, r = n
+  const res = []
+  for(let i = 0; i < n; i++) {
+    res.push(s[i] === 'I' ? l++ : r--)
+  }
+  res.push(r)
+  return res
+};
