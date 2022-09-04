@@ -26,6 +26,31 @@ const findPermutation = function(s) {
  */
 const findPermutation = function(s) {
   const n = s.length
+  const res = Array(n)
+  res[n] = n + 1
+  for(let i = 0; i < n;) {
+    let j = i
+    while(j < n && s[j] === 'D') j++
+    // console.log(j)
+    for(let k = j - i + 1; k > 0; k--) {
+      res[i] = j + 1
+      i++
+      j--
+    }
+  }
+
+  return res
+};
+
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number[]}
+ */
+const findPermutation = function(s) {
+  const n = s.length
   const arr = Array.from({ length: n + 1 }, (el, idx) => idx + 1)
   for(let h = 0; h < n; h++) {
     if(s.charAt(h) === 'D') {
