@@ -33,13 +33,10 @@ const constrainedSubsetSum = function (nums, k) {
   dll.push([0, nums[0]])
   let max = nums[0]
   for (let i = 1; i < nums.length; i++) {
-    // console.log(dll, dll.peek())
-    let [index, lastKsum] = dll.peek().val
-
-    if (index == i - k) {
+    if (!dll.isEmpty() && i - dll.peek().val[0] > k) {
       dll.shift()
     }
-    const sum = Math.max(lastKsum, 0) + nums[i]
+    const sum = Math.max(dll.peek().val[1], 0) + nums[i]
     max = Math.max(max, sum)
     while (!dll.isEmpty() && dll.peekLast().val[1] < sum) {
       dll.pop()
@@ -60,6 +57,7 @@ class DLL {
   constructor() {
     this.head = new Node()
     this.tail = null
+    this.size = 0
   }
   peek() {
     return this.head.next
@@ -79,6 +77,7 @@ class DLL {
       } else {
         this.tail = null
       }
+      this.size--
     }
   }
   pop() {
@@ -88,12 +87,15 @@ class DLL {
       newTail.next = null
       this.tail.prev = null
       this.tail = newTail
+      this.size--
     }
+
   }
   push(val) {
     const node = new Node(val)
     node.prev = this.tail ?? this.head
     node.prev.next = node
     this.tail = node
+    this.size++
   }
 }
