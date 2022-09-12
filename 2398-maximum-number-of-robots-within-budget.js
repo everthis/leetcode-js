@@ -4,21 +4,23 @@
  * @param {number} budget
  * @return {number}
  */
-var maximumRobots = function(chargeTimes, runningCosts, budget) {
-  let times = chargeTimes
-  let costs = runningCosts
-  let sum = 0;
-  let i = 0, n = times.length;
-  const d = [];
-  for (let j = 0; j < n; ++j) {
-      sum += costs[j];
-      while (d.length && times[d[d.length - 1]] <= times[j]) d.pop();
-      d.push(j);
-      if (times[d[0]] + (j - i + 1) * sum > budget) {
-          if (d[0] == i) d.shift();
-          sum -= costs[i++];
-      }
+const maximumRobots = function(chargeTimes, runningCosts, budget) {
+  const times = chargeTimes, costs = runningCosts
+  let sum = 0, res = 0, j = 0
+  const q = [], n = times.length
+  for(let i = 0; i < n; i++) {
+    sum += costs[i]
+    while(q.length && times[q[q.length - 1]] <= times[i]) q.pop()
+    q.push(i)
+    
+    if(q.length && times[q[0]] + (i - j + 1) * sum > budget) {
+      if(q[0] === j) q.shift()
+      sum -= costs[j]
+      j++
+    }
+    res = Math.max(res, i - j + 1)
   }
-  return n - i; 
+  
+  return res
 };
 
