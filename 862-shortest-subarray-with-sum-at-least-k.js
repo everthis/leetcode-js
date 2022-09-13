@@ -12,14 +12,14 @@ const shortestSubarray = function(nums, k) {
     prefix.push(sum)
     if(sum >= k) res = Math.min(res, i + 1)
   }
-  // console.log(prefix)
-  for(let i = 0; i < n; i++) {
 
-    while(q.length && prefix[i] - prefix[q[0]] >= k) {
-        res = Math.min(res, i - q[0])
-        q.shift()
-    }
+  for(let i = 0; i < n; i++) {
     while(q.length && prefix[i] <= prefix[q[q.length - 1]]) q.pop()
+    while(q.length && prefix[i] - prefix[q[0]] >= k) {
+      res = Math.min(res, i - q[0])
+      q.shift()
+    }
+
     q.push(i)
   }
   
