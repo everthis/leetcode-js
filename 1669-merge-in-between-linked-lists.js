@@ -24,6 +24,7 @@ const mergeInBetween = function(list1, a, b, list2) {
       const tmp = cur.next
       cur.next = null
       cur = tmp
+      idx++
       break
     }
     cur = cur.next
@@ -32,7 +33,7 @@ const mergeInBetween = function(list1, a, b, list2) {
   let head
   // console.log(idx)
   while(cur) {
-    if(idx + 1 === b) {
+    if(idx === b) {
       head = cur.next
       cur.next = null
       break
