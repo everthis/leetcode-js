@@ -2,25 +2,17 @@
  * @param {string} seq
  * @return {number[]}
  */
-var maxDepthAfterSplit = function(seq) {
-  let A = 0, B = 0, n = seq.length;
-  let res = Array(n).fill(0);
-  for (let i = 0; i < n; ++i) {
-      if (seq.charAt(i) == '(') {
-          if (A < B) {
-              ++A;
-          } else {
-              ++B;
-              res[i] = 1;
-          }
-      } else {
-          if (A > B) {
-              --A;
-          } else {
-              --B;
-              res[i] = 1;
-          }
-      }
+const maxDepthAfterSplit = function(seq) {
+  const n = seq.length
+  const res = Array(n).fill(0)
+  let depth = 0
+  for(let i = 0; i < n; i++) {
+    const ch = seq[i]
+    if(ch === '(') {
+      depth++
+    }
+    res[i] = depth % 2
+    if(ch === ')') depth--
   }
-  return res;
+  return res
 };
