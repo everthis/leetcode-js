@@ -8,8 +8,6 @@ const getNumberOfBacklogOrders = function (orders) {
   const P = 10 ** 9 + 7
   const { min } = Math
 
-  while (!h0.isEmpty()) h0.pop()
-  while (!h1.isEmpty()) h1.pop()
   let i,
     j,
     i1,
