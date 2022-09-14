@@ -4,7 +4,7 @@
  */
 const getNumberOfBacklogOrders = function (orders) {
   const h0 = new PriorityQueue((a, b) => a[0] > b[0])
-  const h1 = new PriorityQueue((a, b) => a[0] > b[0])
+  const h1 = new PriorityQueue((a, b) => a[0] < b[0])
   const P = 10 ** 9 + 7
   const { min } = Math
 
@@ -29,9 +29,9 @@ const getNumberOfBacklogOrders = function (orders) {
           break
         }
       }
-      if (j) h1.push([-i, j])
+      if (j) h1.push([i, j])
     } else {
-      while (!h1.isEmpty() && -h1.peek()[0] <= i) {
+      while (!h1.isEmpty() && h1.peek()[0] <= i) {
         i1 = h1.peek()[0]
         j1 = h1.peek()[1]
         h1.pop()
