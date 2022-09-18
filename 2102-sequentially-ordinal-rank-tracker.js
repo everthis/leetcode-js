@@ -137,10 +137,10 @@ SORTracker.prototype.add = function(name, score) {
 SORTracker.prototype.get = function() {
   if(this.cnt) {
     this.minQ.push(this.maxQ.pop())
-    while(this.minCmp(this.minQ.peek(), this.maxQ.peek())) {
-      const tmp = this.maxQ.pop()
-      this.maxQ.push(this.minQ.pop())
-      this.minQ.push(tmp)
+    while(this.maxCmp(this.maxQ.peek(), this.minQ.peek())) {
+      const tmp = this.minQ.pop()
+      this.minQ.push(this.maxQ.pop())
+      this.maxQ.push(tmp)
     }
   }
   this.cnt++
