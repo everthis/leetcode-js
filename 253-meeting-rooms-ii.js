@@ -111,3 +111,30 @@ const minMeetingRooms = function(intervals) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+const minMeetingRooms = function(intervals) {
+  const n = intervals.length
+  const limit = 1e6 + 1
+  const arr = Array(limit).fill(0)
+  let res = 0
+  
+  for(const [start, end] of intervals) {
+      arr[start]++
+      arr[end]--
+  }
+
+  for(let i = 1; i < limit; i++) {
+      arr[i] += arr[i - 1]
+  }
+  for(let i = 0; i < limit; i++) {
+      res = Math.max(res, arr[i])
+  }
+  
+  return res
+};
