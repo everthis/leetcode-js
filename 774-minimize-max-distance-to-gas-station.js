@@ -24,7 +24,7 @@ const minmaxGasDist = function (stations, K) {
 const possible = (dis, res, K) => {
   let need = 0
   for (let i = 0; i < dis.length; i++) {
-    need += Math.floor(dis[i] / res)
+    need += dis[i] <= res ? 0 : Math.floor(dis[i] / res)
   }
   return need <= K
 }
