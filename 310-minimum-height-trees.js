@@ -4,7 +4,7 @@
  * @return {number[]}
  */
 const findMinHeightTrees = function (n, edges) {
-  const hash = {}
+  const graph = {}
 
   for(const [u, v] of edges) {
     if(graph[u] == null) graph[u] = new Set()
@@ -15,7 +15,7 @@ const findMinHeightTrees = function (n, edges) {
 
   let q = []
   for(let i = 0; i < n; i++) {
-    if(hash[i].size === 1) q.push(i)
+    if(graph[i].size === 1) q.push(i)
   }
 
   while(n > 2) {
@@ -23,7 +23,7 @@ const findMinHeightTrees = function (n, edges) {
     n -= size
     for(let i = 0; i < size; i++) {
       const cur = q[i]
-      for(const e of (hash[cur] || [])) {
+      for(const e of (graph[cur] || [])) {
         graph[e].delete(cur)
         if(graph[e].size === 1) nxt.push(e)
       }
