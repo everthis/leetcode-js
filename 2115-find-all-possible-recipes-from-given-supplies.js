@@ -62,7 +62,6 @@ const findAllRecipes = function(recipes, ingredients, supplies) {
       if(!supplies.has(e)) {
         if(graph[e] == null) graph[e] = []
         graph[e].push(rec)
-        if(inDegree[e] == null) inDegree[e] = 0
         inDegree[rec]++
       }
     }
