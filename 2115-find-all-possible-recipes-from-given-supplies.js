@@ -38,3 +38,59 @@ const findAllRecipes = function(recipes, ingredients, supplies) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {string[]} recipes
+ * @param {string[][]} ingredients
+ * @param {string[]} supplies
+ * @return {string[]}
+ */
+const findAllRecipes = function(recipes, ingredients, supplies) {
+  const graph = {}
+  const n = recipes.length
+
+  const inDegree = {}
+  supplies = new Set(supplies)
+  for(const e of recipes) inDegree[e] = 0
+
+  let q = []
+  for(let i = 0; i < n; i++) {
+    const rec = recipes[i]
+    for(let e of ingredients[i]) {
+      if(!supplies.has(e)) {
+        if(graph[e] == null) graph[e] = []
+        graph[e].push(rec)
+        if(inDegree[e] == null) inDegree[e] = 0
+        inDegree[rec]++
+      }
+    }
+  }
+  // console.log(inDegree)
+  for(let i = 0; i < n; i++) {
+    if(inDegree[recipes[i]] === 0) {
+      q.push(recipes[i])
+    }
+  }
+  
+  // console.log(q)
+  const res = []  
+  while(q.length) {
+    const size = q.length
+    const nxt = []
+    
+    for(let i = 0; i < size; i++) {
+      const cur = q[i]
+      res.push(cur)
+      for(const e of (graph[cur] || [])) {
+        inDegree[e]--
+        if(inDegree[e] === 0) nxt.push(e)
+      }
+    }
+    
+    q = nxt
+  }
+
+  return res
+};
