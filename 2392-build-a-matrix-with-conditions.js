@@ -4,7 +4,7 @@
  * @param {number[][]} colConditions
  * @return {number[][]}
  */
-var buildMatrix = function (k, rowConditions, colConditions) {
+const buildMatrix = function (k, rowConditions, colConditions) {
   const res = Array.from({ length: k }, () => Array(k).fill(0))
 
   const row = khansAlgo(rowConditions, k)
@@ -13,7 +13,6 @@ var buildMatrix = function (k, rowConditions, colConditions) {
   const col = khansAlgo(colConditions, k)
   if (col.length != k) return []
 
-  // console.log(row, col)
   const idx = Array(k + 1).fill(0)
   for (let j = 0; j < col.length; j++) {
     idx[col[j]] = j
@@ -52,6 +51,7 @@ var buildMatrix = function (k, rowConditions, colConditions) {
     return row
   }
 }
+
 
 
 // another
