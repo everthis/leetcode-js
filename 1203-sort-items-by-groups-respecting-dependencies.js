@@ -14,9 +14,9 @@ const sortItems = function (n, m, group, beforeItems) {
     indegree[i]++
   }
   for (let i = 0; i < beforeItems.length; i++) {
-    for (let e of beforeItems[i]) {
-      let a = group[e] === -1 ? e : n + group[e]
-      let b = group[i] === -1 ? i : n + group[i]
+    for (const e of beforeItems[i]) {
+      const a = group[e] === -1 ? e : n + group[e]
+      const b = group[i] === -1 ? i : n + group[i]
       if (a === b) {
         // same group, ingroup order
         graph[e].push(i)
@@ -43,6 +43,7 @@ const sortItems = function (n, m, group, beforeItems) {
     }
   }
 }
+
 
 // another
 
