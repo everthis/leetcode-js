@@ -9,6 +9,7 @@ const minimumEffortPath = function(heights) {
   
   while(l < r) {
     const mid = ~~((l + r) / 2)
+    // console.log(l, r, mid)
     if(valid(mid)) {
       r = mid
     } else {
@@ -30,9 +31,10 @@ const minimumEffortPath = function(heights) {
       const nx = i + dx, ny = j + dy
       if(nx < 0 || nx >= m || ny < 0 || ny >= n) continue
       if(visited[nx][ny]) continue
-      if(Math.abs(heights[i][j] - heights[nx][ny]) <= limit && dfs(nx, ny, limit, visited)) return true
+      if(Math.abs(heights[i][j] - heights[nx][ny]) > limit) continue
+      if(dfs(nx, ny, limit, visited)) return true
     }
-    return false
+    // return false
   }
 
 };
