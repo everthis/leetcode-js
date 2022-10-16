@@ -9,15 +9,15 @@ const latestDayToCross = function (row, col, cells) {
     n = cells.length,
     r = n
   while (l < r) {
-    const mid = ~~((l + r) / 2)
+    const mid = r - (~~((r - l) / 2))
     if (canWalk(mid)) {
-      l = mid + 1
+      l = mid
     } else {
-      r = mid
+      r = mid - 1
     }
   }
 
-  return l
+  return l + 1
 
   function canWalk(mid) {
     const grid = Array.from({ length: row }, () => Array(col).fill(0))
