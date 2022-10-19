@@ -1,66 +1,63 @@
-
-///////////////////////////////////////////////////// Template ///////////////////////////////////////////////////////////////////////
-const packUG = (g, edges) => { for (const [u, v] of edges) { g[u].push(v); g[v].push(u); } };
-const initializeGraph = (n) => { let g = []; for (let i = 0; i < n; i++) { g.push([]); } return g; };
-
-function DJSet(n) {
-    // parent[i] < 0, -parent[i] is the group size which root is i. example: (i -> parent[i] -> parent[parent[i]] -> parent[parent[parent[i]]] ...)
-    // parent[i] >= 0, i is not the root and parent[i] is i's parent. example: (... parent[parent[parent[i]]] -> parent[parent[i]] -> parent[i] -> i)
-    let parent = Array(n).fill(-1);
-    return { find, union, count, equiv, par }
-    function find(x) {
-        return parent[x] < 0 ? x : parent[x] = find(parent[x]);
-    }
-    function union(x, y) {
-        x = find(x);
-        y = find(y);
-        if (x == y) return false;
-        if (parent[x] < parent[y]) [x, y] = [y, x];
-        parent[x] += parent[y];
-        parent[y] = x;
-        return true;
-    }
-    function count() { // total groups
-        return parent.filter(v => v < 0).length;
-    }
-    function equiv(x, y) { // isConnected
-        return find(x) == find(y);
-    }
-    function par() {
-        return parent;
-    }
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * @param {number[]} vals
  * @param {number[][]} edges
  * @return {number}
  */
-const numberOfGoodPaths = (a, edges) => {
-    let n = a.length, g = initializeGraph(n), f = Array(n).fill(0), ds = new DJSet(n), res = 0;
-    packUG(g, edges);
-    let d = a.map((x, i) => [x, i]);
-    d.sort((x, y) => {
-        if (x[0] != y[0]) return x[0] - y[0];
-        return x[1] - y[1];
-    })
-    for (let r = 0; r < n;) { // l: start node  r: end node
-        let l = r;
-        while (r < n && d[l][0] == d[r][0]) r++; // condition 1
-        for (let i = l; i < r; i++) {
-            let cur = d[i][1];
-            for (const child of g[cur]) {
-                if (a[child] <= d[l][0]) ds.union(child, cur); // condition 2
-            }
-        }
-        for (let i = l; i < r; i++) { // loop the path
-            let cur = d[i][1];
-            res += ++f[ds.find(cur)];
-        }
-        for (let i = l; i < r; i++) {
-            let cur = d[i][1];
-            f[ds.find(cur)]--;
-        }
+const numberOfGoodPaths = function (vals, edges) {
+  const n = vals.length
+  let res = 0
+  const adj = Array.from({ length: n }, () => [])
+  const sameValues = new Map()
+  const valWithIdx = vals.map((v, i) => [v, i])
+  valWithIdx.sort((a, b) => a[0] - b[0])
+  for (let i = 0; i < n; i++) {
+    const [val, idx] = valWithIdx[i]
+    if (sameValues.get(val) == null) sameValues.set(val, [])
+    sameValues.get(val).push(idx)
+  }
+  for (const e of edges) {
+    const [u, v] = e
+    if (vals[u] >= vals[v]) {
+      adj[u].push(v)
+    } else if (vals[v] >= vals[u]) {
+      adj[v].push(u)
     }
-    return res;
-};
+  }
+  const uf = new UF(n)
+  for (const [_, allNodes] of sameValues) {
+    for (let u of allNodes) {
+      for (const v of adj[u]) {
+        uf.union(u, v)
+      }
+    }
+    const group = {}
+    for (let u of allNodes) {
+      const uroot = uf.find(u)
+      if (group[uroot] == null) group[uroot] = 0
+      group[uroot]++
+    }
+    res += allNodes.length
+    for (let [_, size] of Object.entries(group)) {
+      res += (size * (size - 1)) / 2
+    }
+  }
+  return res
+}
+class UF {
+  constructor(n) {
+    this.root = Array(n)
+      .fill(null)
+      .map((_, i) => i)
+  }
+  find(x) {
+    if (this.root[x] !== x) {
+      this.root[x] = this.find(this.root[x])
+    }
+    return this.root[x]
+  }
+  union(x, y) {
+    const xr = this.find(x)
+    const yr = this.find(y)
+    this.root[yr] = xr
+  }
+}
