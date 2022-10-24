@@ -2,6 +2,29 @@
  * @param {number} n
  * @return {number}
  */
+const countPrimes = function (n) {
+  const memo = Array(n).fill(false)
+  let res = 0
+  for (let i = 2; i < n; i++) {
+    if (memo[i] === false) {
+      res++
+      for (let j = 2; i * j < n; j++) {
+        memo[i * j] = true
+      }
+    }
+  }
+
+  return res
+}
+
+
+// another
+
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
 const countPrimes = function(n) {
   /**
    * if n = 2, the prime 2 is not less than n,
