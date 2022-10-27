@@ -8,12 +8,10 @@ const minCost = function (nums, cost) {
   let l = Math.min(...nums)
   let r = Math.max(...nums)
 
-  let res = calc(l)
   while(l < r) {
     const mid = Math.floor((l + r) / 2)
     const v1 = calc(mid)
     const v2 = calc(mid + 1)
-    res = Math.min(res, v1, v2)
     if(v1 < v2) {
       r = mid
     } else {
@@ -21,7 +19,7 @@ const minCost = function (nums, cost) {
     }
   }
 
-  return res
+  return calc(l)
 
   function calc(v) {
     let res = 0
