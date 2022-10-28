@@ -53,3 +53,45 @@ function min(arr) {
   }
   return sum
 }
+
+// another
+
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+const minTotalDistance = function (grid) {
+  const homeArr = []
+  const horiArr = [], vertArr = []
+  const m = grid.length,
+    n = grid[0].length
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === 1) {
+        homeArr.push([i, j])
+        vertArr.push(i)
+        horiArr.push(j)
+      }
+    }
+  }
+
+  vertArr.sort((a, b) => a - b)
+  horiArr.sort((a, b) => a - b)
+
+  let y = vertArr[~~(vertArr.length/2)]
+  let x = horiArr[~~(horiArr.length/2)]
+ 
+  const center = [y, x]
+  
+  let res = 0
+  for(const point of homeArr) {
+    res += dis(center, point)
+  }
+
+  return res
+
+  function dis(a, b) {
+    return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1])
+  }
+
+}
