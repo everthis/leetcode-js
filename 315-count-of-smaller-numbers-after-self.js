@@ -78,3 +78,60 @@ function insert(num, node, ans, i, preSum) {
   }
   return node
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+const countSmaller = function(nums) {
+  
+  const arr = []
+  const n = nums.length
+  for(let i = 0; i < n; i++) {
+    arr.push([nums[i], i])
+  }
+  
+  const res = Array(n).fill(0)
+  cntSmaller(arr, 0, n - 1, res)
+  
+  return res
+  
+  function cntSmaller(arr, l, r, res) {
+    if(l >= r) return
+    
+    const mid = ~~((l + r) / 2)
+    cntSmaller(arr, l, mid, res)
+    cntSmaller(arr, mid + 1, r, res)
+    let leftPos = l, rightPos = mid + 1, cnt = 0
+    const merged = []
+    while(leftPos < mid + 1 && rightPos <= r) {
+      if(arr[leftPos][0] > arr[rightPos][0]) {
+        cnt++
+        merged.push(arr[rightPos])
+        rightPos++
+      } else {
+        res[arr[leftPos][1]] += cnt
+        merged.push(arr[leftPos])
+        leftPos++
+      }
+    }
+    
+    while(leftPos < mid + 1) {
+      res[arr[leftPos][1]] += cnt
+      merged.push(arr[leftPos])
+      leftPos++
+    }
+    
+    while(rightPos <= r) {
+      merged.push(arr[rightPos])
+      rightPos++
+    }
+    
+    for(let i = l; i <= r; i++) {
+      arr[i] = merged[i - l]
+    }
+    
+  }
+};
