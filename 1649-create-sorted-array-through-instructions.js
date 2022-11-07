@@ -34,3 +34,50 @@ const createSortedArray = function(instructions) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} instructions
+ * @return {number}
+ */
+const createSortedArray = function (instructions) {
+  const ins = instructions, n = ins.length
+  let res = 0
+  const mod = 1e9 + 7, { min } = Math
+  const bit = new BIT(1e5)
+  for(let i = 0; i < n; i++) {
+    const cur = ins[i]
+    res = (res + min(bit.query(cur - 1), i - bit.query(cur))) % mod
+    bit.update(cur, 1)
+  } 
+
+  return res
+}
+
+function lowBit(x) {
+  return x & -x
+}
+class BIT {
+  constructor(n) {
+    this.arr = Array(n + 1).fill(0)
+  }
+
+  update(i, delta) {
+    if(i < 1) return
+    while (i < this.arr.length) {
+      this.arr[i] += delta
+      i += lowBit(i)
+    }
+  }
+
+  query(i) {
+    let res = 0
+    if(i < 1) return res
+    while (i > 0) {
+      res += this.arr[i]
+      i -= lowBit(i)
+    }
+    return res
+  }
+}
