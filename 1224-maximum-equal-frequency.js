@@ -20,6 +20,14 @@ const maxEqualFreq = function (nums) {
 
     maxF = max(maxF, f)
 
+    /*
+    cnt records the occurence of each num, freq records the frequence of number of occurences. max_F is the largest frequence.
+    There are three cases which satify the condition:
+
+    all elements appear exact once.
+    all elements appear max_F times, except one appears once.
+    all elements appear max_F-1 times, except one appears max_F.
+    */
     if(
       maxF === 1 ||
       maxF * freqCnt[maxF] === i ||
