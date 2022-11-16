@@ -41,3 +41,54 @@ function build(max, str, out = [], curr = '') {
 
   return out
 }
+
+// another
+
+/**
+ * @param {string} characters
+ * @param {number} combinationLength
+ */
+const CombinationIterator = function(characters, combinationLength) {
+  const res = [], len = combinationLength, str = characters, n = str.length
+  helper([], 0)
+  this.arr = res
+  this.idx = 0
+  
+  function helper(cur, idx) {
+      if(cur.length === len) {
+          res.push(cur.slice().join(''))
+          return
+      }
+      if(idx >= n) return
+
+      cur.push(str[idx])
+      helper(cur, idx + 1)
+      cur.pop()
+
+      helper(cur, idx + 1)
+  }
+};
+
+/**
+ * @return {string}
+ */
+CombinationIterator.prototype.next = function() {
+  if(this.hasNext()) {
+      return this.arr[this.idx++]
+  }
+};
+
+/**
+ * @return {boolean}
+ */
+CombinationIterator.prototype.hasNext = function() {
+  return this.arr[this.idx] != null
+};
+
+/** 
+ * Your CombinationIterator object will be instantiated and called as such:
+ * var obj = new CombinationIterator(characters, combinationLength)
+ * var param_1 = obj.next()
+ * var param_2 = obj.hasNext()
+ */
+
