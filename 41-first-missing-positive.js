@@ -68,3 +68,32 @@ function swap(arr, i, j) {
   arr[i] = arr[j]
   arr[j] = tmp
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const firstMissingPositive = function(nums) {
+  const n = nums.length
+  for(let i = 0; i < n; i++) {
+      while(nums[i] > 0 && nums[i] !== nums[nums[i] - 1] && nums[i] <= n) {
+        swap(i, nums[i] - 1)      
+      }
+  }
+
+    // console.log(nums)
+  for(let i = 0; i < n; i++) {
+      if(nums[i] !== i + 1) return i + 1
+  }
+    
+  return n + 1
+  
+  
+  function swap(i, j) {
+      const tmp = nums[j]
+      nums[j] = nums[i]
+      nums[i] = tmp
+  }
+};
