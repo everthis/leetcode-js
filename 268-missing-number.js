@@ -23,3 +23,15 @@ const missingNumber = function(nums) {
 function sum(arr) {
   return arr.reduce((ac, el) => ac + el, 0);
 }
+
+// another
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var missingNumber = function(nums) {
+  const n = nums.length
+  const sum = nums.reduce((ac, e) => ac + e, 0)
+  const target = (n + 1) * n / 2
+  return target - sum
+};
