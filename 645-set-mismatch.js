@@ -20,3 +20,22 @@ const findErrorNums = function(nums) {
   }
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+const findErrorNums = function(nums) {
+    const res = [];
+    for (const i of nums) {
+      if (nums[Math.abs(i) - 1] < 0) res[0] = Math.abs(i);
+	  else nums[Math.abs(i) - 1] *= -1;
+    }
+    for (let i = 0; i < nums.length; i++) {
+      if (nums[i] > 0) res[1] = i + 1;
+    }
+    return res;    
+};
+
