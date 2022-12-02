@@ -17,3 +17,27 @@ const numSubarraysWithSum = function(A, S) {
     }
     return ans;
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} goal
+ * @return {number}
+ */
+const numSubarraysWithSum = function(nums, goal) {
+  const hash = {}
+  const n = nums.length
+  let res = 0, sum = 0
+  for(let i = 0; i < n; i++) {
+    const cur = nums[i]
+    sum += cur
+    const pre = sum - goal
+    if(hash[sum] == null) hash[sum] = 0
+    if(hash[pre] != null) res += hash[pre]
+    if(sum === goal) res++
+    hash[sum]++    
+  }
+    
+  return res
+};
