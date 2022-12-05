@@ -2,6 +2,31 @@
  * @param {string} s
  * @return {number}
  */
+const findTheLongestSubstring = function(s) {
+  const n = s.length
+  const ch2num = ch => {
+    const idx = 'aeiou'.indexOf(ch)
+    return idx === -1 ? 0 : (1 << idx)
+  }
+  let res = 0
+  let mask = 0
+  const hash = new Map([[0, -1]])
+  for (let i = 0; i < n; i++) {
+    mask ^= ch2num(s[i])
+    const first = hash.has(mask) ? hash.get(mask) : i
+    if (!hash.has(mask)) hash.set(mask, i)
+    res = Math.max(res, i - first)
+  }
+
+  return res
+};
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
 var findTheLongestSubstring = function (s, V = 'aeiou', max = 0) {
   let encode = (c) => {
     let i = V.indexOf(c)
