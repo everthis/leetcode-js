@@ -2,6 +2,33 @@
  * @param {string} s
  * @return {number}
  */
+const deleteString = function (s) {
+  const dp = Array(4000).fill(0), lps = Array(4000).fill(0)
+  for (let k = s.length - 1; k >= 0; --k) {
+    dp[k] = 1; 
+    for (let i = 1, j = 0; dp[k] <= s.length - i - k + 1; ++i) {
+      while (j && s[i + k] != s[j + k]) j = Math.max(0, lps[j] - 1);
+      j += s[i + k] == s[j + k];
+      lps[i] = j;
+      if (i % 2) {
+        const len = ~~((i + 1) / 2);
+        if (lps[len * 2 - 1] == len) {
+          dp[k] = Math.max(dp[k], 1 + dp[k + len]);
+        }
+      }
+    }
+  }
+  return dp[0];
+}
+
+
+// another
+
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
 const deleteString = function (t) {
   let n = t.length
   const set = new Set(t.split(''))
