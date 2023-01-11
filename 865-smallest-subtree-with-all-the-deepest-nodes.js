@@ -26,3 +26,37 @@ function result(node, dist) {
   this.node = node;
   this.dist = dist;
 }
+
+// another
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+const subtreeWithAllDeepest = function(root) {
+  let res = null, maxDepth = 0
+  dfs(root, 0)
+  
+  return res
+  
+  function dfs(node, depth) {
+    if(node == null) return depth - 1
+    
+    const left = dfs(node.left, depth + 1)
+    const right = dfs(node.right, depth + 1)
+    maxDepth = Math.max(maxDepth, left, right)
+    
+    if(left === maxDepth && right === maxDepth) {
+      res = node
+    }
+    return Math.max(left, right)
+  }
+};
