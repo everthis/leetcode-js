@@ -17,3 +17,26 @@ const xorQueries = function(arr, queries) {
   })
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} arr
+ * @param {number[][]} queries
+ * @return {number[]}
+ */
+const xorQueries = function(arr, queries) {
+  const xorArr = []
+  xorArr[0] = 0
+  const n = arr.length
+  for(let i = 0; i < n; i++) {
+    const cur = arr[i]
+    xorArr.push(cur ^ xorArr[xorArr.length - 1])
+  }
+  const res = []
+  for(const [l, r] of queries) {
+    res.push(xorArr[r + 1] ^ xorArr[l])
+  }
+  
+  return res
+};
