@@ -1,3 +1,19 @@
+/**
+ * @param {number[]} arr1
+ * @param {number[]} arr2
+ * @return {number}
+ */
+const getXORSum = function(arr1, arr2) {
+  let a = 0, b = 0
+  for(const e of arr1) a ^= e
+  for(const e of arr2) b ^= e
+  
+  return a & b
+};
+
+
+// another
+
 // On every bit XOR acts as modulo 2 addition and AND acts as modulo 2 multiplication.
 // The set {0,1} with modulo 2 addition and multiplication is the field GF(2) and the distributive property holds in every field.
 
