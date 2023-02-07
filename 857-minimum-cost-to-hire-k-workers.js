@@ -75,6 +75,9 @@ const mincostToHireWorkers = function(quality, wage, K) {
   for(let i = 0; i < n; i++) {
     workers.push([wage[i] / quality[i], quality[i]])
   }
+  // wage[i] / wage[j] = quality[i] / quality[j]
+  // wage[i] * quality[j] = wage[j] * quality[i]
+  // wage[i] / quality[i] = wage[j] / quality[j]
   workers.sort((a, b) => a[0] - b[0])
   const pq = new MaxPriorityQueue({ priority: (w) => w.quality })
   let res = Infinity, qualitySum = 0
@@ -91,4 +94,5 @@ const mincostToHireWorkers = function(quality, wage, K) {
   
   return res
 };
+
 
