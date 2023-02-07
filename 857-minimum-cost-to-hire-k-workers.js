@@ -61,3 +61,34 @@ function insert(arr, el) {
   }
   arr.push(el)
 }
+
+// another
+
+/**
+ * @param {number[]} quality
+ * @param {number[]} wage
+ * @param {number} K
+ * @return {number}
+ */
+const mincostToHireWorkers = function(quality, wage, K) {
+  const workers = [], n = wage.length
+  for(let i = 0; i < n; i++) {
+    workers.push([wage[i] / quality[i], quality[i]])
+  }
+  workers.sort((a, b) => a[0] - b[0])
+  const pq = new MaxPriorityQueue({ priority: (w) => w.quality })
+  let res = Infinity, qualitySum = 0
+  for(const worker of workers) {
+    const [ratio, quality] = worker
+    qualitySum += quality
+    pq.enqueue({ quality })
+    
+    if(pq.size() > K) {
+      qualitySum -= pq.dequeue().element.quality
+    }
+    if(pq.size() === K) res = Math.min(res, qualitySum * ratio)
+  }
+  
+  return res
+};
+
