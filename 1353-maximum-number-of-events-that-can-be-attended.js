@@ -220,3 +220,29 @@ function maxEvents(events) {
 //     segmentTree.setAt(i, value)
 //     segmentTree.length
 class SegmentTree{constructor(t,e,s){if(this.valueLength=t.length,this.identity=e,this.associate=s,0===t.length)this.tree=[];else{const h=2**Math.ceil(Math.log2(t.length))*2-1,i=[];for(let s=0;s<=h>>1;++s)i[(h>>1)+s]=s<t.length?t[s]:e;for(let t=(h>>1)-1;t>=0;--t)i[t]=s(i[2*t+1],i[2*t+2]);this.tree=i}}get length(){return this.valueLength}getAt(t){return this.tree[t+(this.tree.length>>1)]}queryIn(t,e){let s=this.identity;const h=[[0,0,1+(this.tree.length>>1)]];for(;h.length>0;){const[i,r,n]=h.pop();r>=t&&n<=e?s=this.associate(s,this.tree[i]):r>=e||n<t||i>this.tree.length>>1||h.push([2*i+1,r,r+n>>1],[2*i+2,r+n>>1,n])}return s}setAt(t,e){const s=t+(this.tree.length>>1);this.tree[s]=e;let h=s-1>>1;for(;h>=0;)this.tree[h]=this.associate(this.tree[2*h+1],this.tree[2*h+2]),h=h-1>>1}}
+
+
+// another
+
+/**
+ * @param {number[][]} events
+ * @return {number}
+ */
+function maxEvents(events) {
+  const pq = new MinPriorityQueue ()
+  events.sort((a, b) => a[0] - b[0])
+  let res = 0, i = 0, n = events.length
+  for(let d = 1; d <= 1e5; d++) {
+    while(i < n && events[i][0] === d) {
+      pq.enqueue(events[i++][1])
+    }
+    while(!pq.isEmpty() && pq.front().element < d) {
+      pq.dequeue()
+    }
+    if(!pq.isEmpty()) {
+      res++
+      pq.dequeue()
+    }
+  }
+  return res
+}
