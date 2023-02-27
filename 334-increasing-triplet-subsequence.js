@@ -35,3 +35,22 @@ const increasingTriplet = function(nums) {
 
   return false
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+const increasingTriplet = function(nums) {
+  let small = Number.MAX_VALUE, big = Number.MAX_VALUE
+  
+  for(const e of nums) {
+    if(e <= small) small = e
+    else if(e <= big) big = e
+    else return true
+  }
+  
+  return false
+};
+
