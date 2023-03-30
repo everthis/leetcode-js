@@ -117,4 +117,45 @@ const addTwoNumbers = function(l1, l2) {
   return dummy.next
 };
 
+// another
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+const addTwoNumbers = function(l1, l2) {
+  const dummy = new ListNode(null)
+  let cur = dummy, carry = 0
+  
+  while(l1 || l2) {
+    let v = 0
+    if(l1 && l2) {
+      v = l1.val + l2.val + carry
+      l1 = l1.next
+      l2 = l2.next
+    } else {
+      const node = l1 || l2
+      v = node.val + carry
+      if(l1) l1 = l1.next
+      if(l2) l2 = l2.next
+    }
+    
+    cur.next = new ListNode(v % 10)
+    cur = cur.next
+    if(v >= 10) carry = 1
+    else carry = 0
+  }
+  
+  if(carry) cur.next = new ListNode(1)
+  
+  return dummy.next
+};
 
