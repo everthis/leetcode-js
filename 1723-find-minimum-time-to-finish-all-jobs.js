@@ -17,12 +17,9 @@ const minimumTimeRequired = function(jobs, k) {
       res = Math.min(res, Math.max(...workers))
       return
     }
-    const visited = new Set()
     const e = jobs[idx]
     for(let i = 0; i < k; i++) {
-      if(visited.has(workers[i])) continue
       if(workers[i] + e >= res) continue
-      visited.add(workers[i])
       workers[i] += e
       dfs(idx + 1)
       workers[i] -= e
