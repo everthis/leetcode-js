@@ -100,3 +100,50 @@ const colorTheGrid = function(m, n) {
 
   return dp(0, 0)
 };
+
+// another
+
+/**
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+const colorTheGrid = function(m, n) {
+  const mod = 1e9 + 7
+  const limit = 1 << (2 * m)
+  const memo = Array.from({ length: n }, () => Array(limit))
+  
+  return dp(0, 0)
+  
+  function dp(col, preColMask) {
+    if(col === n) return 1
+    let res = 0
+    
+    if(memo[col][preColMask] != null) return memo[col][preColMask]
+    const curColMasks = []
+    dfs(preColMask, 0, 0, curColMasks)
+    for(const colMask of curColMasks) {
+      res = (res + dp(col + 1, colMask)) % mod
+    }
+    return memo[col][preColMask] = res
+  }
+  
+  function dfs(preColMask, curColMask, row, res) {
+    if(row === m) {
+      res.push(curColMask)
+      return
+    }
+    for(let i = 1; i <= 3; i++) {
+      if(getColor(preColMask, row) !== i && (row === 0 || getColor(curColMask, row - 1) !== i)) {
+        dfs(preColMask, setColor(curColMask, row, i) ,row + 1, res)
+      }
+    }
+  }
+    
+  function getColor(mask, row) {
+    return (mask >> (2 * row)) & 3 
+  }
+  function setColor(mask, row, val) {
+    return mask | (val << (2 * row)) 
+  }
+};
