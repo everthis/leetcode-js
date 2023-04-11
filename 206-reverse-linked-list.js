@@ -14,7 +14,7 @@ const reverseList = function(head) {
   const pre = new ListNode(null, head)
   let cur = head
   while(cur.next) {
-    let tmp = pre.next
+    const tmp = pre.next
     pre.next = cur.next
     cur.next = cur.next.next
     pre.next.next = tmp
