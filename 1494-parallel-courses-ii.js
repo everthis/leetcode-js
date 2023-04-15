@@ -48,3 +48,50 @@ function bitCount(n) {
   n = (n & 0x33333333) + ((n >> 2) & 0x33333333)
   return (((n + (n >> 4)) & 0xf0f0f0f) * 0x1010101) >> 24
 }
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[][]} dependencies
+ * @param {number} k
+ * @return {number}
+ */
+const minNumberOfSemesters = function (n, dependencies, k) {
+  const pre = Array(n).fill(0)
+  const limit = 1 << n
+  for(const [p, v] of dependencies) {
+    pre[v - 1] |= (1 << (p - 1))
+  }
+  const dp = Array(limit).fill(Infinity)
+  dp[0] = 0
+  
+  for(let learned = 0; learned < limit; learned++) {
+    let wait = 0
+    for(let i = 0; i < n; i++) {
+      if( (learned & pre[i]) === pre[i]) {
+        wait |= (1 << i)
+      }
+    }
+    wait = wait & (~learned)
+    for(let sub = wait; sub; sub = (sub - 1) & wait) {
+      if(bitCnt(sub) > k) continue
+      const mask = learned | sub
+      dp[mask] = Math.min(dp[mask], dp[learned] + 1)
+    }
+  }
+  
+  return dp[limit - 1]
+}
+
+function bitCnt(num) {
+  let res = 0
+  while(num) {
+    if(num & 1) res++
+    num = num >> 1
+  }
+  
+  return res
+}
+
+
