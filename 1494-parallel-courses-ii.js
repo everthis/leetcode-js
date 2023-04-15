@@ -87,11 +87,12 @@ const minNumberOfSemesters = function (n, dependencies, k) {
 function bitCnt(num) {
   let res = 0
   while(num) {
-    if(num & 1) res++
-    num = num >> 1
+    num &= (num - 1)
+    res++
   }
   
   return res
 }
+
 
 
