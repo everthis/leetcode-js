@@ -1,3 +1,4 @@
+
 /**
  * @param {number[]} nums
  * @param {number[]} quantity
@@ -9,13 +10,13 @@ const canDistribute = function(nums, quantity) {
     freq.set(e, (freq.get(e) || 0) + 1)
   }
   const cntArr = [...freq.values()]
-  const dp = Array.from({ length: 51 }, () => Array(1024).fill(false))
-  const n = cntArr.length, m = quantity.length
+  const n = cntArr.length, m = quantity.length, limit = 1 << m
+  const dp = Array.from({ length: n + 1 }, () => Array(limit).fill(false))
   for(let i = 0; i < n; i++) {
     dp[i][0] = true
   }
   cntArr.unshift(0)
-  const allMask = (1 << m) - 1
+  const allMask = limit - 1
   
   for(let i = 1; i <= n; i++) {
     for(let mask = 1; mask <= allMask; mask++) {
@@ -37,7 +38,7 @@ const canDistribute = function(nums, quantity) {
   
   function canSatisfySubset(cnt, subset) {
     let sum = 0
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < m; i++) {
       if(subset & (1 << i)) {
         sum += quantity[i]
       }
