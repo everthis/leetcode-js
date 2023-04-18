@@ -3,56 +3,48 @@
  * @return {number}
  */
 const minimumLines = function(points) {
-  const n = points.length;
-  const connects = Array.from({ length: n }, () => Array(n).fill(0));
-  for(let i = 0; i < n; ++i) {
-      for(let j = i + 1; j < n; ++j) {
-          connects[i][j] = (1 << i) | (1 << j);
-          let dx = points[j][0] - points[i][0];
-          let dy = points[j][1] - points[i][1];
-          for(let k = j + 1; k < n; ++k) { // check if k will be on the line connecting i and j.
-              let dx2 = points[k][0] - points[i][0];
-              let dy2 = points[k][1] - points[i][1];
-              if (dx * dy2 == dy * dx2) {
-                  connects[i][j] |= (1 << k);
-              }
-          }
+  const n = points.length
+  const limit = 1 << n
+  const dp = Array(limit).fill(n)
+  dp[0] = 0
+  for(let mask = 1; mask < limit; mask++) {
+    for(let sub = mask; sub; sub = (sub - 1) & mask) {
+      if(valid(sub)) {
+        dp[mask] = Math.min(dp[mask], dp[mask - sub] + 1)
       }
+    }
   }
-  const dp = new Array(1<<n).fill(Infinity);
-  return helper(n, 0, dp, connects);
+  return dp[limit - 1]
+  
+  function valid(sub) {
+    let res = true
+    const arr = []
+    let idx = 0
+    while(sub) {
+      if(sub & 1) arr.push(idx)
+      sub = sub >> 1
+      idx++
+    }
+    if(arr.length <= 2) return res
+    for(let i = 2; i < arr.length; i++) {
+      if(!isSameLine(points[arr[0]], points[arr[1]], points[arr[i]])) {
+        return false
+      }
+    }
+    return res
+  }
 };
 
-function helper(n, mask, dp, connects) {
-  if (dp[mask] == Infinity) {
-      let has = numOfOne(mask);
-      if (has == n) { // if all the points have been connected
-          dp[mask] = 0;
-      } else if (has >= n - 2) { // if only 2 points left
-          dp[mask] = 1;
-      } else { // if there are more than 2 points, try a line connecting first to second, third, ...
-          let i = 0;
-          for(let x = (1 << i); i < n; ++i, x <<= 1) {
-              if ((mask & x) == 0) {
-                  break;
-              }
-          }
-          for(let j = i + 1, x = (1 << j); j < n; ++j, x <<= 1) {
-              if ((mask & x) == 0) {
-                  let mask2 = mask | connects[i][j];
-                  dp[mask] = Math.min(dp[mask], 1 + helper(n, mask2, dp, connects));
-              }
-          }
-      }
-  }
-  return dp[mask];
-}
 
-function numOfOne(num) {
-  const str = (num >>> 0).toString(2)
+function bitCnt(num) {
   let res = 0
-  for(let ch of str) {
-    if(ch === '1') res++
+  while(num) {
+    if(num & 1) res++
+    num = num >> 1
   }
   return res
+}
+function isSameLine(p1, p2, p3) {
+  const delta = (p3[1] - p2[1]) * (p2[0] - p1[0]) - (p2[1] - p1[1]) * (p3[0] - p2[0])
+  return delta === 0
 }
