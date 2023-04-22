@@ -5,6 +5,7 @@
 const maximumInvitations = function(favorite) {
   const n = favorite.length
   const inDegree = Array(n).fill(0)
+  const { max } = Math
   for(let i = 0; i < n; i++) {
     inDegree[favorite[i]]++
   }
@@ -16,23 +17,24 @@ const maximumInvitations = function(favorite) {
     if(inDegree[i] === 0) {
       q.push(i)
       visited[i] = 1
+      depth[i] = 1
     }
   }
   
   while(q.length) {
-    const cur = q.shift()
+    const cur = q.pop()
     const nxt = favorite[cur]
     inDegree[nxt]--
     if(inDegree[nxt] === 0) {
       q.push(nxt)
       visited[nxt] = 1
     }
-    depth[nxt] = depth[cur] + 1
+    depth[nxt] = max(depth[nxt], depth[cur] + 1)
   }
-  
+
   let maxLoopSize = 0
   let twoNodesSize = 0
-  const { max } = Math
+
   for(let i = 0; i < n; i++) {
     if(visited[i] === 1) continue
     let j = i
@@ -49,7 +51,6 @@ const maximumInvitations = function(favorite) {
       twoNodesSize += depth[i] + depth[favorite[i]]
     }
   }
-  
   
   return max(maxLoopSize, twoNodesSize)
 };
