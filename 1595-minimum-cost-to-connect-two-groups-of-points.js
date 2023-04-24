@@ -6,7 +6,7 @@ const connectTwoGroups = function(cost) {
   const m = cost.length, n = cost[0].length, { min } = Math
   const limit = 1 << n
   const dp = Array.from({ length: m + 1 }, () => Array(limit).fill(Infinity))
-  const minCost = Array.from({ length: m + 1 }, () => Array(limit).fill(Infinity))
+  const subCost = Array.from({ length: m + 1 }, () => Array(limit).fill(Infinity))
   
   for(let i = 0; i < m; i++) {
     for(let mask = 0; mask < limit; mask++) {
@@ -17,7 +17,7 @@ const connectTwoGroups = function(cost) {
         }
       }
       
-      minCost[i][mask] = sum
+      subCost[i][mask] = sum
     }
   }
   
@@ -27,7 +27,7 @@ const connectTwoGroups = function(cost) {
       for(let sub = mask; sub; sub = (sub - 1) & mask) {
         dp[i][mask] = min(
           dp[i][mask],
-          dp[i - 1][mask - sub] + minCost[i - 1][sub]
+          dp[i - 1][mask - sub] + subCost[i - 1][sub]
         )
       }
       let tmp = Infinity
