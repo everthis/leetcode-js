@@ -11,17 +11,11 @@ const maximumRows = function(matrix, numSelect) {
   
   for(let mask = 1; mask < limit; mask++) {
     if(bitCnt(mask) > numSelect) continue
-    const set = new Set()
-    for(let i = 0; i < n; i++) {
-      if(mask & (1 << i)) {
-        set.add(n - 1 - i)
-      }
-    }
     let num = 0
     for(let i = 0; i < m; i++) {
       let mark = true
-      for(let j = 0; j < n; j++) {
-        if(matrix[i][j] === 1 && !set.has(j)) {
+      for(let j = n - 1; j >= 0; j--) {
+        if(matrix[i][j] === 1 && (mask & (1 << j)) === 0) {
           mark = false
           break
         }
