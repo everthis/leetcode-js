@@ -16,6 +16,40 @@ Output:
  * @return {string[]}
  */
 const generateAbbreviations = function(word) {
+  const n = word.length
+  const limit = 1 << n
+  const res = []
+  
+  for(let mask = 0; mask < limit; mask++) {
+    res.push(helper(word, mask))
+  }
+  
+  return res
+  
+  function helper(word, mask) {
+    let res = '', zero = 0, idx = 0
+    for(let i = 0; i < n; i++) {
+      if(mask & (1 << i)) {
+        if(zero) res += zero
+        res += word[i]
+        zero = 0
+      } else {
+        zero++
+      }
+      if(i === n - 1 && zero) res += zero
+    }
+    
+    return res
+  }
+};
+
+// another
+
+/**
+ * @param {string} word
+ * @return {string[]}
+ */
+const generateAbbreviations = function(word) {
   const arr = []
   dfs(arr, word, 0, '', 0)
   return arr
