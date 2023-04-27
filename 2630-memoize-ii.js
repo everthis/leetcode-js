@@ -1,4 +1,4 @@
-const RES = Symbol("result");
+const RES = Symbol("res");
 /**
  * @param {Function} fn
  */
