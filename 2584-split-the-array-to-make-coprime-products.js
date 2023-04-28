@@ -37,3 +37,72 @@ function getPrimeFactors(n) {
   if (n > 1) counts[n] = (counts[n] || 0) + 1;
   return counts;
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const findValidSplit = function (nums) {
+  const map = new Map()
+  const n = nums.length
+  const max = Math.max(...nums)
+  const primes = Eratosthenes(max)
+
+  for (let i = 0; i < n; i++) {
+    let x = nums[i]
+    for (const p of primes) {
+      if (p * p > x && x > 1) {
+        if (!map.has(x)) {
+          map.set(x, [i, i])
+        }
+        map.get(x)[1] = i
+        break
+      }
+
+      if (x % p === 0) {
+        if (!map.has(p)) {
+          map.set(p, [i, i])
+        }
+        const a = map.get(p)
+        a[1] = i
+      }
+      while (x % p === 0) x = x / p
+    }
+  }
+
+  const diff = Array(n + 1).fill(0)
+  for (const [k, v] of map) {
+    const [s, e] = v
+    // if(s === e) continue
+    diff[s] += 1
+    diff[e] -= 1
+  }
+  // console.log(diff)
+  let sum = 0
+  for (let i = 0; i < n - 1; i++) {
+    sum += diff[i]
+    if (sum === 0) return i
+  }
+
+  return -1
+}
+
+function Eratosthenes(n) {
+  const q = Array(n + 1).fill(0)
+  const primes = []
+  for (let i = 2; i <= Math.sqrt(n); i++) {
+    if (q[i] == 1) continue
+    let j = i * 2
+    while (j <= n) {
+      q[j] = 1
+      j += i
+    }
+  }
+  for (let i = 2; i <= n; i++) {
+    if (q[i] == 0) primes.push(i)
+  }
+  return primes
+}
+
