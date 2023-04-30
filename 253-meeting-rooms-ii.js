@@ -20,6 +20,27 @@ Output: 1
  * @return {number}
  */
 const minMeetingRooms = function(intervals) {
+  const arr = Array(1e6 + 2).fill(0)
+  for(const [s, e] of intervals) {
+    arr[s]++
+    arr[e]--
+  }
+  let res = arr[0]
+  for(let i = 1; i < arr.length; i++) {
+    arr[i] += arr[i - 1]
+    res = Math.max(res, arr[i])
+  }
+  
+  return res
+};
+
+// another
+
+/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+const minMeetingRooms = function(intervals) {
   const n = intervals.length
   const start = Array(n), end = Array(n)
   for(let i = 0; i < n; i++) {
