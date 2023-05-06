@@ -2,64 +2,75 @@
  * @param {number[][]} orders
  * @return {number}
  */
-const getNumberOfBacklogOrders = function (orders) {
-  const h0 = new PriorityQueue((a, b) => a[0] > b[0])
-  const h1 = new PriorityQueue((a, b) => a[0] < b[0])
-  const P = 10 ** 9 + 7
-  const { min } = Math
-
-  let i,
-    j,
-    i1,
-    j1,
-    ans = 0
-  for (let c of orders) {
-    i = c[0]
-    j = c[1]
-    if (c[2]) {
-      while (!h0.isEmpty() && h0.peek()[0] >= i) {
-        i1 = h0.peek()[0]
-        j1 = h0.peek()[1]
-        h0.pop()
-        if (j > j1) j -= j1
-        else {
-          j1 -= j
-          j = 0
-          if (j1) h0.push([i1, j1])
-          break
+const getNumberOfBacklogOrders = function(orders) {
+  const buyPQ = new PQ((a, b) => a[0] > b[0])
+  const sellPQ = new PQ((a, b) => a[0] < b[0])
+  const mod = 1e9 + 7
+  
+  for(const e of orders) {
+    const [p, a, o] = e
+    if(o === 0) {
+      // buy order
+      if(sellPQ.isEmpty() || sellPQ.peek()[0] > p) {
+        buyPQ.push(e)
+        continue
+      }
+      while(!sellPQ.isEmpty() && sellPQ.peek()[0] <= p && e[1]) {
+        const tmp = sellPQ.peek()
+        if(e[1] <= tmp[1]) {
+          tmp[1] -= e[1]
+          e[1] = 0
+          if(tmp[1] === 0) {
+            sellPQ.pop()
+          }
+        } else {
+          // e[1] > tmp[1]
+          sellPQ.pop()
+          e[1] -= tmp[1]
         }
       }
-      if (j) h1.push([i, j])
-    } else {
-      while (!h1.isEmpty() && h1.peek()[0] <= i) {
-        i1 = h1.peek()[0]
-        j1 = h1.peek()[1]
-        h1.pop()
-        if (j > j1) j -= j1
-        else {
-          j1 -= j
-          j = 0
-          if (j1) h1.push([i1, j1])
-          break
+      if(e[1]) {
+        buyPQ.push(e)
+      }
+    } else if(o === 1) {
+      // sell order
+      if(buyPQ.isEmpty() || buyPQ.peek()[0] < p) {
+        sellPQ.push(e)
+        continue
+      }
+      while(!buyPQ.isEmpty() && buyPQ.peek()[0] >= p && e[1]) {
+        const tmp = buyPQ.peek()
+        if(e[1] <= tmp[1]) {
+          tmp[1] -= e[1]
+          e[1] = 0
+          if(tmp[1] === 0) {
+            buyPQ.pop()
+          }
+        } else {
+          // e[1] > tmp[1]
+          buyPQ.pop()
+          e[1] -= tmp[1]
         }
       }
-      if (j) h0.push([i, j])
+      if(e[1]) {
+        sellPQ.push(e)
+      }
     }
   }
-  while (!h0.isEmpty()) {
-    ans += h0.peek()[1]
-    h0.pop()
-    if (ans >= P) ans -= P
+  
+  let res = 0
+  
+  while(!buyPQ.isEmpty()) {
+    res = (res + buyPQ.pop()[1]) % mod
   }
-  while (!h1.isEmpty()) {
-    ans += h1.peek()[1]
-    h1.pop()
-    if (ans >= P) ans -= P
+  while(!sellPQ.isEmpty()) {
+    res = (res + sellPQ.pop()[1]) % mod
   }
-  return ans
-}
+  
+  return res % mod
+};
 
-class PriorityQueue {
+class PQ {
   constructor(comparator = (a, b) => a > b) {
     this.heap = []
     this.top = 0
