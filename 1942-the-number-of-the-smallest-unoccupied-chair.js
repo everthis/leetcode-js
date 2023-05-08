@@ -17,9 +17,7 @@ const smallestChair = function(times, targetFriend) {
     let res = -1
     const [s, e, idx] = times[i]
     while(!occupied.isEmpty() && occupied.peek()[1] <= s) {
-      const tmp = occupied.pop()
-      tmp[1] = s
-      avail.push(tmp)
+      avail.push(occupied.pop())
     }
     
     const c = avail.pop()
