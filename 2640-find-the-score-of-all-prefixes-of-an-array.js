@@ -3,12 +3,14 @@
  * @return {number[]}
  */
 const findPrefixScore = function(nums) {
-  let pre = [];
-  let m = 0, s = 0;
-  for(let x of nums) {
-      m = Math.max(m, x);
-      s += x + m;
-      pre.push(s);
+  const { max } = Math
+  const res = []
+  let ma = 0, sum = 0
+  for(const e of nums) {
+    ma = max(e, ma)
+    sum += ma + e
+    res.push(sum)
   }
-  return pre;
+  
+  return res
 };
