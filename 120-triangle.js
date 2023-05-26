@@ -17,3 +17,26 @@ const minimumTotal = function(triangle) {
 
   return triangle[0][0];
 };
+
+// another
+
+/**
+ * @param {number[][]} triangle
+ * @return {number}
+ */
+const minimumTotal = function(triangle) {
+  const m = triangle.length, n = triangle.at(-1).length
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(Infinity))
+  dp[1][1] = triangle[0][0]
+  for(let i = 2; i <= m; i++) {
+    for(let j = 1; j <= triangle[i - 1].length; j++) {
+      if(j === 1) dp[i][j] = dp[i - 1][j] + triangle[i - 1][j - 1]
+      else dp[i][j] = Math.min(dp[i - 1][j], dp[i - 1][j - 1]) + triangle[i - 1][j - 1] 
+    }
+  }
+  let res = Infinity
+  for (let j = 0; j <= n; j++) {
+    res = Math.min(res, dp[m][j])
+  }
+  return res
+};
