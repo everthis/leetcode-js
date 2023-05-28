@@ -4,7 +4,7 @@
  */
 const nextPermutation = function(nums) {
   const n = nums.length
-  let k
+  let k = null
   for(let i = n - 2; i >= 0; i--) {
     if(nums[i] < nums[i + 1]) {
       k = i
