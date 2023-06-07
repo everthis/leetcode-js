@@ -4,17 +4,19 @@
  * @return {number}
  */
 const minCapability = function(nums, k) {
-  let left = 1, right = 1e9, n = nums.length
-  while (left < right) {
-    let mid = Math.floor((left + right) / 2), take = 0
-    for (let i = 0; i < n; ++i) {
-      if (nums[i] <= mid) {
-        take += 1
+  const n = nums.length
+  let l = 1, r = 1e9
+  while(l < r) {
+    const mid = Math.floor((l + r) / 2)
+    let cnt = 0
+    for(let i = 0; i < n; i++) {
+      if(nums[i] <= mid) {
+        cnt++
         i++
-      } 
+      }
     }
-    if (take >= k) right = mid
-    else left = mid + 1
+    if(cnt >= k) r = mid
+    else l = mid + 1
   }
-  return left
+  return l
 };
