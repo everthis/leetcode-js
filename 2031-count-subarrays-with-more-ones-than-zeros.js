@@ -29,12 +29,12 @@ class FenwickTree {
 const subarraysWithMoreZerosThanOnes = function(nums) {
   const n = nums.length, mod = 1e9 + 7
   const bit = new FenwickTree(2 * n + 1)
-  bit.update(n, 1)
+  bit.update(n + 1, 1)
   let balance = 0, res = 0
   for(const e of nums) {
     balance += (e === 1 ? 1 : -1)
-    bit.update(balance + n, 1)
-    res = (res + bit.query(balance + n - 1)) % mod 
+    bit.update(balance + n + 1, 1)
+    res = (res + bit.query(balance + n)) % mod 
   }
   
   return res
