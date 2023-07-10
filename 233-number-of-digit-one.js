@@ -3,6 +3,32 @@
  * @return {number}
  */
 const countDigitOne = function(n) {
+    return countNum(1, n + 1)
+};
+
+// Counts the number of `digit` in the range [0, limit)
+function countNum( digit,  limit) {
+  let count = 0;
+  let factor = 1;
+  let tail = 0;
+  while (limit >= 10) {
+    let d = limit % 10;
+    limit = ~~(limit / 10);
+    count += limit * factor;
+    count += d > digit ? factor : d == digit ? tail : 0;
+    tail += d * factor;
+    factor *= 10;
+  }
+  return count + (limit > digit ? factor : limit == digit ? tail : 0);
+}
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const countDigitOne = function(n) {
   let count = 0
   for (let m = 1; m <= n; m *= 10) {
     const a = Math.floor(n / m)
