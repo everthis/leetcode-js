@@ -25,7 +25,7 @@ const atMostNGivenDigitSet = function(digits, n) {
         res += pow(base, len - 1 - pos)
       } else if(str[pos] === ch) {
         dfs(pos + 1)
-      }
+      } else break
     }
   }
 };
