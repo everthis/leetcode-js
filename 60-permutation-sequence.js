@@ -67,6 +67,36 @@ const getPermutation = function(n, k) {
  * @param {number} k
  * @return {string}
  */
+const getPermutation = function(n, k) {
+  const fact = []
+  const nums = []
+  for(let i = 1; i <= n; i++) {
+    nums.push(i)
+  }
+  fact[0] = 1
+  for(let i = 1, tmp = 1; i <= n; i++) {
+    tmp *= i
+    fact[i] = tmp
+  }
+  let res = ''
+  k--
+  for(let i = 1; i <= n; i++) {
+    const idx = ~~(k / fact[n - i])
+    res += nums[idx]
+    nums.splice(idx, 1)
+    k -= idx * fact[n - i]
+  }
+  
+  return res
+};
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {string}
+ */
 const getPermutation = function (n, k) {
   let sb = ''
   const num = []
