@@ -3,6 +3,31 @@
  * @return {number}
  */
 const countQuadruplets = function(nums) {
+  let res = 0, n = nums.length
+  const cnt = Array(n).fill(0)
+  
+  for(let j = 0; j < n; j++) {
+    let preSmall = 0
+    for(let i = 0; i < j; i++) {
+      if(nums[i] < nums[j]) {
+        preSmall++
+        res += cnt[i]
+      } else if(nums[j] < nums[i]) {
+        cnt[i] += preSmall
+      }
+    }
+  }
+  
+  return res
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const countQuadruplets = function(nums) {
   const B = new Array(nums.length + 1).fill(0);
   let quadruplets = 0;
 
