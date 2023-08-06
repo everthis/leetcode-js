@@ -40,3 +40,22 @@ const reverse = function(num) {
   if (negative) return result * -1;
   return result;
 };
+
+// another 
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const reverse = (n) => {
+    if (typeof n !== 'number') {
+        throw new Error('n must be a number');
+    }
+    let sign = Math.sign(n);
+    n = Math.abs(n);
+    if (n < 0) {
+        return -reverse(-n);
+    }
+    let reversed = Number([...n.toString()].reverse().join(''));
+    return sign * reversed;
+}
