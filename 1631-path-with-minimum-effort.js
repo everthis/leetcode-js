@@ -4,6 +4,50 @@
  */
 const minimumEffortPath = function(heights) {
   const m = heights.length, n = heights[0].length
+  const { abs, floor } = Math
+  let l = 0, r= 1e6
+  
+  while(l <  r) {
+    const mid = l + floor((r- l) /2)
+    if(valid(mid)) {
+      r = mid
+    } else {
+      l = mid + 1
+    }
+  }
+  
+  return l
+  
+  function valid(effort) {
+    const visited = Array.from({length:m}, () => Array(n).fill(0))
+    const dirs = [[1,0],[-1,0],[0,1],[0,-1]]
+    let q = []
+    q.push([0, 0])
+    visited[0][0] = 1
+    while(q.length) {
+      const [x, y] = q.shift()
+      for(const [dx, dy] of dirs) {
+        const nx = x + dx, ny = y + dy
+        if(nx<0 || nx>=m || ny < 0 || ny >= n) continue
+        if(visited[nx][ny]) continue
+        if(abs(heights[nx][ny] - heights[x][y]) > effort) continue
+        q.push([nx,ny])
+        visited[nx][ny] = 1
+      }
+    }
+    
+    return visited[m - 1][n - 1] === 1
+  }
+};
+
+// another
+
+/**
+ * @param {number[][]} heights
+ * @return {number}
+ */
+const minimumEffortPath = function(heights) {
+  const m = heights.length, n = heights[0].length
   const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
   let l = 0, r = 1e6 - 1
   
