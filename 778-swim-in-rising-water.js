@@ -3,6 +3,49 @@
  * @return {number}
  */
 const swimInWater = function(grid) {
+   const n = grid.length
+   const limit = n * n, { floor } = Math
+   let l = 0, r = limit - 1
+   
+   while(l < r) {
+     const mid = l + floor((r - l) / 2)
+     if(valid(mid)) r = mid
+     else l = mid + 1
+   }
+   
+    return l
+   
+  
+   function valid(h) {
+     const visited = Array.from({ length: n }, () => Array(n).fill(0))
+     if(grid[0][0] > h) return false
+     return dfs(h, 0, 0, visited)
+   }
+  
+   function dfs(h, i, j, visited) {
+     if(i === n - 1 && j === n - 1) return true
+     const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+     visited[i][j] = 1
+     for(const [dx, dy] of dirs) {
+       const nx = i + dx, ny = j + dy
+       if(nx >= 0 && nx < n && ny >= 0 && ny < n && visited[nx][ny] === 0 && grid[nx][ny] <= h) {
+         if(dfs(h, nx, ny, visited)) return true
+       }
+  
+     }
+     
+     return false
+   }
+};
+
+// another
+
+
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+const swimInWater = function(grid) {
   let n = grid.length;
   let low = grid[0][0],
     hi = n * n - 1;
