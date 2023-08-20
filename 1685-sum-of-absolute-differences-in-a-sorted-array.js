@@ -3,15 +3,18 @@
  * @return {number[]}
  */
 const getSumAbsoluteDifferences = function(nums) {
-  const res = [], n = nums.length
-  let sum = 0
-  for(let first = nums[0], i = 1; i < n; i++) {
-    sum += nums[i] - first
-  }
-  res[0] = sum
+  const n = nums.length, { abs } = Math
+  const res = []
+  let e0 = 0
   for(let i = 1; i < n; i++) {
-    res[i] = res[i - 1] - (nums[i] - nums[i - 1]) * (n - i - 1) + (nums[i] - nums[i - 1]) * (i - 1)
+    e0 += abs(nums[i] - nums[0])
   }
-
+  res[0] = e0
+  for(let i = 1; i < n; i++) {
+    const pre = res[i - 1], diff = nums[i] - nums[i - 1]
+    let cur = pre + diff * (i - 1) - diff * (n - 1 - i)
+    res.push(cur)
+  }
+  
   return res
 };
