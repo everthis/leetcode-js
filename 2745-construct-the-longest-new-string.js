@@ -4,9 +4,12 @@
  * @param {number} z
  * @return {number}
  */
-var longestString = function(x, y, z) {
-    if (x === y)
-        return (4 * x + 2 * z);
-    var mini = Math.min(x, y);
-    return (2 * mini + 2 * (mini + 1) + 2 * z); 
+const longestString = function(x, y, z) {
+   const base = Math.min(x, y)
+   let extra = 0
+   if(x !== y) {
+     extra = 1
+   }
+  
+   return (base * 2 + z + extra) * 2
 };
