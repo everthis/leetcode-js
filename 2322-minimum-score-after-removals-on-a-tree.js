@@ -139,3 +139,96 @@ var minimumScore = function (nums, edges) {
     return (child_xor[i] = ans)
   }
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number[][]} edges
+ * @return {number}
+ */
+const minimumScore = function (nums, edges) {
+  const n = nums.length,
+    m = edges.length
+  const graph = {},
+    degree = Array(n).fill(0)
+  const children = [],
+    vArr = nums.slice()
+  for (let i = 0; i < n; i++) children[i] = new Set()
+  for (const [u, v] of edges) {
+    if (graph[u] == null) graph[u] = []
+    if (graph[v] == null) graph[v] = []
+    graph[u].push(v)
+    graph[v].push(u)
+    degree[u]++
+    degree[v]++
+  }
+  let v = 0,
+    q = []
+  const seen = new Set()
+  for (let i = 0; i < n; i++) {
+    v ^= nums[i]
+    if (degree[i] === 1) {
+      q.push(i)
+      seen.add(i)
+    }
+  }
+
+  while (q.length) {
+    const tmp = []
+    const size = q.length
+    for (let i = 0; i < size; i++) {
+      const cur = q[i]
+      for (const nxt of graph[cur]) {
+        // chidlren
+        // vArr
+        if (!seen.has(nxt)) {
+          children[nxt].add(cur)
+          children[nxt] = mergeSet(children[nxt], children[cur])
+          vArr[nxt] ^= vArr[cur]
+        }
+        degree[nxt]--
+        if (degree[nxt] === 1) {
+          tmp.push(nxt)
+          seen.add(nxt)
+        }
+      }
+    }
+
+    q = tmp
+  }
+
+  let res = Infinity
+  for (let i = 0; i < m - 1; i++) {
+    for (let j = i + 1; j < m; j++) {
+      let [a, b] = edges[i]
+      if (children[a].has(b)) {
+        ;[a, b] = [b, a]
+      }
+      let [c, d] = edges[j]
+      if (children[c].has(d)) {
+        ;[c, d] = [d, c]
+      }
+      if (children[c].has(a)) {
+        const tmp = [vArr[a], vArr[c] ^ vArr[a], v ^ vArr[c]]
+        res = Math.min(res, Math.max(...tmp) - Math.min(...tmp))
+      } else if (children[a].has(c)) {
+        const tmp = [vArr[c], vArr[a] ^ vArr[c], v ^ vArr[a]]
+        res = Math.min(res, Math.max(...tmp) - Math.min(...tmp))
+      } else {
+        const tmp = [vArr[a], vArr[c], v ^ vArr[a] ^ vArr[c]]
+        res = Math.min(res, Math.max(...tmp) - Math.min(...tmp))
+      }
+    }
+  }
+
+  return res
+}
+
+function mergeSet(s, t) {
+  for (const e of t) {
+    s.add(e)
+  }
+  return s
+}
+
