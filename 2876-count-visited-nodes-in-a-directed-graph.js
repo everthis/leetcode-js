@@ -4,7 +4,8 @@
  */
 var countVisitedNodes = function(edges) {
     let n = edges.length, res = new Array(n).fill(0), j = 0;
-    for (let i = 0; i < n; j = ++i) {
+    for (let i = 0; i < n; i++) {
+        let j = i
         let seen = new Set();
         let s = [];
         while (!seen.has(j) && res[j] == 0) {
