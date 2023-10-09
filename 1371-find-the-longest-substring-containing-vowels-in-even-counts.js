@@ -124,3 +124,41 @@ const findTheLongestSubstring = function(s) {
 
   return res
 };
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const findTheLongestSubstring = function (s) {
+  let mask = 0
+  const n = s.length,
+    { max } = Math,
+    map = new Map(),
+    a = 'a'.charCodeAt(0),
+    set = new Set(['a', 'e', 'i', 'o', 'u'])
+  map.set(0, -1)
+  let res = 0
+  for (let i = 0; i < n; i++) {
+    const ch = s[i]
+    if (set.has(ch)) {
+      const idx = ch.charCodeAt(0) - a
+      mask ^= 1 << idx
+      if (mask === 0) res = max(res, i + 1)
+      else if (map.has(mask)) {
+        res = max(res, i - map.get(mask))
+      } else {
+        map.set(mask, i)
+      }
+    } else {
+        if(map.has(mask)) {
+            // console.log(i, map.get(mask))
+            res = max(res, i - map.get(mask))
+        }
+    }
+  }
+
+  return res
+}
+
