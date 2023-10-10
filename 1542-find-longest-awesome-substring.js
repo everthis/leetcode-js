@@ -2,6 +2,40 @@
  * @param {string} s
  * @return {number}
  */
+const longestAwesome = function(s) {
+  const n = s.length, map = new Map(), {max} = Math
+  let res = 0, mask = 0
+  
+  map.set(0, -1)
+  for(let i = 0; i < n; i++) {
+    const d = +s[i]
+    mask ^= (1 << d)
+    if(map.has(mask)) {
+        res = max(res, i - map.get(mask))
+    }
+
+    for(let j = 0; j < 10; j++) {
+        const tmp = mask ^ (1 << j)
+        if(map.has(tmp)) {
+            // console.log(i, map.get(tmp), tmp)
+            res = max(res, i - map.get(tmp))
+        }
+    }
+
+    if(!map.has(mask)) {
+        map.set(mask, i)
+    }
+  }
+
+  return res
+};
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
 const longestAwesome = function (s) {
   const dp = new Array(1024).fill(s.length)
   let res = 0,
