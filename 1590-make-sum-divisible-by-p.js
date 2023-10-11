@@ -4,6 +4,36 @@
  * @return {number}
  */
 const minSubarray = function(nums, p) {
+  const sum = nums.reduce((ac, e) => ac+ e,0)
+  const target = sum % p, n = nums.length, {min} = Math
+  if(target === 0) return 0
+  const map = new Map()
+  map.set(0, -1)
+  let res = n
+  for(let i = 0, s = 0; i < n; i++) {
+      s += nums[i]
+      const r = s % p
+
+      if(r >= target) {
+          if(map.has(r - target)) res = min(res, i - map.get(r-target))
+      }else {
+          if(map.has(p + r - target)) res = min(res, i - map.get(p + r - target))
+      }
+      map.set(r, i)
+  }
+  
+  return res === n ? -1 : res
+};
+
+// another
+
+
+/**
+ * @param {number[]} nums
+ * @param {number} p
+ * @return {number}
+ */
+const minSubarray = function(nums, p) {
   const remain = nums.reduce((ac, e) => ac + e, 0) % p
   const n = nums.length, hash = {0: -1}
   let res = n
