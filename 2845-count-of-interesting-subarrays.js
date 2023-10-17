@@ -15,8 +15,11 @@ const countInterestingSubarrays = function (nums, modulo, k) {
       cnt++
     }
     const key = cnt % modulo
+    /*
     if(key >= k) res += map.get(key - k) || 0
     else res += map.get(modulo - (k - key)) || 0
+    */
+    res += map.get((modulo + key - k) % modulo) || 0
 
     map.set(key, (map.get(key) || 0) + 1)
   }
