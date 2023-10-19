@@ -4,6 +4,27 @@
  * @return {number}
  */
 const coinChange = function(coins, amount) {
+  const n = coins.length
+  const dp = Array(amount + 1).fill(Infinity)
+  dp[0] = 0
+  for(const e of coins) dp[e] = 1
+  for(let i = 1; i <= amount; i++) {
+    for(const e of coins) {
+      if(i > e) dp[i] = Math.min(dp[i], dp[i - e] + 1)
+    }
+  }
+  // console.log(dp)
+  return dp[amount] !== Infinity ? dp[amount] : -1
+};
+
+// another
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+const coinChange = function(coins, amount) {
   const dp = new Array(amount + 1).fill(amount + 1)
   dp[0] = 0
   for (let i = 1; i <= amount; i++) {
