@@ -3,6 +3,32 @@
  * @param {number[]} coins
  * @return {number}
  */
+const change = function(amount, coins) {
+  const n = coins.length
+  const dp = Array.from({length: n + 1}, () => Array(amount + 1).fill(0))
+  for(let i = 0; i <= n; i++) {
+      dp[i][0] = 1
+  }
+
+  for(let j = 1; j <= amount; j++) {
+      for(let i = 1; i <= n; i++) {
+          const e = coins[i - 1]
+          dp[i][j] = dp[i - 1][j] + (j >= e ? dp[i][j - e]: 0)
+      }
+  }
+  // console.log(dp)
+  return dp[n][amount]
+};
+
+// another
+
+
+
+/**
+ * @param {number} amount
+ * @param {number[]} coins
+ * @return {number}
+ */
 function change(amount, coins) {
   const dp = Array.from(new Array(coins.length + 1), () =>
     new Array(amount + 1).fill(0)
