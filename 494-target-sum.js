@@ -4,6 +4,34 @@
  * @return {number}
  */
 const findTargetSumWays = function(nums, target) {
+  const n = nums.length
+  let res = 0
+  for(let i = 0, limit = Math.pow(2, n); i < limit; i++) {
+    if(helper(i)) res++
+  }
+  
+  return res
+  
+  function helper(mask) {
+    let sum = 0
+    for(let i = 0; i < nums.length; i++) {
+      if(mask & (1 << i)) {
+        sum += nums[i]
+      } else sum -= nums[i]
+    }
+    
+    return sum === target
+  }
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+const findTargetSumWays = function(nums, target) {
     const sum = nums.reduce((a, b) => a+b);
     if(Math.abs(target) > sum) {
         return 0;
