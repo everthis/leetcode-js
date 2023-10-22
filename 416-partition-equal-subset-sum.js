@@ -3,6 +3,30 @@
  * @return {boolean}
  */
 const canPartition = function(nums) {
+  const n = nums.length
+  const sum = nums.reduce((ac, e) => ac + e, 0)
+  if(sum % 2 === 1) return false
+  const target = sum / 2
+  const dp = Array.from({length: n + 1}, () => Array(target + 101).fill(0))
+  dp[0][0] = 1
+  
+  for(let i = 1; i <= n ; i++) {
+    const e = nums[i - 1]
+    for(let s = 0; s < target + 101; s++) {
+      dp[i][s] = dp[i - 1][s]
+      if(s >= e) dp[i][s] += dp[i - 1][s - e]
+    }
+  }
+  return dp[n][target] > 0
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+const canPartition = function(nums) {
     let sum = 0
     for(let num of nums) {
       sum += num
