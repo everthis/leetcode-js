@@ -1,3 +1,34 @@
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+function countPartitions(nums, k) {
+  const mod = 1e9 + 7
+  let total = 0
+  let res = 1
+  const dp = new Array(k).fill(0)
+  dp[0] = 1
+
+  for (let a of nums) {
+    for (let i = k - 1 - a; i >= 0; i--) {
+      dp[i + a] = (dp[i + a] + dp[i]) % mod
+    }
+    res = (res * 2) % mod
+    total += a
+  }
+
+  for (let i = 0; i < k; i++) {
+    res -= total - i < k ? dp[i] : dp[i] * 2
+  }
+
+  return ((res % mod) + mod) % mod
+}
+
+// another
+
+
+
 const ll = BigInt,
   mod = 1e9 + 7,
   bmod = ll(mod)
