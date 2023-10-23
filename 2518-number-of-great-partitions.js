@@ -4,6 +4,33 @@
  * @return {number}
  */
 function countPartitions(nums, k) {
+  const bi = BigInt
+  const mod = bi(1e9 + 7)
+  const n = nums.length, total = bi(2 ** n)
+  const sum = nums.reduce((ac, e) => ac + e, 0)
+  if(sum < 2 * k) return 0
+  const dp = Array.from({ length: n + 1}, () => Array(k).fill(0n))
+  for(let i = 0; i <= n; i++) dp[i][0] = 1n
+
+  for(let i = 1; i <= n; i++) {
+    const e = nums[i - 1]
+    for(let j = 1; j < k; j++) {
+        dp[i][j] = dp[i - 1][j]
+        if(j >= e) dp[i][j] = bi(dp[i][j] + dp[i - 1][j - e]) % mod
+    }
+  }
+  const tmp = dp[n].reduce((ac, e) => ac + bi(e), 0n)
+  return (total - tmp * 2n) % mod
+}
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+function countPartitions(nums, k) {
   const mod = 1e9 + 7
   let total = 0
   let res = 1
