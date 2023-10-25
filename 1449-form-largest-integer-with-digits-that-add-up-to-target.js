@@ -4,6 +4,37 @@
  * @return {string}
  */
 const largestNumber = function (cost, target) {
+  const dp = Array(target + 1).fill('#')
+  cost.unshift(0)
+  dp[0] = ''
+  for (let sum = 0; sum <= target; sum++) {
+    for (let i = 1; i <= 9; i++) {
+      const e = cost[i]
+      if (sum < e) continue
+      if (dp[sum - e] === '#') continue
+      const str = dp[sum - e] + `${i}`
+      // console.log(str)
+      if (
+        str.length > dp[sum].length ||
+        (str.length === dp[sum].length && str > dp[sum])
+      ) {
+        dp[sum] = str
+      }
+    }
+  }
+// console.log(dp)
+  if (dp[target] === '#') return '0'
+  return dp[target]
+}
+
+// another
+
+/**
+ * @param {number[]} cost
+ * @param {number} target
+ * @return {string}
+ */
+const largestNumber = function (cost, target) {
   const dp = new Array(target + 1).fill(-Infinity)
   dp[0] = 0
   for (let i = 1; i <= target; i++) {
