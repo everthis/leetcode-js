@@ -4,6 +4,35 @@
  * @param {number} x
  * @return {number}
  */
+const minOperations = function (s1, s2, x) {
+   const n = s1.length, arr = []
+   for(let i = 0; i < n; i++) {
+     if(s1[i] !== s2[i]) arr.push(i)
+   }
+   const len = arr.length
+   if(len % 2) return -1
+   const cache = new Map()
+   return dfs(len - 1)
+
+   function dfs(i) {
+     if(i < 0) return 0
+     if(i === 0) return x / 2
+     if(cache.has(i)) return cache.get(i)
+     const res = Math.min(dfs(i - 2) + arr[i] - arr[i - 1], dfs(i - 1) + x/2)
+     cache.set(i, res)
+     return res
+   }
+}
+
+// another
+
+
+/**
+ * @param {string} s1
+ * @param {string} s2
+ * @param {number} x
+ * @return {number}
+ */
 var minOperations = function(s1, s2, x) {
     const n = s1.length;
     const idxs = [];
