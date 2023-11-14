@@ -12,6 +12,57 @@
  * @return {number[]}
  */
 const treeQueries = function(root, queries) {
+  const depth = [], height = [], depthHash = []
+  dfs(root, 0)
+  const res = []
+  for(const e of queries) {
+    const d = depth[e], h = height[e], row = depthHash[d]
+    if(row.length === 1) {
+       res.push(d - 1)
+    } else if(h === row[0]) {
+        res.push(d + row[1])
+    } else {
+        res.push(d + row[0])
+    }
+  }
+  return res
+
+  function dfs(node, d) {
+    if(node == null) return 0
+    const {val} = node
+    const h = Math.max(dfs(node.left, d + 1), dfs(node.right, d + 1))
+    depth[val] = d
+    height[val] = h
+    if(depthHash[d] == null) depthHash[d] = []
+    depthHash[d].push(h)
+    keepLargestTwo(depthHash[d])
+    return h + 1
+  }
+  function keepLargestTwo(arr) {
+      arr.sort((a,b) => b - a)
+      if(arr.length > 2) {
+         arr.splice(2, arr.length - 2)
+      }
+  }
+};
+
+// another
+
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number[]} queries
+ * @return {number[]}
+ */
+const treeQueries = function(root, queries) {
   const height = [], depth = [], { max } = Math
   dfs(root, 0)
   
