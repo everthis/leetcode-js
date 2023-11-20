@@ -99,3 +99,58 @@ const maximizeXor = function (nums, queries) {
   }
   return result
 }
+
+// another
+// though not enough memory, this method still provides a method to solve this kind of problem
+
+class Trie {
+  constructor() {
+    this.next = Array(2).fill(null)
+  }
+}
+/**
+ * @param {number[]} nums
+ * @param {number[][]} queries
+ * @return {number[]}
+ */
+const maximizeXor = function(nums, queries) {
+  nums.sort((a, b) => a - b)
+  queries.forEach((e, i) => e.push(i))
+  queries.sort((a, b) => a[1] - b[1])
+  const n = nums.length
+  let idx = 0
+  const res = []
+  const root = new Trie()
+  for(const [x, m, qi] of queries) {
+    
+    while(idx < n && nums[idx] <= m) {
+      let cur = root, val = nums[idx]
+      for(let i = 29; i >= 0; i--) {
+        const tmp = (val >> i) & 1
+        if(cur.next[tmp] == null) cur.next[tmp] = new Trie()
+        cur = cur.next[tmp]
+      }
+      idx++
+    }
+    if(idx === 0) {
+      res[qi] = -1
+      continue
+    }
+    
+    let tmp = 0, cur = root
+    for(let i = 29; i >= 0; i--) {
+      const val = 1 - ((x >> i) & 1)
+      if(cur.next[val] != null) {
+        tmp = tmp * 2 + 1
+        cur = cur.next[val]
+      } else {
+        tmp = tmp * 2
+        cur = cur.next[1 - val]
+      }
+
+    }
+    
+    res[qi] = tmp
+  }
+  return res
+};
