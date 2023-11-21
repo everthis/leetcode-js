@@ -44,3 +44,51 @@ class Trie {
     return ans
   }
 }
+
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} low
+ * @param {number} high
+ * @return {number}
+ */
+const countPairs = function(nums, low, high) {
+  let res = 0, n = nums.length, trie = { cnt: 0 }
+  for(const e of nums) {
+    res += helper(e, high + 1) - helper(e, low)
+    insert(e)
+  }
+  return res
+  
+  function helper(e, limit) {
+    let res = 0, cur = trie
+    for(let i = 14; i >= 0; i--) {
+      const a = (e >> i) & 1
+      const b = (limit >> i) & 1
+      if(cur == null) break
+      if(b === 0) {
+        cur = cur[a]
+        continue
+      }
+      if(cur[a]) {
+        res += cur[a].cnt
+      }
+      cur = cur[1 - a]
+    }
+    
+    return res
+  }
+  
+  function insert(e) {
+    let cur = trie
+    for(let i = 14; i >= 0; i--) {
+      const tmp = (e >> i) & 1
+      if(!(tmp in cur)) cur[tmp] = {cnt:0}
+      cur[tmp].cnt++
+      cur = cur[tmp]
+    }
+  }
+  
+};
