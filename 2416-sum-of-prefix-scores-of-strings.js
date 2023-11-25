@@ -2,6 +2,47 @@
  * @param {string[]} words
  * @return {number[]}
  */
+const sumPrefixScores = (words) => {
+  const n = words.length
+  const trie = { _count: 0 }
+  const result = []
+
+  // Create our own custom trie with _count property.
+  // We are storing how many time we passed current node.
+  for (let i = 0; i < n; i++) {
+    const word = words[i]
+
+    let node = trie
+    for (let j = 0; j < word.length; j++) {
+      if (!node[word[j]]) node[word[j]] = {}
+      node = node[word[j]]
+      node._count = (node._count || 0) + 1
+    }
+  }
+
+  // Collect all _count values together as a result
+  for (let i = 0; i < n; i++) {
+    const word = words[i]
+    let count = 0
+
+    let node = trie
+    for (let j = 0; j < word.length; j++) {
+      node = node[word[j]]
+      count += node._count || 0
+    }
+
+    result[i] = count
+  }
+
+  return result
+}
+
+// another
+
+/**
+ * @param {string[]} words
+ * @return {number[]}
+ */
 const sumPrefixScores = function(words) {
   let trie = new Trie();
   for (let word of words) {
