@@ -188,7 +188,7 @@ var smallestRange = function(nums) {
 
 // another
 
-class PriorityQueue {
+class PQ {
   constructor(comparator = (a, b) => a > b) {
     this.heap = []
     this.top = 0
@@ -260,7 +260,7 @@ class PriorityQueue {
  * @return {number[]}
  */
 const smallestRange = function (nums) {
-  const pq = new PriorityQueue((a, b) => a[0] < b[0])
+  const pq = new PQ((a, b) => a[0] < b[0])
   const limit = 10 ** 5,
     n = nums.length,
     { max } = Math
