@@ -54,6 +54,64 @@ var closestRoom = function (rooms, queries) {
  * @param {number[][]} queries
  * @return {number[]}
  */
+const closestRoom = function (rooms, queries) {
+  const n = rooms.length
+  const m = queries.length
+  const idxArr = Array.from({ length: m }, (_, i) => i)
+  const res = []
+  rooms.sort((a, b) => b[1] - a[1])
+  idxArr.sort((a, b) => queries[b][1] - queries[a][1])
+  const set = new Set()
+  let j = 0
+  for (let i = 0; i < m; i++) {
+    const q = queries[idxArr[i]]
+    while (j < n && rooms[j][1] >= q[1]) {
+      set.add(rooms[j][0])
+      j++
+    }
+    res[idxArr[i]] = helper(q[0])
+  }
+
+  return res
+
+  function helper(preferedId) {
+    let floor = -Infinity,
+      ceil = Infinity
+    for (const roomId of set) {
+      if (roomId < preferedId && roomId > floor) {
+        floor = roomId
+      }
+      if (roomId >= preferedId && roomId < ceil) {
+        ceil = roomId
+      }
+    }
+    let res = -1
+    if (floor === -Infinity) {
+      res = ceil
+    } else if (ceil === Infinity) {
+      res = floor
+    } else {
+      if (preferedId - floor === ceil - preferedId) {
+        res = floor
+      } else if (preferedId - floor < ceil - preferedId) {
+        res = floor
+      } else {
+        res = ceil
+      }
+    }
+
+    return res === Infinity || res === -Infinity ? -1 : res
+  }
+}
+
+
+// another
+
+/**
+ * @param {number[][]} rooms
+ * @param {number[][]} queries
+ * @return {number[]}
+ */
  const closestRoom = function (rooms, queries) {
   rooms.sort((a, b) => b[1] - a[1])
   const n = queries.length
