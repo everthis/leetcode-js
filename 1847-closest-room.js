@@ -1,3 +1,53 @@
+/**
+ * @param {number[][]} rooms
+ * @param {number[][]} queries
+ * @return {number[]}
+ */
+var closestRoom = function (rooms, queries) {
+  const n = rooms.length
+  const k = queries.length
+  const indexes = new Array(k)
+  for (let i = 0; i < k; i++) {
+    indexes[i] = i
+  }
+  rooms.sort((a, b) => b[1] - a[1]) // Sort by decreasing order of room size
+  indexes.sort((a, b) => queries[b][1] - queries[a][1]) // Sort by decreasing order of query minSize
+  const roomIdsSoFar = new Set()
+  const ans = new Array(k)
+  let i = 0
+  for (const index of indexes) {
+    while (i < n && rooms[i][1] >= queries[index][1]) {
+      // Add id of the room which its size >= query minSize
+      roomIdsSoFar.add(rooms[i++][0])
+    }
+    ans[index] = searchClosetRoomId(roomIdsSoFar, queries[index][0])
+    if (ans[index] == Infinity || ans[index] == -Infinity) ans[index] = -1
+  }
+  return ans
+
+  function searchClosetRoomId(treeSet, preferredId) {
+    let floor = -Infinity
+    let ceiling = Infinity
+    for (const id of treeSet) {
+      if (id <= preferredId) {
+        floor = Math.max(floor, id)
+      } else {
+        ceiling = Math.min(ceiling, id)
+      }
+    }
+    if (floor === -Infinity) {
+      return ceiling
+    } else if (ceiling === Infinity) {
+      return floor
+    } else if (preferredId - floor <= ceiling - preferredId) {
+      return floor
+    } else {
+      return ceiling
+    }
+  }
+}
+
+// another
 
 /**
  * @param {number[][]} rooms
