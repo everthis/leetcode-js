@@ -1,3 +1,46 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const maxBalancedSubsequenceSum = (nums) => {
+    const stack = [[-Infinity, 0]];
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] > 0) {
+            const key = nums[i] - i;
+
+            let left = 0, right = stack.length - 1;
+            while (left <= right) {
+                const mid = left + Math.floor((right - left) / 2);
+                if (stack[mid][0] > key) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+
+            const sum = nums[i] + Math.max(0, stack[left - 1][1]);
+            if (left === stack.length) {
+                stack.push([key, sum]);
+            } else {
+                stack.splice(left, 0, [key, sum]);
+            }
+
+            let k = left + 1;
+            while (k < stack.length && sum >= stack[k][1]) {
+                stack.splice(k, 1);
+            }
+        }
+    }
+
+    if (stack.length > 1) {
+        return stack[stack.length - 1][1];
+    }
+
+    return Math.max(...nums);
+}
+
+// another
+
 ////////////////////// Template /////////////////////////////////
 function Bisect() {
   return { insort_right, insort_left, bisect_left, bisect_right }
