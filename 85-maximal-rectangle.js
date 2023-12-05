@@ -4,6 +4,54 @@
  */
 const maximalRectangle = function(matrix) {
   const m = matrix.length, n = matrix[0].length
+  const heights = Array(n).fill(0), left = Array(n).fill(0), right = Array(n).fill(n)
+  let res = 0
+  for(let i = 0; i < m; i++) {
+    let l = 0, r = n
+    for(let j = 0; j < n; j++) {
+      if(matrix[i][j] === '1') {
+        heights[j]++
+      } else {
+        heights[j] = 0
+      }
+    }
+
+    for(let j = 0; j < n; j++) {
+      if(matrix[i][j] === '1') {
+        left[j] = Math.max(l, left[j])
+      } else {
+        left[j] = 0
+        l = j + 1
+      }
+    }
+
+    for(let j = n - 1; j >= 0; j--) {
+      if(matrix[i][j] === '1') {
+        right[j] = Math.min(r, right[j])
+      } else {
+        right[j] = n
+        r = j
+      }
+    }
+
+    for(let j = 0; j < n; j++) {
+      res = Math.max(res, heights[j] * (right[j] - left[j]))
+    }
+
+  }
+
+  return res
+};
+
+// another
+
+
+/**
+ * @param {character[][]} matrix
+ * @return {number}
+ */
+const maximalRectangle = function(matrix) {
+  const m = matrix.length, n = matrix[0].length
   const left = Array(n).fill(0)
   const right = Array(n).fill(n - 1)
   const height = Array(n).fill(0)
