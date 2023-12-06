@@ -3,6 +3,37 @@
  * @return {number}
  */
 const findMaximumLength = function(nums) {
+  const n = nums.length
+  const stk = [0]
+  const preSum = Array(n + 1).fill(0)
+  const maxLen = Array(n + 1).fill(0)
+  const last = Array(n + 1).fill(0)
+  for(let i = 1; i <= n; i++) {
+    preSum[i] = preSum[i - 1] + nums[i - 1]
+  }
+  // console.log(preSum)
+  let stkPtr = 0
+  last[0] = nums[0]
+  for(let i = 1; i <= n; i++) {
+    stkPtr = Math.min(stkPtr, stk.length - 1)
+    while(stkPtr < stk.length - 1 && preSum[stk[stkPtr + 1]] + last[stk[stkPtr + 1]] <= preSum[i]) stkPtr++
+    const idx = stk[stkPtr]
+    maxLen[i] = maxLen[idx] + 1
+    last[i] = preSum[i] - preSum[idx]
+    while(stk.length && preSum[stk.at(-1)] + last[stk.at(-1)] >= preSum[i] + last[i]) stk.pop()
+    stk.push(i)
+  }
+  // console.log(maxLen)
+  return maxLen[n]
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const findMaximumLength = function(nums) {
    let res = 0
    const n = nums.length
    const stk = [[0,0,0]]
