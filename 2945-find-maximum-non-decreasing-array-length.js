@@ -15,7 +15,6 @@ const findMaximumLength = function(nums) {
   let stkPtr = 0
   last[0] = nums[0]
   for(let i = 1; i <= n; i++) {
-    stkPtr = Math.min(stkPtr, stk.length - 1)
     while(stkPtr < stk.length - 1 && preSum[stk[stkPtr + 1]] + last[stk[stkPtr + 1]] <= preSum[i]) stkPtr++
     const idx = stk[stkPtr]
     maxLen[i] = maxLen[idx] + 1
