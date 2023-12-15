@@ -1,4 +1,33 @@
 /**
+ * @param {number[]} nums
+ * @param {number} left
+ * @param {number} right
+ * @return {number}
+ */
+const numSubarrayBoundedMax = function(nums, left, right) {
+  let prev = -1, res = 0, dp = 0
+  const n = nums.length
+
+  for(let i = 0; i < n; i++) {
+    const e = nums[i]
+    if(e < left) {
+    
+    } else if(e > right) {
+      prev = i
+      dp = 0
+    } else {
+      dp = i - prev
+    }
+
+    res += dp
+  }
+  
+  return res
+};
+
+// another
+
+/**
  * @param {number[]} A
  * @param {number} L
  * @param {number} R
