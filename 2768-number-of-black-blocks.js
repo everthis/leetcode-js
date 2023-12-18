@@ -5,6 +5,54 @@
  * @return {number[]}
  */
 const countBlackBlocks = function(m, n, coordinates) {
+  const hash = {}
+  const key = ([x, y]) => `${x},${y}`
+  for (const e of coordinates) {
+    const [x, y] = e
+    if(x === m - 1 && y === n - 1) {
+      if(hash[`${x - 1},${y - 1}`]==null) hash[`${x - 1},${y - 1}`] = 0
+      hash[`${x - 1},${y - 1}`]++       
+    } else if(x === m - 1) {
+      if(hash[`${x - 1},${y - 1}`]==null) hash[`${x - 1},${y - 1}`] = 0
+      if(hash[`${x - 1},${y}`]==null) hash[`${x - 1},${y}`] = 0
+      hash[`${x - 1},${y}`]++
+      hash[`${x - 1},${y - 1}`]++
+    } else if(y === n - 1) {
+      if(hash[`${x - 1},${y - 1}`]==null) hash[`${x - 1},${y - 1}`] = 0
+      if(hash[`${x},${y- 1}`]==null) hash[`${x},${y-1}`] = 0
+      hash[`${x},${y-1}`]++
+      hash[`${x-1},${y - 1}`]++
+    } else {
+      if(hash[`${x - 1},${y - 1}`]==null) hash[`${x - 1},${y - 1}`] = 0
+      if(hash[`${x},${y- 1}`]==null) hash[`${x},${y-1}`] = 0
+      if(hash[`${x - 1},${y}`]==null) hash[`${x - 1},${y}`] = 0
+      if(hash[`${x},${y}`]==null) hash[`${x},${y}`] = 0
+      hash[`${x},${y}`]++
+      hash[`${x},${y-1}`]++
+      hash[`${x-1},${y}`]++
+      hash[`${x-1},${y - 1}`]++
+    }
+  }
+  // console.log(hash)
+  const res = Array(5).fill(0)
+  for(const [k, v] of Object.entries(hash)) {
+    const [x, y] = k.split(',').map(e => +e)
+    if(x >= 0 && y >= 0) res[v]++
+  }
+  const sum = res.reduce((ac, e) => ac + e, 0)
+  res[0] = (m - 1) * (n - 1) - sum
+  return res
+};
+
+// another
+
+/**
+ * @param {number} m
+ * @param {number} n
+ * @param {number[][]} coordinates
+ * @return {number[]}
+ */
+const countBlackBlocks = function(m, n, coordinates) {
    const block = {}
    
    for(const [i, j] of coordinates) {
