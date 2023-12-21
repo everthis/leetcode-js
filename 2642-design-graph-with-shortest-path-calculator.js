@@ -77,3 +77,59 @@ Graph.prototype.shortestPath = function (node1, node2) {
  * obj.addEdge(edge)
  * var param_2 = obj.shortestPath(node1,node2)
  */
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[][]} edges
+ */
+const Graph = function(n, edges) {
+  const matrix = Array.from({ length: n }, () => Array(n).fill(1e12))
+  this.mat = matrix
+  this.n = n
+  for(let i = 0; i < n; i++) {
+    this.mat[i][i] = 0
+  }
+  for(const [u,v,c] of edges) {
+    this.mat[u][v] = c
+  }
+  for(let k = 0; k < n; k++) {
+    for(let i = 0; i < n; i++) {
+      for(let j = 0; j < n; j++) {
+        this.mat[i][j] = Math.min(this.mat[i][j], this.mat[i][k] + this.mat[k][j])
+      } 
+    }
+  }
+};
+
+/** 
+ * @param {number[]} edge
+ * @return {void}
+ */
+Graph.prototype.addEdge = function(edge) {
+  const [u, v, c] = edge
+  this.mat[u][v] = Math.min(this.mat[u][v], c)
+  const n = this.n
+  for(let i = 0; i < n; i++) {
+    for(let j = 0; j < n; j++) {
+      this.mat[i][j] = Math.min(this.mat[i][j], this.mat[i][u] + this.mat[v][j] + c)
+    } 
+  }
+};
+
+/** 
+ * @param {number} node1 
+ * @param {number} node2
+ * @return {number}
+ */
+Graph.prototype.shortestPath = function(node1, node2) {
+  return this.mat[node1][node2] === 1e12 ? -1 : this.mat[node1][node2]
+};
+
+/** 
+ * Your Graph object will be instantiated and called as such:
+ * var obj = new Graph(n, edges)
+ * obj.addEdge(edge)
+ * var param_2 = obj.shortestPath(node1,node2)
+ */
