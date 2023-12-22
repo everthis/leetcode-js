@@ -5,34 +5,36 @@
  * @return {number}
  */
 const numberOfSets = function(n, maxDistance, roads) {
-    let res = 0;
-    for(let i = 0; i < 1 << n; i++) {
-        let g = Array.from({ length: n }, () => Array(n).fill(1e9));
-        for(let j = 0; j < roads.length; j++) {
-            let [x, y, w] = roads[j];
-            if((i >> x & 1) && (i >> y & 1)) {
-                g[x][y] = g[y][x] = Math.min(g[x][y], w);
-            }
-        }
-        for(let j = 0; j < n; j++) {
-            g[j][j] = 0;
-        }
-        for(let p = 0; p < n; p++) {
-            for(let q = 0; q < n; q++) {
-                for(let k = 0; k < n; k++) {
-                    g[q][k] = Math.min(g[q][k], g[q][p] + g[p][k]);
-                }
-            }
-        }
-        let ok = 1;
-        for(let j = 0; j < n; j++) {
-            for(let k = 0; k < n; k++) {
-                if((i >> j & 1) && (i >> k & 1)) {
-                    ok &= (g[j][k] <= maxDistance);
-                }
-            }
-        }
-        res += ok;
+  let res = 0
+  const {min} = Math
+  for(let i = 0, limit = 1<<n; i < limit; i++) {
+    const mat = Array.from({ length: n }, () => Array(n).fill(1e9))
+    for(const [u,v,w] of roads) {
+      if( (1 & (i >> u)) && (1 & (i >> v))) {
+        mat[u][v] = mat[v][u] = min(w, mat[u][v])
+      }
     }
-    return res; 
+    for(let x = 0; x < n; x++) mat[x][x] = 0
+
+    for(let k = 0; k < n; k++) {
+      for(let x = 0; x < n; x++) {
+        for(let y = 0; y < n; y++) {
+          mat[x][y] = min(mat[x][y], mat[x][k] + mat[k][y])
+        }
+      }
+    }
+
+    let tmp = true
+    for(let x = 0; x < n; x++) {
+      for(let y = 0; y < n; y++) {
+        if( (1 & (i >> x)) && (1 & (i >> y))) {
+          tmp &= mat[x][y] <= maxDistance
+        }
+      }
+    }
+
+    res += tmp ? 1 : 0
+  }
+  
+  return res
 };
