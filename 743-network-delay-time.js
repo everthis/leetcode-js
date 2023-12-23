@@ -5,6 +5,61 @@
  * @return {number}
  */
 const networkDelayTime = function(times, n, k) {
+  const g = Array.from({ length: n + 1 }, () => Array(n + 1).fill(Infinity))
+  const graph = {} 
+  for(const [u,v,w] of times) {
+    if(graph[u] == null) graph[u] = {}
+    graph[u][v] = w
+    g[u][v] = w
+  }
+  for(let k = 1; k <= n; k++) {
+    for(let i = 1; i <= n; i++) {
+      for(let j = 1; j <= n; j++) {
+        g[i][j] = Math.min(g[i][j], g[i][k] + g[k][j])
+      }
+    }
+  }
+
+  let q = [k]
+  const visited = new Set()
+  const dis = Array(n + 1).fill(Infinity)
+  let res = 0
+  dis[k] = 0
+  // console.log(g)
+  while(q.length) {
+    const size = q.length, tmp = []
+    for(let i = 0; i < size; i++) {
+      const e = q[i]
+      visited.add(e)
+      for(let nxt of (Object.keys(graph[e] || {}) || [])) {
+        nxt = +nxt
+        if(!visited.has(nxt)) {
+          tmp.push(nxt)
+        }
+        if(g[e][nxt]) dis[nxt] = Math.min(dis[nxt], dis[e] + g[e][nxt])
+      }
+    }
+
+    q = tmp
+  }
+  // console.log(dis)
+  for(let i = 1; i <= n; i++) {
+    if(i === k) continue
+    res = Math.max(res, dis[i])
+  }
+
+  return visited.size === n ? res : -1
+};
+
+// another
+
+/**
+ * @param {number[][]} times
+ * @param {number} n
+ * @param {number} k
+ * @return {number}
+ */
+const networkDelayTime = function(times, n, k) {
   const graph = {}
   for(const [u, v, w] of times) {
     if(graph[u] == null) graph[u] = []
