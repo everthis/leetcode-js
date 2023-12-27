@@ -1,3 +1,110 @@
+class PQ {
+  constructor(comparator = (a, b) => a > b) {
+    this.heap = []
+    this.top = 0
+    this.comparator = comparator
+  }
+  size() {
+    return this.heap.length
+  }
+  isEmpty() {
+    return this.size() === 0
+  }
+  peek() {
+    return this.heap[this.top]
+  }
+  push(...values) {
+    values.forEach((value) => {
+      this.heap.push(value)
+      this.siftUp()
+    })
+    return this.size()
+  }
+  pop() {
+    const poppedValue = this.peek()
+    const bottom = this.size() - 1
+    if (bottom > this.top) {
+      this.swap(this.top, bottom)
+    }
+    this.heap.pop()
+    this.siftDown()
+    return poppedValue
+  }
+  replace(value) {
+    const replacedValue = this.peek()
+    this.heap[this.top] = value
+    this.siftDown()
+    return replacedValue
+  }
+
+  parent = (i) => ((i + 1) >>> 1) - 1
+  left = (i) => (i << 1) + 1
+  right = (i) => (i + 1) << 1
+  greater = (i, j) => this.comparator(this.heap[i], this.heap[j])
+  swap = (i, j) => ([this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]])
+  siftUp = () => {
+    let node = this.size() - 1
+    while (node > this.top && this.greater(node, this.parent(node))) {
+      this.swap(node, this.parent(node))
+      node = this.parent(node)
+    }
+  }
+  siftDown = () => {
+    let node = this.top
+    while (
+      (this.left(node) < this.size() && this.greater(this.left(node), node)) ||
+      (this.right(node) < this.size() && this.greater(this.right(node), node))
+    ) {
+      let maxChild =
+        this.right(node) < this.size() &&
+        this.greater(this.right(node), this.left(node))
+          ? this.right(node)
+          : this.left(node)
+      this.swap(node, maxChild)
+      node = maxChild
+    }
+  }
+}
+
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+const minimumTime = function (grid) {
+  if (grid[0][1] > 1 && grid[1][0] > 1) return -1;
+  const dirs = [
+    [-1, 0],
+    [0, 1],
+    [1, 0],
+    [0, -1],
+  ]
+  let m = grid.length,
+    n = grid[0].length
+  const visited = Array.from({ length: m }, () => Array(n).fill(false))
+  const pq = new PQ((a, b) => a[0] < b[0])
+  pq.push([grid[0][0], 0, 0])
+
+  while(!pq.isEmpty()) {
+    const [v, r, c] = pq.pop()
+    if(r === m - 1 && c === n - 1) return v
+    if(visited[r][c]) continue
+    visited[r][c] = true
+    for(const [dr, dc] of dirs) {
+      const nr = r + dr, nc = c + dc
+      if(nr >= 0 && nr < m && nc >= 0 && nc < n && visited[nr][nc] === false) {
+        const wait = (grid[nr][nc] - v) % 2 === 0 ? 1 : 0
+        pq.push([Math.max(v + 1, grid[nr][nc] + wait), nr, nc])
+      }
+    }
+  }
+
+  return -1
+}
+
+
+// another
+
+
 /**
  * @param {number[][]} grid
  * @return {number}
