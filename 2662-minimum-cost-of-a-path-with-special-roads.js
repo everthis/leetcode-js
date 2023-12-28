@@ -88,7 +88,7 @@ const minimumCost = function(start, target, specialRoads) {
 
   while(!pq.isEmpty()) {
     const [d, i] = pq.pop()
-    // if(d !== dis[i]) continue
+    if(d > dis[i]) continue
     res = min(res, d + abs(target[0] - specialRoads[i][2]) + abs(target[1] - specialRoads[i][3]))
 
     for(let nxt = 0; nxt < n; nxt++) {
