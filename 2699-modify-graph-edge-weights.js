@@ -74,7 +74,7 @@ class PQ {
  * @return {number[][]}
  */
 const modifiedGraphEdges = function (n, edges, source, destination, target) {
-  const kMax = Number.MAX_SAFE_INTEGER
+  const kMax = 1e9
   const graph = Array(n)
     .fill(null)
     .map(() => [])
