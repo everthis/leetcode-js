@@ -2,27 +2,30 @@
  * @param {number[]} edges
  * @return {number[]}
  */
-var countVisitedNodes = function(edges) {
-    let n = edges.length, res = new Array(n).fill(0), j = 0;
-    for (let i = 0; i < n; i++) {
-        let j = i
-        let seen = new Set();
-        let s = [];
-        while (!seen.has(j) && res[j] == 0) {
-            seen.add(j);
-            s.push(j);
-            j = edges[j];
-        }
-        if (seen.has(j)) { // hit the cycle
-            let k = s.length - s.indexOf(j);
-            for (j = 0; j < k; ++j) {
-                res[s.pop()] = k;
-            }
-        }
-        while (s.length) {
-            j = s.pop();
-            res[j] = res[edges[j]] + 1;
-        }
+const countVisitedNodes = function(edges) {
+  const n = edges.length, res = Array(n).fill(0)
+  for(let i = 0; i < n; i++) {
+    const visited = new Set()
+    let j = i, q = []
+    while(res[j] === 0 && !visited.has(j)) {
+      q.push(j)
+      visited.add(j)
+      j = edges[j]
     }
-    return res;  
+
+    if(visited.has(j)) {
+      const k = q.length - q.indexOf(j)
+      for(let ii = 0; ii < k; ii++) {
+        res[q.pop()] = k
+      }
+    }
+
+    while(q.length) {
+      const ii = q.pop()
+      res[ii] = res[edges[ii]] + 1
+    }
+
+  }
+
+  return res
 };
