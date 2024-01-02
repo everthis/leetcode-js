@@ -34,12 +34,11 @@ const longestEqualSubarray = function(nums, k) {
     cnt[e]++
     res = Math.max(res, cnt[e])
     
-    while(j - i + 1 - res > k) {
+    if(j - i + 1 - res > k) {
       const pre = nums[i]
       if(cnt[pre] == null) cnt[pre] = 0
       cnt[pre]--
       i++
-      res = Math.max(res, cnt[nums[i]])
     }
   }
 
