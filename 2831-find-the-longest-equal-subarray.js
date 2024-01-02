@@ -17,3 +17,31 @@ const longestEqualSubarray = function(nums, k) {
   }
   return maxf;
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const longestEqualSubarray = function(nums, k) {
+  const n = nums.length, cnt = {}
+  let i = 0, res = 0
+  for(let j = 0; j < n; j++) {
+    const e = nums[j]
+    if(cnt[e] == null) cnt[e] = 0
+    cnt[e]++
+    res = Math.max(res, cnt[e])
+    
+    while(j - i + 1 - res > k) {
+      const pre = nums[i]
+      if(cnt[pre] == null) cnt[pre] = 0
+      cnt[pre]--
+      i++
+      res = Math.max(res, cnt[nums[i]])
+    }
+  }
+
+  return res
+};
