@@ -4,6 +4,33 @@
  * @return {number}
  */
 const countSubarrays = function (nums, k) {
+  const n = nums.length
+  const t = Math.max(...nums)
+  let i = 0,
+    num = 0, res = 0
+  for (let j = 0; j < n; j++) {
+    const e = nums[j]
+    if (e === t) {
+      num++
+      while(num >= k) {
+        if(nums[i] === t) num--
+        i++
+        res += n - j
+      }
+    }
+  }
+
+  return res
+}
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const countSubarrays = function (nums, k) {
     const n = nums.length
     const t = Math.max(...nums)
     const cnt = {0: -1}
