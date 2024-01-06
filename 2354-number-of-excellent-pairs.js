@@ -4,6 +4,42 @@
  * @return {number}
  */
 const countExcellentPairs = function(nums, k) {
+  const n = nums.length, set = new Set()
+  for(const e of nums) set.add(e)
+  const cnt = Array(30).fill(0)
+  for(const e of set) {
+    const bc = bitCnt(e)
+    if(cnt[bc] == null) cnt[bc] = 0
+    cnt[bc] += 1
+  }
+  let res = 0
+  for(let i = 0; i < 30; i++) {
+    for(let j = 0; j < 30; j++) {
+      if(i + j >= k) res += cnt[i] * cnt[j]
+    }
+  }
+
+  return res
+
+  function bitCnt(num) {
+    let res = 0
+    while(num) {
+      if(num & 1) res++
+      num = num >> 1
+    }
+
+    return res
+  }
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const countExcellentPairs = function(nums, k) {
   const cnt = Array(31).fill(0), set = new Set(nums)
   for(const e of set) {
     cnt[setBits(e)]++
