@@ -3,6 +3,43 @@
  * @param {number} k
  * @return {number}
  */
+const maximumSubarraySum = function(nums, k) {
+  let res = 0, i = 0, sum = 0
+  const map = new Map(), n = nums.length
+  for(let j = 0; j < k; j++) {
+    const e = nums[j]
+    if(map.get(e) == null) map.set(e, 0)
+    map.set(e, (map.get(e) || 0) + 1)
+    sum += e
+  }
+  if(map.size === k) res = sum
+  for(let j = k; j < n; j++) {
+    const e = nums[j]
+    if(map.get(e) == null) map.set(e, 0)
+    map.set(e, (map.get(e) || 0) + 1)
+    sum += e
+
+    // pre
+    const tmp = nums[i]
+    map.set(tmp, map.get(tmp) - 1)
+    if(map.get(tmp) === 0) map.delete(tmp)
+    sum -= tmp
+    i++
+
+    if(map.size === k) res = Math.max(res, sum)
+  }
+
+  return res
+};
+
+// another
+
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
 const maximumSubarraySum = function (nums, k) {
   const map = new Map(), n = nums.length
   let i = 0, res = 0, sum = 0
