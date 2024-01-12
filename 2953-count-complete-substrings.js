@@ -3,6 +3,80 @@
  * @param {number} k
  * @return {number}
  */
+const countCompleteSubstrings = function(word, k) {
+  const arr = [], { abs } = Math
+  const n = word.length
+  const code = ch => ch.charCodeAt(0)
+  let i = 0
+  if(n === 1) arr.push(word)
+  for(let j = 1; j < n; j++) {
+    const pre = j - 1
+    if(abs(word[j].charCodeAt(0) - word[pre].charCodeAt(0)) > 2) {
+      arr.push(word.slice(i, j))
+      i = j
+    }
+    if(j === n - 1) {
+      arr.push(word.slice(i))
+    }
+  }
+  // console.log(arr)
+  let res = 0
+  for(const str of arr) {
+    if(str === '') continue
+    res += helper(str)
+  }
+
+  return res
+
+
+  function helper(str) {
+    let res = 0
+    const n = str.length, a = code('a')
+    
+    for(let i = 1; i <= 26; i++) {
+      const len = i * k
+      const arr = Array(26).fill(0)
+      let pre = 0
+      for(let j = 0; j < len && j < n; j++) {
+        const idx = code(str[j]) - a
+        arr[idx]++
+      }
+      if(valid(arr, i)) res++
+
+      for(let j = len; j < n; j++) {
+        const idx = code(str[j]) - a
+        arr[idx]++
+        const preIdx = code(str[pre]) - a
+        arr[preIdx]--
+        if(valid(arr, i)) res++
+        pre++
+      }
+    }
+
+    return res
+  }
+
+  function valid(arr, num) {
+    let cnt = 0
+    for(const e of arr) {
+      if(e === 0) continue
+      if(e !== k) return false
+      else cnt++
+    }
+
+    if(cnt !== num) return false
+    return true
+  }
+};
+
+// another 
+
+
+/**
+ * @param {string} word
+ * @param {number} k
+ * @return {number}
+ */
 var countCompleteSubstrings = function (word, k) {
   let w = word
   function calc(s) {
