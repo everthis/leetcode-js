@@ -1,4 +1,86 @@
 /**
+ * @param {string} n
+ * @return {string}
+ */
+const nearestPalindromic = function(n) {
+  const {floor} = Math
+  const str = num => `${num}`
+  const a = makeSmaller(n), b = makeGreater(n)
+  // console.log(a, b)
+  if(delta(b, n) >= delta(n, a)) {
+    return a
+  }
+  return b
+
+  function makeGreater(num) {
+    const n = num.length
+    const arr = num.split('')
+    for(let i = 0, j = n - 1; i <= j;) {
+      arr[j] = arr[i]
+      i++
+      j--
+    }
+    const tmp = arr.join('')
+    // console.log(tmp)
+    if(tmp > num) return tmp
+    let carry = 1
+    
+    for(let i = floor((n - 1) / 2); i >= 0; i--) {
+      const cur = +arr[i] + carry
+      if(cur <= 9) {
+        arr[i] = str(cur)
+        carry = 0
+      } else {
+        arr[i] = '0'
+        carry = 1
+      }
+      arr[n - 1 - i] = arr[i]
+    }
+    if(carry) {
+      const ta = Array(n + 1).fill('0')
+      ta[0] = '1'
+      ta[ta.length - 1] = '1'
+      return ta.join('')
+    }
+    return arr.join('')
+  }
+
+  function makeSmaller(num) {
+    const n = num.length
+    const arr = num.split('')
+    for(let i = 0, j = n - 1; i <= j;) {
+      arr[j] = arr[i]
+      i++
+      j--
+    }
+    const tmp = arr.join('')
+    if(tmp < num) return tmp
+    let carry = 1
+    for(let i = floor((n - 1) / 2); i >= 0; i--) {
+      const cur = +arr[i] - carry
+      if(cur >= 0) {
+        arr[i] = str(cur)
+        carry = 0
+      } else {
+        arr[i] = '9'
+        carry = 1
+      }
+      arr[n - 1 - i] = arr[i]
+    }
+    if(arr[0] === '0' && n > 1) {
+      return '9'.repeat(n - 1)
+    }
+    return arr.join('')
+  }
+  function delta(a, b) {
+    return BigInt(a) - BigInt(b)
+  }
+};
+
+// another
+
+
+/**
  * @param {bigint | string} n
  * @return {string}
  */
