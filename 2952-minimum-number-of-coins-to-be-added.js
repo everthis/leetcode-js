@@ -3,6 +3,31 @@
  * @param {number} target
  * @return {number}
  */
+const minimumAddedCoins = function(coins, target) {
+  coins.sort((a,b) => a - b)
+  const n = coins.length
+  let sum = 1, i = 0, res = 0
+  while(true) {
+    const e = coins[i]
+    if(sum > target) break
+    if(e <= sum) {
+      sum += e
+      i++
+    } else {
+      sum *= 2
+      res++
+    }
+  }
+  return res
+};
+
+// another
+
+/**
+ * @param {number[]} coins
+ * @param {number} target
+ * @return {number}
+ */
 var minimumAddedCoins = function (coins, target) {
   coins.sort((a, b) => a - b)
   let current_max = 0;
