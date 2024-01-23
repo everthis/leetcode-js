@@ -3,6 +3,29 @@
  * @return {number}
  */
 const findLongestChain = function(pairs) {
+  let res = 0
+  const n = pairs.length
+  if(n === 0) return res
+  pairs.sort((a, b) => a[1] - b[1])
+  let end = pairs[0][1]
+  res++
+  for(let i = 1; i < n; i++) {
+    const e = pairs[i]
+    if(e[0] <= end) continue
+    res++
+    end = e[1]
+  }
+
+  return res
+};
+
+// another
+
+/**
+ * @param {number[][]} pairs
+ * @return {number}
+ */
+const findLongestChain = function(pairs) {
   pairs.sort((a, b) => a[1] - b[1])
   let end = pairs[0][1], res = 1
   for(let i = 1, len = pairs.length; i < len; i++) {
