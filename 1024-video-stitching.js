@@ -1,5 +1,36 @@
 /**
  * @param {number[][]} clips
+ * @param {number} time
+ * @return {number}
+ */
+const videoStitching = function(clips, time) {
+  const n = clips.length
+  if(time === 0) return 0
+  clips.sort((a, b) => a[0] === b[0] ? b[1] - a[1] : a[0] - b[0])
+  let res = 0, start = 0, end = 0, nextEnd = 0, idx = 0
+
+  while(idx < n) {
+    nextEnd = end
+    while(idx < n && clips[idx][0] <= end) {
+        nextEnd = Math.max(nextEnd, clips[idx][1])
+        idx++
+    }
+    res++
+    if(nextEnd >= time) return res
+    else if(nextEnd === end) return -1
+    else {
+       end = nextEnd 
+    }
+  }
+
+  return -1
+
+};
+
+// anonther
+
+/**
+ * @param {number[][]} clips
  * @param {number} T
  * @return {number}
  */
