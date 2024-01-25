@@ -2,6 +2,37 @@
  * @param {number[][]} intervals
  * @return {number}
  */
+const intersectionSizeTwo = function (intervals) {
+  if (intervals.length === 1) return 2
+  intervals.sort((a, b) => (a[1] !== b[1] ? a[1] - b[1] : b[0] - a[0]))
+  let right = intervals[0][1]
+  let left = right - 1
+  let res = 2
+
+  for (let i = 1, len = intervals.length; i < len; i++) {
+    const cur = intervals[i]
+    if(cur[0] <= left) continue
+    else if(cur[0] <= right) {
+      res++
+      left = right
+      right = cur[1]
+    } else {
+      res += 2
+      right = cur[1]
+      left = right - 1
+    }
+  }
+
+  return res
+}
+
+// another
+
+
+/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
 const intersectionSizeTwo = function(intervals) {
   let highest = Number.NEGATIVE_INFINITY;
   let secondHighest = Number.NEGATIVE_INFINITY;
