@@ -3,6 +3,38 @@
  * @param {number[]} ranges
  * @return {number}
  */
+const minTaps = function(n, ranges) {
+  const len = ranges.length, {min, max} = Math
+  const arr = []
+  for(let i = 0; i < len; i++) {
+    arr.push([max(0, i - ranges[i]), i + ranges[i]])
+  }
+  // arr.sort((a, b) => a[1] === b[1] ? a[0] - b[0]: a[1] - b[1])
+  arr.sort((a, b) => a[0] === b[0] ? b[1] - a[1] : a[0] - b[0])
+  let res = 0, end = 0, nextEnd = 0, idx = 0
+  while(idx < len) {
+    nextEnd = end
+    while(idx < len && arr[idx][0] <= end) {
+      nextEnd = max(nextEnd, arr[idx][1])
+      idx++
+    }
+    res++
+    if(nextEnd >= n) return res
+    else if(nextEnd === end) return -1
+    end = nextEnd
+  }
+
+
+  return -1
+};
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[]} ranges
+ * @return {number}
+ */
 const minTaps = function (n, ranges) {
   const starts = new Array(n + 1).fill(0)
   for (let i = 0; i <= n; i++) {
