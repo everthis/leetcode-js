@@ -4,6 +4,36 @@
  */
 const countDigitOne = function(n) {
   let res = 0
+  const s = `${n}`
+  const len = s.length, {floor, pow} = Math
+
+  for(let i = 1; i <= len; i++) {
+    const np = pow(10, i - 1)
+    const pre = floor(n / pow(10, i))
+    const remain = n % np
+    
+    res += pre * np
+    const e = +s[len - i]
+    if(e > 1) {
+        res += np
+    } else if(e === 1) {
+        res += remain + 1
+    }
+  }
+
+  return res
+};
+
+
+// another
+
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const countDigitOne = function(n) {
+  let res = 0
   const str = `${n}`
   const len = str.length, { pow } = Math
   
