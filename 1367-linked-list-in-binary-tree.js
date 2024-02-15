@@ -18,6 +18,66 @@
  * @param {TreeNode} root
  * @return {boolean}
  */
+function isSubPath(head, root) {
+  let needle = convertLinkedListToArray(head);
+  let lps = computeKMPTable(needle);
+  return kmpSearch(root, 0);
+
+  function kmpSearch(i, j) {
+    if (j === needle.length) return true;
+    if (i === null) return false;
+    while (j > 0 && i.val !== needle[j]) j = lps[j - 1];
+    if (i.val === needle[j]) j++;
+    return kmpSearch(i.left, j) || kmpSearch(i.right, j);
+  }
+
+  function computeKMPTable(pattern) {
+    let n = pattern.length;
+    let lps = new Array(n);
+    for (let i = 0; i < n; i++) {
+      lps[i] = 0;
+    }
+    for (let i = 1, j = 0; i < n; i++) {
+      while (j > 0 && pattern[i] !== pattern[j]) j = lps[j - 1];
+      if (pattern[i] === pattern[j]) lps[i] = ++j;
+    }
+    return lps;
+  }
+
+  function convertLinkedListToArray(head) {
+    let list = [];
+    while (head !== null) {
+      list.push(head.val);
+      head = head.next;
+    }
+    return list;
+  }
+}
+
+
+// another
+
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
 const isSubPath = function(head, root) {
   return dfs(root)
   
