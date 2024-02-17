@@ -1,3 +1,44 @@
+/**
+ * @param {string} ch
+ */
+function encode(ch) {
+  let c = ch.charCodeAt(0)
+  const a = 'a'.charCodeAt(0)
+  const A = 'A'.charCodeAt(0)
+  const zero = '0'.charCodeAt(0)
+  if (c >= a) return c - a;
+  if (c >= A) return c - A + 26;
+  return c - zero + 52;
+}
+
+/**
+ * @param {string} s
+ * @param {string} sub
+ * @param {character[][]} mappings
+ * @return {boolean}
+ */
+const matchReplacement = function (s, sub, mappings) {
+  const adj = Array(62 * 62).fill(0)
+  const m = s.length, n = sub.length
+  for(const ch of sub) adj[encode(ch) * 62 + encode(ch)] = 1
+  for(const [f, t] of mappings) {
+    adj[encode(f) * 62 + encode(t)] = 1
+  }
+  
+  for(let i = m - n; i >= 0; i--) {
+    for(let si = i, j = 0;; si++, j++) {
+      if(j === n) return true
+      if(adj[encode(sub[j]) * 62 + encode(s[si])] === 0) break
+    }
+  }
+  
+  return false
+};
+
+
+// another
+
+
 let adj = new Uint8Array(3844);
 
 /**
