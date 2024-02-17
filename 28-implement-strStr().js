@@ -3,6 +3,47 @@
  * @param {string} needle
  * @return {number}
  */
+const strStr = function(haystack, needle) {
+  const m = haystack.length, n = needle.length
+  
+  const lps = process(needle)
+  for(let j = 0, i = 0; i < m; i++) {
+    while(j > 0 && haystack[i] !== needle[j]) {
+      j = lps[j - 1]
+    }
+    if(haystack[i] === needle[j]) {
+      j++
+      if(j === n) {
+        return i - n + 1
+      }
+    }
+  }
+  return -1
+  
+  function process(s) {
+    const n = s.length
+    const lps = Array(n).fill(0)
+    for(let len = 0, i = 1; i < n; i++) {
+      while(len > 0 && s[i] !== s[len]) {
+        len = lps[len - 1]
+      }
+      if(s[i] === s[len]) {
+        len++
+        lps[i] = len
+      }
+    }
+    
+    return lps
+  }
+};
+
+// another
+
+/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @return {number}
+ */
 const strStr = function(a, b) {
   if(b === '') return 0
   if(a.length < b.length) return -1
