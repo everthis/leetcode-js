@@ -1,3 +1,70 @@
+/**
+ * @param {string} s
+ * @param {string} t
+ * @param {number} k
+ * @return {number}
+ */
+const numberOfWays = function (s, t, k) {
+  const n = s.length,
+    M = 1e9 + 7
+  const pos = kmp(s + s.slice(0, n-1), t)
+  const fk = [0, 0]
+  calcFK()
+
+  let res = 0
+  for (let p of pos) {
+    if (p === 0) res = (res + fk[0]) % M
+    else res = (res + fk[1]) % M
+  }
+  return res
+
+  function kmp(s, t) {
+    const m = s.length,
+      n = t.length
+    const pi = new Array(n).fill(0)
+    for (let i = 1; i < n; ++i) {
+      let j = pi[i - 1]
+      while (j > 0 && t.charAt(j) !== t.charAt(i)) j = pi[j - 1]
+      if (j === 0 && t.charAt(0) !== t.charAt(i)) pi[i] = 0
+      else pi[i] = j + 1
+    }
+    let j = 0
+    const res = []
+    for (let i = 0; i < m; ++i) {
+      while (j >= n || (j > 0 && s.charAt(i) !== t.charAt(j))) j = pi[j - 1]
+      if (s.charAt(i) === t.charAt(j)) j++
+      if (j === n) res.push(i - n + 1)
+    }
+    return res
+  }
+  
+  function calcFK() {
+    fk[1] =
+      (((powWrap(n - 1, k, M) + BigInt(((k % 2) * 2 - 1)) + BigInt(M)) % BigInt(M)) * powWrap(n, M - 2, M)) % BigInt(M)
+    fk[0] = (fk[1] - BigInt(((k % 2) * 2 - 1)) + BigInt(M)) % BigInt(M)
+    // console.log(fk)
+    fk[1] = Number(fk[1])
+    fk[0] = Number(fk[0])
+  }
+  
+  function powWrap(a,b,M) {
+    a = BigInt(a)
+    b = BigInt(b)
+    M = BigInt(M)
+    return pow(a,b,M)
+  }
+  
+  function pow(a, b, M) {
+    if (b === 0n) return 1n
+    if ((b & 1n) === 0n) return pow((a * a) % M, b >> 1n, M)
+    return (a * pow((a * a) % M, b >> 1n, M)) % M
+  }  
+}
+
+
+// another
+
+
 class Modulo {
   /**
    * @param {number} modulo
