@@ -12,7 +12,7 @@ var beautifulIndices = function (s, a, b, k) {
   const js = kmp(s, b)
   if (js.length === 0) return []
 
-  const answer = []
+  const res = []
   let p = 0
   let q = 0
 
@@ -20,7 +20,7 @@ var beautifulIndices = function (s, a, b, k) {
     const distance = Math.abs(is[p] - js[q])
 
     if (distance <= k) {
-      answer.push(is[p])
+      res.push(is[p])
       p++
     } else if (is[p] < js[q]) {
       p++
@@ -29,13 +29,13 @@ var beautifulIndices = function (s, a, b, k) {
     }
   }
 
-  return answer
+  return res
 }
 
 function kmp(str1, str2) {
   const pattern = buildPattern(str2)
 
-  const answer = []
+  const res = []
   let i = 0
   let j = 0
 
@@ -43,33 +43,32 @@ function kmp(str1, str2) {
     if (str1[i] === str2[j]) {
       i++
       j++
-
       if (j === str2.length) {
-        answer.push(i - str2.length)
-        j = pattern[j - 1] + 1
+        res.push(i - str2.length)
+        j = pattern[j - 1]
       }
     } else if (j > 0) {
-      j = pattern[j - 1] + 1
+      j = pattern[j - 1]
     } else {
       i++
     }
   }
 
-  return answer
+  return res
 }
 
 function buildPattern(str) {
-  const pattern = new Array(str.length).fill(-1)
+  const pattern = new Array(str.length).fill(0)
   let i = 1
   let j = 0
 
   while (i < str.length) {
     if (str[i] === str[j]) {
+      j++
       pattern[i] = j
       i++
-      j++
     } else if (j > 0) {
-      j = pattern[j - 1] + 1
+      j = pattern[j - 1]
     } else {
       i++
     }
@@ -77,6 +76,7 @@ function buildPattern(str) {
 
   return pattern
 }
+
 
 // another
 
