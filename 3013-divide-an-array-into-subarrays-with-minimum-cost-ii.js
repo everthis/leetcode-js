@@ -1,3 +1,86 @@
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @param {number} dist
+ * @return {number}
+ */
+var minimumCost = function (nums, k, dist) {
+  // store k-1 smallest elements
+  const maxHeap = new PriorityQueue({ compare: (a, b) => b - a })
+  // store dist - k + 1 biggest elements
+  const minHeap = new PriorityQueue({ compare: (a, b) => a - b })
+  const maxDiscard = {}
+  const minDiscard = {}
+  let sum = nums[0]
+  let start = 1
+  let end = start
+  while (end - start < k - 1) {
+    maxHeap.enqueue(nums[end])
+    sum += nums[end]
+    end++
+  }
+  // now there are k-1 elemetns in the Max heap
+  while (end - start <= dist) {
+    maxHeap.enqueue(nums[end])
+    sum += nums[end]
+    let dequeued = maxHeap.dequeue()
+    sum -= dequeued
+    minHeap.enqueue(dequeued)
+    end++
+  }
+
+  let minSum = sum
+  while (end < nums.length) {
+    if (k - 2 === dist) {
+      sum += nums[end++]
+      sum -= nums[start++]
+    } else {
+      discardMin()
+
+      if (nums[start] < minHeap.front()) {
+        maxDiscard[nums[start]] = 1 + (maxDiscard[nums[start]] ?? 0)
+        sum -= nums[start]
+
+        sum += minHeap.front()
+        maxHeap.enqueue(minHeap.dequeue())
+      } else minDiscard[nums[start]] = 1 + (minDiscard[nums[start]] ?? 0)
+
+      maxHeap.enqueue(nums[end])
+      sum += nums[end]
+
+      discardMax()
+      sum -= maxHeap.front()
+      minHeap.enqueue(maxHeap.dequeue())
+
+      end++
+      start++
+    }
+    minSum = Math.min(minSum, sum)
+  }
+
+  function discardMax() {
+    if (maxHeap.isEmpty()) return
+
+    while (maxDiscard[maxHeap.front()]) {
+      maxDiscard[maxHeap.front()]--
+      maxHeap.dequeue()
+    }
+  }
+  function discardMin() {
+    if (minHeap.isEmpty()) return
+
+    while (minDiscard[minHeap.front()]) {
+      minDiscard[minHeap.front()]--
+      minHeap.dequeue()
+    }
+  }
+
+  return minSum
+}
+
+// another
+
+
 //#region AVL Tree
 /**
  * @typedef {"keep-all" | "override" | "ignore"} DuplicateMode
