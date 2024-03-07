@@ -35,3 +35,36 @@ var minOrAfterOperations = function(nums, k) {
   }
   return res;  
 };
+
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var minOrAfterOperations = function(nums, k) {
+  const n = nums.length;
+  let ans = 0;
+
+  for (let j = 30; j >= 0; j--) {
+    let cnt = 0;
+    let cur = (1 << 30) - 1;
+    let target = ans | ((1 << j) - 1);
+
+    for (let i = 0; i < n; i++) {
+      cur &= nums[i];
+      if ((cur | target) === target) {
+        cnt++;
+        cur = (1 << 30) - 1;
+      }
+    }
+
+    if (n - cnt > k) {
+      ans |= (1 << j);
+    }
+  }
+
+  return ans;
+};
