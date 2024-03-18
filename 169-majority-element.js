@@ -2,6 +2,31 @@
  * @param {number[]} nums
  * @return {number}
  */
+var majorityElement = function(nums) {
+  let el, cnt = 0
+  for(let e of nums) {
+      if(cnt === 0) {
+          el = e
+          cnt++
+      } else if(el === e) {
+          cnt++
+      } else {
+          cnt--
+      }
+  }
+  let tmp = 0
+  for(const e of nums) {
+     if(e === el) tmp++
+  }
+  return tmp > Math.floor(nums.length / 2) ? el : null
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
 const majorityElement = function(nums) {
    let res = 0, cnt = 0
    
