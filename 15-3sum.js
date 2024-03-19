@@ -90,3 +90,35 @@ const threeSum = function(nums) {
 
   return res
 };
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+const threeSum = function(nums) {
+  nums.sort((a, b) => a - b)
+  const n = nums.length
+  let res = []
+  for(let i = 0; i < n - 2; i++) {
+      const e = nums[i], target = -e
+      let l = i + 1, r = n - 1
+      while(l < r) {
+          const tmp = nums[l] + nums[r]
+          if(tmp < target) l++
+          else if(tmp > target) r--
+          else {
+              res.push([nums[i], nums[l], nums[r]])
+              l++
+              r--
+              while(l < r && nums[l] === nums[l - 1]) l++
+              while(l < r && nums[r] === nums[r + 1]) r--
+          }
+      }
+      while(i + 1 < n && nums[i + 1] === e) i++
+  }
+  
+  
+  return res
+};
