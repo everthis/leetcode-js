@@ -88,3 +88,39 @@ function nSum(nums, target, k, start) {
   }
   return res;
 }
+
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[][]}
+ */
+const fourSum = function(nums, target) {
+  const res = [], n = nums.length
+  nums.sort((a, b) => a - b)
+  for(let a = 0; a < n - 3; a++) {
+    if(a > 0 && nums[a] === nums[a - 1]) continue
+    for(let b = a + 1; b < n - 2; b++) {
+        if(b > a + 1 && nums[b] === nums[a + 1]) continue
+        if(b > a + 1 && nums[b] === nums[b - 1]) continue
+        const t = target - nums[a] - nums[b]
+        let l = b + 1, r = n - 1
+        while(l < r) {
+            const sum = nums[l] + nums[r]
+            if(sum < t) l++
+            else if(sum > t) r--
+            else {
+                res.push([nums[a], nums[b], nums[l], nums[r]])
+                l++
+                r--
+                while(l < r && nums[l] === nums[l - 1]) l++
+                while(l < r && nums[r] === nums[r + 1]) r--
+            }
+        }
+    }
+  }
+  
+  return res
+};
