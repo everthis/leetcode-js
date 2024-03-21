@@ -1,36 +1,40 @@
+class Interval {
+  constructor(s,e,h) {
+    this.start = s
+    this.end = e
+    this.height = h
+  }
+}
 /**
  * @param {number[][]} positions
  * @return {number[]}
  */
-class Interval {
-  constructor(start, end, height) {
-    this.start = start
-    this.end = end
-    this.height = height
-  }
-}
-function fallingSquares(positions) {
-  const intervals = []
+const fallingSquares = function(positions) {
+  const n = positions.length
   const res = []
-  let h = 0
-  for (let pos of positions) {
-    let cur = new Interval(pos[0], pos[0] + pos[1], pos[1])
-    h = Math.max(h, getHeight(intervals, cur))
-    res.push(h)
+  const intervals = []
+  let curMax = 0
+  for(let i = 0; i < n; i++) {
+    const [s, len] = positions[i]
+    const ins = new Interval(s, s + len, len)
+    curMax = Math.max(curMax, getHeight(intervals, ins))
+    res.push(curMax)
   }
-  console.log(intervals)
+  
   return res
-}
-function getHeight(intervals, cur) {
-  let preMaxHeight = 0
-  for (let i of intervals) {
-    if (i.end <= cur.start) continue
-    if (i.start >= cur.end) continue
-    preMaxHeight = Math.max(preMaxHeight, i.height)
+};
+
+function getHeight(intervals, ins) {
+  let preMax = 0
+  for(const e of intervals) {
+    if(ins.start >= e.end) continue
+    if(ins.end <= e.start) continue
+    preMax = Math.max(preMax, e.height)
   }
-  cur.height += preMaxHeight
-  intervals.push(cur)
-  return cur.height
+  
+  ins.height += preMax
+  intervals.push(ins)
+  return ins.height
 }
 
 // another
