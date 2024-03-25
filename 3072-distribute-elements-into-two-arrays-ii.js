@@ -1,3 +1,53 @@
+const binarySearch = function (arr, val) {
+    let start = 0, 
+        end = arr.length - 1
+    while (start < end) {
+        const mid = Math.floor((start + end) / 2)
+        if (arr[mid] > val) {
+            end = mid    
+        } else {
+            start = mid + 1 
+        }
+    }
+    if (arr[start] <= val) {
+        start++;
+    }
+    return [arr.length - start, start]
+}
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+const resultArray = function(nums) {
+     const arr1 = [nums[0]],
+           arr2 = [nums[1]]
+     let sortedArr1 = [nums[0]],
+         sortedArr2 = [nums[1]]
+     for (let i = 2; i < nums.length; i++) {
+         const n = nums[i],
+               [gc1, s1] = binarySearch(sortedArr1, n),
+               [gc2, s2] = binarySearch(sortedArr2, n)
+         if (gc1 > gc2) {
+             arr1.push(n)
+             sortedArr1.splice(s1, 0, n)
+         } else if (gc2 > gc1) {
+             arr2.push(n)
+             sortedArr2.splice(s2, 0, n)
+         } else if (arr2.length < arr1.length){
+             arr2.push(n)
+             sortedArr2.splice(s2, 0, n)
+         } else {
+             arr1.push(n)
+             sortedArr1.splice(s1, 0, n)
+         }
+     }
+    return [...arr1, ...arr2]
+};
+
+// another
+
+
 //#region AVL Tree
 /**
  * @typedef {"keep-all" | "override" | "ignore"} DuplicateMode
