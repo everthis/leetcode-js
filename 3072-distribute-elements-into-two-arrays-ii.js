@@ -1,3 +1,46 @@
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+const resultArray = function(nums) {
+  const n = nums.length
+  const a1 = [nums[0]], a2 = [nums[1]], a1s = [nums[0]], a2s = [nums[1]]
+  for(let i = 2; i < n; i++) {
+    const e = nums[i]
+    const [gc1, s1] = bs(a1s, e)
+    const [gc2, s2] = bs(a2s, e)
+    if(gc1 > gc2) {
+        a1.push(e)
+        a1s.splice(s1, 0, e)
+    } else if(gc1 < gc2) {
+        a2.push(e)
+        a2s.splice(s2, 0, e)
+    } else if(a1.length > a2.length) {
+        a2.push(e)
+        a2s.splice(s2, 0, e)
+    } else {
+        a1.push(e)
+        a1s.splice(s1, 0, e)
+    }
+  }
+    
+  return [...a1, ...a2]
+    
+  function bs(arr, val) {
+     const n = arr.length
+     let l = 0, r = n - 1
+     while(l < r) {
+         const mid = Math.floor((l + r) / 2)
+         if(arr[mid] > val) r = mid
+         else l = mid + 1
+     }
+     if(arr[l] <= val) l++
+     return [n - l, l]
+  }
+};
+
+// another
+
 const binarySearch = function (arr, val) {
     let start = 0, 
         end = arr.length - 1
