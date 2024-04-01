@@ -25,6 +25,33 @@ const maximumStrength = function(nums, k) {
 
 // another
 
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const maximumStrength = function(nums, k) {
+  let dp = new Array(k + 1).fill(0).map(() => new Array(nums.length + 1).fill(0));
+
+  for (let i = 1; i <= k; i++) {
+    let maxSum = Number.MIN_SAFE_INTEGER / 2;
+    let curr = Number.MIN_SAFE_INTEGER / 2;
+    let multiplier = (i % 2 === 1) ? (k + 1 - i) : (i - 1 - k);
+
+    for (let j = i - 1; j < nums.length; j++) {
+      curr = Math.max(curr + nums[j] * multiplier, dp[i - 1][j] + nums[j] * multiplier);
+      maxSum = Math.max(maxSum, curr);
+      dp[i][j + 1] = maxSum;
+    }
+  }
+
+  return dp[k][nums.length];
+};
+
+
+
+// another
+
 let pre = Array(10001).fill(0);
 let cur = Array(10001).fill(0);
 let ps = Array(10001).fill(0);
