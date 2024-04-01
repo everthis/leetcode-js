@@ -1,3 +1,30 @@
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const maximumStrength = function(nums, k) {
+    const n = nums.length;
+    let dp = new Array(n + 1).fill(0);
+    
+    for (let i = 0; i < k; i++) {
+        let m = k - i;
+        m = (i % 2 === 0) ? m : -m;
+        const nextdp = new Array(n + 1).fill(-Infinity);
+        for (let j = 1; j <= n; j++) {
+            nextdp[j] = Math.max(nextdp[j-1], dp[j-1]) + nums[j-1] * m;
+        }
+        dp = nextdp;
+        for (let j = 1; j <= n; j++) {
+            dp[j] = Math.max(dp[j-1], dp[j]);
+        }
+    }
+    return dp[n];
+};
+
+
+// another
+
 let pre = Array(10001).fill(0);
 let cur = Array(10001).fill(0);
 let ps = Array(10001).fill(0);
