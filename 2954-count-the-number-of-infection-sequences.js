@@ -1,3 +1,68 @@
+const MOD = 1e9 + 7;
+const MX = 100000;
+const big = BigInt
+
+const FAC = new Array(MX).fill(0);
+const INV_FAC = new Array(MX).fill(0);
+
+FAC[0] = 1;
+for (let i = 1; i < MX; i++) {
+  FAC[i] = mul(FAC[i - 1], i) % MOD;
+}
+
+INV_FAC[MX - 1] = pow(FAC[MX - 1], MOD - 2);
+for (let i = MX - 1; i > 0; i--) {
+  INV_FAC[i - 1] = mul(INV_FAC[i], i) % MOD;
+}
+
+function comb(n, k) {
+  return mul(mul(FAC[n], INV_FAC[k]),  INV_FAC[n - k]) % MOD;
+}  
+/**
+ * @param {number} n
+ * @param {number[]} sick
+ * @return {number}
+ */
+var numberOfSequence = function(n, sick) {
+  const a = sick  
+  const m = a.length;
+  let total = n - m;
+  let ans = mul(comb(total, a[0]), comb(total - a[0], n - a[m - 1] - 1));
+  total -= a[0] + n - a[m - 1] - 1;
+  let e = 0;
+  for (let i = 1; i < m; i++) {
+    const k = a[i] - a[i - 1] - 1;
+    if (k > 0) {
+      e += k - 1;
+      ans = mul(ans, comb(total, k));
+      total -= k;
+    }
+  }
+  return mul(ans, pow(2, e));
+};
+
+function pow(x, n) {
+
+  const mod = big(MOD)
+  let res = 1n;
+  x = big(x)
+  while (n > 0) {
+    if (n % 2 === 1) {
+      res = (res * x) % mod;
+    }
+    x = (x * x) % mod;
+    n = Math.floor(n / 2);
+  }
+  return Number(res);
+}
+
+function mul(a, b) {
+  return Number(big(a) * big(b) % big(MOD))
+}
+
+// another
+
+
 //#region Modulo
 class Modulo {
   /**
