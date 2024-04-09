@@ -3,6 +3,33 @@
  * @param {number} x
  * @return {number}
  */
+function minOperations(grid, x) {
+  const m = grid.length, n = grid[0].length
+  const len = m * n, arr = []
+  for(let i = 0; i < m; i++) {
+    for(let j = 0; j < n; j++) {
+      arr.push(grid[i][j])
+    }
+  }
+  arr.sort((a, b) => a - b)
+  const mid = arr[Math.floor(len / 2)]
+  let res = 0
+  for(const e of arr) {
+    const d = Math.abs(e - mid)
+    if(d % x !== 0) return -1
+    res += d / x
+  }
+  
+  return res
+};
+
+// another
+
+/**
+ * @param {number[][]} grid
+ * @param {number} x
+ * @return {number}
+ */
 const minOperations = function (grid, x) {
   const arr = [],
     m = grid.length,
