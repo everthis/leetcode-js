@@ -2,6 +2,57 @@
  * @param {number[]} nums
  * @return {number}
  */
+var findValidSplit = function(nums) {
+    const rightCounter = new Map();
+
+    for (const num of nums) {
+        for (const [prime, count] of getPrimesCount(num)) {
+            rightCounter.set(prime, (rightCounter.get(prime) ?? 0) + count);
+        }
+    }
+
+    const leftCounter = new Map();
+    const common = new Set();
+
+    for (let i = 0; i < nums.length - 1; i++) {
+        for (const [prime, count] of getPrimesCount(nums[i])) {
+            leftCounter.set(prime, (leftCounter.get(prime) ?? 0) + count);
+            rightCounter.set(prime, rightCounter.get(prime) - count);
+
+            if (rightCounter.get(prime) > 0) common.add(prime);
+            if (rightCounter.get(prime) === 0) common.delete(prime);
+        }
+
+        if (common.size === 0) return i;
+    }
+
+    return -1;
+};
+
+function getPrimesCount(n) {
+    const count = new Map();
+
+    for (let i = 2; (i * i) <= n; i++) {
+        while (n % i === 0) {
+            count.set(i, (count.get(i) ?? 0) + 1);
+            n /= i;
+        }
+    }
+
+    if (n > 1) {
+        count.set(n, (count.get(n) ?? 0) + 1);
+    }
+
+    return count;
+}
+
+// another
+
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
 const findValidSplit = function(nums) {
   const n = nums.length, right = {};
   for (let i = 0; i < n; i++) {
