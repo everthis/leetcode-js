@@ -6,6 +6,49 @@
  * @param {number} K
  * @return {number}
  */
+const findCheapestPrice = function(n, flights, src, dst, K) {
+  const arr = Array(n).fill(Infinity)
+  arr[src] = 0
+  const g = {}
+  for(const [u,v,p] of flights) {
+    if(g[u] == null) g[u] = []
+    g[u].push([v, p])
+  }
+
+  let step = 0
+  let q = [[src,0]]
+  while(step < K + 1 && q.length) {
+    const len = q.length
+    const row = []
+    for(let i = 0; i < len; i++) {
+      const el = q[i]
+      const [s, dis] = el
+      for(const e of (g[s] || [])) {
+        const [nxt, p] = e
+        if(arr[nxt] > p + dis) {
+          arr[nxt] = p + dis
+          row.push([nxt, arr[nxt]])
+        }
+        
+      }      
+    }
+    q = row
+    step++
+  }
+  
+  return arr[dst] === Infinity ? -1 : arr[dst]
+}
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[][]} flights
+ * @param {number} src
+ * @param {number} dst
+ * @param {number} K
+ * @return {number}
+ */
 
 const findCheapestPrice = function(n, flights, src, dst, K) {
     let mn = new Array(n + 1).fill(Infinity);
