@@ -6,7 +6,7 @@
  * @param {number} end
  * @return {number}
  */
-const maxProbability = function (n, edges, succProb, start, end) {
+var maxProbability = function (n, edges, succProb, start, end) {
   const g = {}
   for (let i = 0; i < edges.length; ++i) {
     const a = edges[i][0],
@@ -16,15 +16,13 @@ const maxProbability = function (n, edges, succProb, start, end) {
     g[a].push([b, i])
     g[b].push([a, i])
   }
-  const p = new Array(n).fill(0)
+  const p = new Array(n).fill(-1)
   p[start] = 1
-  const pq = new PriorityQueue((a, b) => p[a] > p[b])
+  const pq = new PQ((a, b) => p[a] > p[b])
   pq.push(start)
   while (!pq.isEmpty()) {
     const cur = pq.pop()
-    if (cur === end) {
-      return p[end]
-    }
+
     for (let a of g[cur] || []) {
       const neighbor = a[0],
         index = a[1]
@@ -34,9 +32,9 @@ const maxProbability = function (n, edges, succProb, start, end) {
       }
     }
   }
-  return 0
+  return p[end] === -1 ? 0 : p[end]
 }
-class PriorityQueue {
+class PQ {
   constructor(comparator = (a, b) => a > b) {
     this.heap = []
     this.top = 0
