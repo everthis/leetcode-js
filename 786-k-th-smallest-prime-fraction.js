@@ -1,9 +1,10 @@
 /**
- * @param {number[]} A
- * @param {number} K
+ * @param {number[]} arr
+ * @param {number} k
  * @return {number[]}
  */
-const kthSmallestPrimeFraction = function(A, K) {
+var kthSmallestPrimeFraction = function(arr, k) {
+  const A = arr, K = k
   let ans = []
   let left = 0.0
   let right = 1.0
@@ -34,4 +35,4 @@ const kthSmallestPrimeFraction = function(A, K) {
     }
     return { count, p, q }
   }
-}
+};
