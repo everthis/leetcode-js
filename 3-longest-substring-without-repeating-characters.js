@@ -3,6 +3,27 @@
  * @return {number}
  */
 const lengthOfLongestSubstring = function(s) {
+  const n = s.length, hash = {}
+  let res = 0
+  let i = -1
+  for(j = 0;j < n; j++) {
+    const e = s[j]
+    if(hash[e] != null) i = Math.max(i, hash[e])
+    hash[e] = j
+    res = Math.max(res, j - i)
+  }
+  
+  return res
+};
+
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const lengthOfLongestSubstring = function(s) {
   if(s.length < 2) return s.length
   const hash = {}
   let max = 0
