@@ -31,3 +31,18 @@ const rob = function(nums) {
   
   return dp[n]
 };
+
+// another
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const rob = function(nums) {
+  const n = nums.length
+  const dp = Array(n + 1).fill(0)
+  for(let i = 1; i <= n; i++) {
+    const e = nums[i - 1]
+    dp[i] = Math.max(dp[i - 1], (i === 1 ? 0 : dp[i - 2]) + e)
+  }
+  return dp[n]
+};
