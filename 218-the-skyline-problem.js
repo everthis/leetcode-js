@@ -2,6 +2,49 @@
  * @param {number[][]} buildings
  * @return {number[][]}
  */
+var getSkyline = function(buildings) {
+    const edgeSet = new Set();
+    for (let i = 0; i < buildings.length; i++) {
+        const [from, to] = buildings[i];
+        edgeSet.add(from);
+        edgeSet.add(to);
+    }
+    const positions = [...edgeSet];
+    positions.sort((a, b) => a - b);
+
+    const pq = new PriorityQueue({compare: (a, b) => b[2] - a[2]});
+
+    const result = [];
+
+    let j = 0;
+    for (let i = 0; i < positions.length; i++) {
+        const position = positions[i];
+
+        for (j; j < buildings.length && buildings[j][0] <= position; j++) {
+            pq.enqueue(buildings[j]);
+        }
+
+        while (!pq.isEmpty() && pq.front()[1] <= position) {
+            pq.dequeue();
+        }
+
+        let maxHeight = pq.front()?.[2] ?? 0;
+
+        if (!result.length || result.at(-1)[1] !== maxHeight) {
+            result.push([position, maxHeight]);
+        }
+    }
+
+    return result;
+};
+
+// another
+
+
+/**
+ * @param {number[][]} buildings
+ * @return {number[][]}
+ */
 const getSkyline = function getSkyline(
   buildings,
   begin = 0,
