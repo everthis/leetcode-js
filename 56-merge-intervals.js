@@ -3,6 +3,31 @@
  * @return {number[][]}
  */
 const merge = function(intervals) {
+  intervals.sort((a, b) => a[0] - b[0])
+  const res = []
+  let cur = intervals[0]
+  const n = intervals.length
+  res.push(cur)
+  for(let i = 1; i < n; i++) {
+    const e = intervals[i]
+    if(e[0] <= cur[1]) {
+      cur[1] = Math.max(e[1], cur[1])
+    } else {
+      res.push(e)
+      cur = e
+    }
+  }
+  
+  return res
+};
+
+// another
+
+/**
+ * @param {number[][]} intervals
+ * @return {number[][]}
+ */
+const merge = function(intervals) {
   intervals.sort((a, b) => a[0] - b[0] || a[1] - b[1])
   const res = [intervals[0]]
   for(let i = 1, n = intervals.length; i < n; i++) {
