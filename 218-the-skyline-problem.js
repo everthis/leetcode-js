@@ -2,6 +2,91 @@
  * @param {number[][]} buildings
  * @return {number[][]}
  */
+const getSkyline = function(buildings) {
+  const hash = {}
+  for(const b of buildings) {
+    const [s, e, h] = b
+    if(hash[s] == null) hash[s] = []
+    if(hash[e] == null) hash[e] = []
+    hash[s].push(h)
+    hash[e].push(-h)
+  }
+  const ms = new MultiSet()
+  const res = []
+
+  for(const [pos, hs] of Object.entries(hash)) {
+    for(const h of hs) {
+      if(h > 0) {
+        ms.add(h)
+      } else {
+        ms.remove(-h)
+      }
+    }
+    const h = ms.max || 0
+    if(res.length === 0 || res[res.length - 1][1] !== h) {
+      res.push([+pos, h])
+    }
+  }
+
+
+  return res
+};
+
+class MultiSet {
+  constructor() {
+    this.countMap = new Map()
+    this.valueList = []
+  }
+  remove(value) {
+    if(!this.countMap.has(value)) return false
+    let index = binarySearch(this.valueList, value)
+    if (this.countMap.get(value) === 1) {
+      this.valueList.splice(index, 1)
+      this.countMap.delete(value)
+    } else {
+      this.countMap.set(value, (this.countMap.get(value) || 0) - 1)
+    }
+    return true
+  }
+  add(value) {
+    let index = binarySearch(this.valueList, value)
+    if (index < 0) {
+      this.valueList.splice(-index - 1, 0, value)
+      this.countMap.set(value, 1)
+    } else {
+      this.countMap.set(value, this.countMap.get(value) + 1)
+    }
+  }
+  get max() {
+    return this.valueList[this.valueList.length - 1]
+  }
+  get min() {
+    return this.valueList[0]
+  }
+}
+
+function binarySearch(arr, val) {
+  let l = 0, r = arr.length
+  while( l < r ) {
+    const mid = Math.floor((l + r) / 2)
+    if(arr[mid] < val) {
+       l = mid + 1
+    } else {
+      r = mid
+    }
+  }
+  if(arr[l] !== val) return -(l + 1)
+  
+  return l
+}
+
+// another
+
+
+/**
+ * @param {number[][]} buildings
+ * @return {number[][]}
+ */
 var getSkyline = function(buildings) {
     const edgeSet = new Set();
     for (let i = 0; i < buildings.length; i++) {
