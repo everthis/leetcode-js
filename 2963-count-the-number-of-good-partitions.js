@@ -1,3 +1,23 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const numberOfGoodPartitions = function(nums) {
+  const n = nums.length, mod = 1e9 + 7, lastIdxHash = {}
+  let res = 1
+  for (let i = 0; i < n; i++) lastIdxHash[nums[i]] = i
+  let j = 0
+  for(let i = 0; i < n; i++) {
+      if(i > j) res = (res * 2) % mod
+      j = Math.max(j, lastIdxHash[nums[i]])
+  }
+
+
+  return res
+};
+
+// another
+
 class Interval {
   constructor(left, right) {
     this.left = left
