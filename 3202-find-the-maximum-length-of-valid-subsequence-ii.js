@@ -1,5 +1,29 @@
 /**
  * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const maximumLength = function(nums, k) {
+  const n = nums.length;
+  const dp = Array.from({ length: k + 1 }, () => Array(k + 1).fill(0));
+  let res = 0
+  for(const e of nums) {
+    const cur = e % k;
+    for(let remain = 0; remain < k; remain++) {
+      const prev = (k + remain - cur) % k;
+      dp[cur][remain] = Math.max(dp[cur][remain], dp[prev][remain] + 1)
+      res = Math.max(res, dp[cur][remain])
+    }
+  }
+
+  return res
+};
+
+// another
+
+
+/**
+ * @param {number[]} nums
  * @return {number}
  */
 var maximumLength = function (nums, k) {
