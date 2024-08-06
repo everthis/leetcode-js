@@ -45,3 +45,55 @@ var minimumDiameterAfterMerge = function (edges1, edges2) {
   const radius2 = Math.floor((diameter2 + 1) / 2)
   return Math.max(radius1 + radius2 + 1, diameter1, diameter2)
 }
+
+// another
+
+/**
+ * @param {number[][]} edges1
+ * @param {number[][]} edges2
+ * @return {number}
+ */
+var minimumDiameterAfterMerge = function(edges1, edges2) {
+    const [d1, i, j] = diameter(edges1);
+    const [d2, ii, jj] = diameter(edges2);
+    return Math.max(d1, d2, Math.floor((d1 + 1) / 2) + Math.floor((d2 + 1) / 2) + 1); 
+    function farthest(G, i) {
+        const n = G.length;
+        const bfs = [i];
+        const seen = new Array(n).fill(0);
+        seen[i] = 1;
+        let res = -1;
+        let maxd = -1;
+        for (let k = 0; k < bfs.length; k++) {
+            const node = bfs[k];
+            for (let j = 0; j < G[node].length; j++) {
+                const neighbor = G[node][j];
+                if (seen[neighbor] === 0) {
+                    seen[neighbor] = seen[node] + 1;
+                    bfs.push(neighbor);
+                    if (seen[neighbor] > maxd) {
+                        res = neighbor;
+                        maxd = seen[neighbor];
+                    }
+                }
+            }
+        }
+        return [res, maxd - 1];
+    }
+
+    function diameter(edges) {
+        if (edges.length === 0) {
+            return [0, 0, 0];
+        }
+        const n = edges.length + 1;
+        const G = Array.from({ length: n }, () => []);
+        for (let k = 0; k < edges.length; k++) {
+            const [i, j] = edges[k];
+            G[i].push(j);
+            G[j].push(i);
+        }
+        let [v1, d] = farthest(G, 0);
+        [v1, d] = farthest(G, v1);
+        return [d, v1, v1];
+    }
+};
