@@ -57,13 +57,14 @@ var minimumDiameterAfterMerge = function(edges1, edges2) {
     const [d1, i, j] = diameter(edges1);
     const [d2, ii, jj] = diameter(edges2);
     return Math.max(d1, d2, Math.floor((d1 + 1) / 2) + Math.floor((d2 + 1) / 2) + 1); 
+
     function farthest(G, i) {
         const n = G.length;
         const bfs = [i];
         const seen = new Array(n).fill(0);
         seen[i] = 1;
-        let res = -1;
-        let maxd = -1;
+        let res = 0;
+        let maxd = 0;
         for (let k = 0; k < bfs.length; k++) {
             const node = bfs[k];
             for (let j = 0; j < G[node].length; j++) {
@@ -93,7 +94,8 @@ var minimumDiameterAfterMerge = function(edges1, edges2) {
             G[j].push(i);
         }
         let [v1, d] = farthest(G, 0);
-        [v1, d] = farthest(G, v1);
-        return [d, v1, v1];
+        let [v2, d2] = farthest(G, v1);
+        return [d2, v1, v2];
     }
 };
+
