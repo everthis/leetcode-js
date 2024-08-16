@@ -1,4 +1,45 @@
 /**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {number[]}
+ */
+var sumOfDistancesInTree = function(n, edges) {
+  const res = new Array(n).fill(0);
+  const count = new Array(n).fill(1);
+  const graph = Array.from({ length: n }, () => []);
+    for (const [u, v] of edges) {
+        graph[u].push(v);
+        graph[v].push(u);
+    }
+    dfs1(0, -1);
+    dfs2(0, -1);
+
+  return res
+
+  function dfs1(node, parent) {
+    for (const child of graph[node]) {
+      if (child === parent) {
+        continue;
+      }
+      dfs1(child, node);
+      count[node] += count[child];
+      res[node] += res[child] + count[child];
+    }
+  }
+  function dfs2(node, parent) {
+    for (const child of graph[node]) {
+      if (child === parent) {
+        continue;
+      }
+      res[child] = res[node] - count[child] + n - count[child];
+      dfs2(child, node);
+    }
+  }
+};
+
+// another
+
+/**
  * @param {number} N
  * @param {number[][]} edges
  * @return {number[]}
