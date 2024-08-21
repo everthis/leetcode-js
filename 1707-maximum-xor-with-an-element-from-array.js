@@ -3,6 +3,68 @@
  * @param {number[][]} queries
  * @return {number[]}
  */
+var maximizeXor = function(nums, queries) {
+    nums.sort((a, b) => a - b)
+    const n = nums.length
+    queries.forEach((query, index) => {
+        query.push(index)
+    })
+    queries.sort((a, b) => a[1] - b[1])
+    const trie = new Trie()
+    let i = 0
+    const res = []
+    queries.forEach(([x, m, index]) => {
+        while (i < n && nums[i] <= m) {
+            trie.insert(nums[i])
+            i++
+        }
+
+        res[index] = trie.query(x)
+        
+    })
+    return res
+};
+
+class Trie {
+    constructor() {
+        this.root = {}
+    }
+    insert(num) {
+        let node = this.root
+        for (let i = 31; i >= 0; i--) {
+            const bit = (num >> i) & 1
+            if (!node[bit]) {
+                node[bit] = {}
+            }
+            node = node[bit]
+        }
+    }
+    query(num) {
+        let node = this.root
+        if (Object.keys(node).length === 0) return -1
+        let res = 0
+        for (let i = 31; i >= 0; i--) {
+            const bit = (num >> i) & 1
+            if(node == null) break
+            if (node[1 - bit]) {
+                res |= 1 << i
+                node = node[1 - bit]
+            } else {
+              node = node[bit]
+            }
+        }
+        return res
+    }
+}
+
+// another
+
+
+/**
+ * @param {number[]} nums
+ * @param {number[][]} queries
+ * @return {number[]}
+ */
 const maximizeXor = function(nums, queries) {
   nums.sort((a, b) => a - b)
   queries.forEach((e, i) => e.push(i))
