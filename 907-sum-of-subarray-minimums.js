@@ -67,3 +67,38 @@ const sumSubarrayMins = function (arr) {
 
   return res
 }
+
+// another
+
+/**
+ * @param {number[]} arr
+ * @return {number}
+ */
+const sumSubarrayMins = function(arr) {
+  const stk1 = [], stk2 = []
+    const len = arr.length, mod = 1e9 + 7
+    const left = new Array(len), right = new Array(len)
+    for(let i = 0; i < len; i++) {
+        left[i] = i + 1
+        right[i] = len - i
+    }
+    for(let i = 0; i < len; i++) {
+        while(stk1.length && arr[stk1[stk1.length - 1]] > arr[i]) {
+            stk1.pop()
+        }
+        left[i] = i - (stk1.length ? stk1[stk1.length - 1] : -1)
+        stk1.push(i)
+
+        while(stk2.length && arr[stk2[stk2.length - 1]] > arr[i]) {
+            let index = stk2.pop()
+            right[index] = i - index
+        }
+        stk2.push(i)
+    }
+
+    let res = 0
+    for(let i = 0; i < len; i++) {
+        res = (res + arr[i] * left[i] * right[i]) % mod
+    }
+    return res
+};
