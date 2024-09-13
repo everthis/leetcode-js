@@ -3,6 +3,45 @@
  * @param {string} target
  * @return {number}
  */
+const minStickers = function(stickers, target) {
+  const n = target.length
+  const limit = 1 << n
+  const dp = Array(limit).fill(Infinity)
+  dp[0] = 0
+  for(let state = 0; state < limit; state++) {
+    if(dp[state] === Infinity) continue
+    for(let s of stickers) {
+      const ns = helper(state, target, s)
+      dp[ns] = Math.min(dp[ns], dp[state] + 1)      
+    }
+
+  }
+  
+  return dp[limit -  1] === Infinity ? -1 : dp[limit - 1]
+  
+  function helper(state, target, s) {
+    const n = target.length
+    for(const ch of s) {
+      for(let i = 0; i < n; i++) {
+        if(target[i] === ch && ((state >> i) & 1) === 0) {
+          state |= (1 << i)
+          break
+        }
+      }
+    }
+    
+    return state
+  }
+};
+
+// another
+
+
+/**
+ * @param {string[]} stickers
+ * @param {string} target
+ * @return {number}
+ */
 const minStickers = function (stickers, target) {
   const n = stickers.length
   const m = target.length
