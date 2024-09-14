@@ -3,6 +3,50 @@
  * @param {string[][]} people
  * @return {number[]}
  */
+var smallestSufficientTeam = function(req_skills, people) {
+   const n = req_skills.length, m = people.length
+   const limit = 1 << n
+   const reqSet = new Set(req_skills)
+   const si = {}
+   for(let i = 0; i < n; i++) si[req_skills[i]] = i
+   const ps = {}
+   for(let i = 0; i < m; i++) {
+     const p = people[i]
+     let mask = 0
+     for(const s of p) {
+       if(!reqSet.has(s)) continue
+       mask |= (1 << si[s])
+     }
+     ps[i] = mask
+   }
+   const res = Array.from({ length: limit }, () => new Array())
+   let dp = Array(limit).fill(Infinity)
+   dp[0] = 0
+   for(let i = 0; i < m; i++) {
+     const pMask = ps[i]
+     const dp2 = [...dp]
+     for(let mask = 0; mask < limit; mask++) {
+       const newMask = mask | pMask
+       if(dp2[newMask] > dp[mask] + 1) {
+         dp2[newMask] = dp[mask] + 1
+         res[newMask] = [...res[mask]]
+         res[newMask].push(i)
+       }
+     }
+     dp = dp2
+   }
+   
+   return res[limit - 1]
+};
+
+// another
+
+
+/**
+ * @param {string[]} req_skills
+ * @param {string[][]} people
+ * @return {number[]}
+ */
 const smallestSufficientTeam = function (req_skills, people) {
   const m = req_skills.length,
     n = people.length,
