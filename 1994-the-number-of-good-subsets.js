@@ -1,3 +1,89 @@
+const M = 1e9 + 7
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const numberOfGoodSubsets = function (nums) {
+  const set = new Set([
+    2, 3, 5, 6, 7, 10, 11, 13, 14, 15, 17, 19, 21, 22, 23, 26, 29, 30,
+  ])
+  const map = new Map()
+  let count1 = 0
+
+  for (const x of nums) {
+    if (set.has(x)) {
+      map.set(x, (map.get(x) || 0) + 1)
+    }
+    if (x === 1) {
+      count1++
+    }
+  }
+
+  const n = map.size
+  const count = []
+  const digit = []
+  for (const [key, value] of map) {
+    digit.push(key)
+    count.push(value)
+  }
+
+  let ret = 0
+  for (let state = 1; state < 1 << n; state++) {
+    let flag = 1
+    for (let i = 0; i < n; i++) {
+      if (((state >> i) & 1) === 0) continue
+      for (let j = i + 1; j < n; j++) {
+        if (((state >> j) & 1) === 0) continue
+        if (gcd(digit[i], digit[j]) !== 1) {
+          flag = 0
+          break
+        }
+      }
+      if (flag === 0) break
+    }
+
+    if (flag === 0) continue
+
+    let ans = 1
+    for (let i = 0; i < n; i++) {
+      if (((state >> i) & 1) === 0) continue
+      ans = mul(ans, count[i])
+    }
+    ret = (ret + ans) % M
+  }
+
+  ret = mul(ret, quickMul(2, count1))
+  return ret
+}
+
+function quickMul(x, N) {
+  if (N === 0) {
+    return 1
+  }
+  const y = quickMul(x, Math.floor(N / 2))
+  return N % 2 === 0 ? mul(y, y) : mul(y, y, x)
+}
+
+function mul(...arr) {
+  let res = 1n
+  for (const e of arr) {
+    res *= BigInt(e)
+  }
+
+  return Number(res % BigInt(M))
+}
+
+function gcd(a, b) {
+  while (b) {
+    ;[a, b] = [b, a % b]
+  }
+  return a
+}
+
+// another
+
+
 /**
  * @param {number[]} nums
  * @return {number}
