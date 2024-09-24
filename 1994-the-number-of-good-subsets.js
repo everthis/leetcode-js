@@ -1,3 +1,70 @@
+const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+const M = 1e9 + 7
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var numberOfGoodSubsets = function (nums) {
+  const n = primes.length
+  const dp = new Array(1 << n).fill(0)
+  dp[0] = 1
+
+  const map = new Map()
+  for (const x of nums) {
+    map.set(x, (map.get(x) || 0) + 1)
+  }
+
+  let count1 = 0
+  for (const [x, count] of map) {
+    if (x === 1) continue
+    const encode = encoding(x)
+    if (encode === -1) continue
+
+    for (let state = (1 << n) - 1; state >= 1; state--) {
+      if (state - encode === (state ^ encode)) {
+        dp[state] = (dp[state] + ((dp[state - encode] * count) % M)) % M
+      }
+    }
+  }
+
+  let ret = 0
+  for (let state = 1; state < 1 << n; state++) {
+    ret = (ret + dp[state]) % M
+  }
+
+  let power2 = 1
+  for (let i = 0; i < (map.get(1) || 0); i++) {
+    power2 = (power2 * 2) % M
+  }
+
+  return mul(ret, power2)
+}
+
+function mul(...arr) {
+  let res = 1n
+  for (const e of arr) {
+    res *= BigInt(e)
+  }
+
+  return Number(res % BigInt(M))
+}
+
+function encoding(num) {
+  let encode = 0
+  for (let i = 0; i < primes.length; i++) {
+    if (num % primes[i] === 0) {
+      encode += 1 << i
+      num /= primes[i]
+    }
+    if (num % primes[i] === 0) {
+      return -1
+    }
+  }
+  return encode
+}
+
+// another
+
 const M = 1e9 + 7
 
 /**
