@@ -2,6 +2,49 @@
  * @param {string} s
  * @return {number}
  */
+const maxProduct = function(s) {
+  const n = s.length
+  const limit = (1 << n) - 1
+  let res = 0
+  for(let mask = 1; mask < limit; mask++) {
+    res = Math.max(res, lp(mask) * lp(limit - mask))
+  }
+  return res
+  
+  function lp(state) {
+    if(state === 0) return 0
+    const str = []
+    let idx = 0
+    // console.log((state))
+    while(idx < s.length) {
+      // console.log((state >>> 0).toString(2))
+      if((state >> idx) & 1) str.push(s[s.length - 1 - idx])
+      idx++
+    }
+    // console.log(str)
+    const len = str.length
+    const dp = Array.from({ length: len }, () => Array(len).fill(0))
+    for(let i = 0; i < len; i++) dp[i][i] = 1
+    
+    for(let length = 2; length <= len; length++) {
+      for(let i = 0; i + length - 1 < len; i++) {
+        const j = i + length - 1
+        if(str[i] === str[j]) dp[i][j] = dp[i + 1][j - 1] + 2
+        else dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1])
+      }
+    }
+    
+    // console.log(dp, len)
+    return dp[0][len - 1]
+  } 
+};
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
 var maxProduct = function(s) {
   const n = s.length;
   let max = 0;
