@@ -1,5 +1,57 @@
 /**
  * @param {number} n
+ * @param {number[][]} relations
+ * @param {number} k
+ * @return {number}
+ */
+const minNumberOfSemesters = function(n, relations, k) {
+  const limit = (1 << n)
+  const dp = Array(limit).fill(Number.MAX_SAFE_INTEGER)
+  const preCourse = Array(n).fill(0)
+  const preState = Array(limit).fill(0)
+  
+  for(const [s, d] of relations) {
+    preCourse[d - 1] |= (1 << (s - 1))
+  }
+  for(let state = 0; state < limit; state++) {
+    for(let i = 0; i < n; i++) {
+      if(state & (1 << i)) {
+        preState[state] |= preCourse[i]
+      }
+    }
+    if(preState[state] === 0 && bitCnt(state) <= k) dp[state] = 1
+  }
+  dp[0] = 0
+  for(let state = 1; state < limit; state++) {
+    for(let sub = state; sub >= 0; sub = (sub - 1) & state) {
+      if(
+        bitCnt(state) - bitCnt(sub) <= k &&
+        ((preState[state] & sub) === preState[state])
+      ) {
+        // console.log('d', state, sub, dp)
+        dp[state] = Math.min(dp[state], dp[sub] + 1)
+      }
+      if(sub === 0) break
+    }
+  }
+  
+  // console.log(limit)
+  return dp[limit - 1]
+};
+
+function bitCnt(num) {
+  let res = 0
+  while(num) {
+    res++
+    num &= (num - 1)
+  }
+  return res
+}
+
+// another
+
+/**
+ * @param {number} n
  * @param {number[][]} dependencies
  * @param {number} k
  * @return {number}
