@@ -94,3 +94,52 @@ var numDupDigitsAtMostN = function(n) {
 
   return n - res
 };
+
+// another
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var numDupDigitsAtMostN = function(n) {
+  return n - helper(n)
+  function helper(num) {
+    let res = 0
+    const s = `${num}`
+    const slen = s.length
+    for(let len = 1; len < slen; len++) {
+      res += perm(10, len) - perm(9, len - 1)
+    }
+    const visited = Array(10).fill(null)
+    dfs(s, 0, visited)
+    
+    return res
+    function dfs(s, i, visited) {
+      const n = s.length
+      if(i === n) {
+        res++
+        return
+      }
+      for(let d = 0; d <= 9; d++) {
+        if(d === 0 && i === 0) continue
+        if(visited[d]) continue
+        if(d < +s[i]) {
+          res += perm(10 - i - 1, n - i - 1)
+        } else if(d === +s[i]) {
+          visited[d] = 1
+          dfs(s, i + 1, visited)
+          visited[d] = 0
+        }
+      }
+    }
+  }
+
+  function perm(m, n) {
+    if(n === 0) return 1
+    let res = 1
+    for(let i = 0; i < n; i++) {
+      res *= m - i
+    }
+    return res
+  }
+};
