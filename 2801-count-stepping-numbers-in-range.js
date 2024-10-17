@@ -109,3 +109,65 @@ const countSteppingNumbers = (low, high) => {
     return minus_mod(x, y, mod);
 };
 
+// another
+
+
+/**
+ * @param {string} low
+ * @param {string} high
+ * @return {number}
+ */
+const countSteppingNumbers = function(low, high) {
+  const mod = 1e9 + 7
+  let res = 0
+  res = (helper(high) - helper(low) + isSteppingNumber(low) + mod) % mod
+
+  return res
+
+  function helper(num) {
+    let res = 0
+    const n = num.length
+    const memo = Array.from({ length: 2 }, () => Array.from({ length: 11 }, () => Array.from({ length: n + 1 }, () => -1)))
+    for (let len = 1; len < n; len++) {
+        for(let i = 1; i < 10; i++){
+          res = (res + dfs(len - 1, i, false, num, memo)) % mod
+        }
+    }
+    const d = num[0] - '0'
+    for(let i = 1; i < d; i++){
+      res = (res + dfs(n - 1, i, false, num, memo)) % mod
+    }
+    res = (res + dfs(n - 1, d, true, num, memo)) % mod
+    return res
+  }
+  function dfs(len, prev, isSame, num, memo) {
+    if(len === 0) return 1
+    if(memo[+isSame][prev][len] !== -1) return memo[+isSame][prev][len]
+    let res = 0
+    if(isSame){
+        const d = num[num.length - len] - '0'
+        if(prev + 1 < d) res = (res + dfs(len - 1, prev + 1, false, num, memo)) % mod
+        else if(prev + 1 === d) res = (res + dfs(len - 1, prev + 1, true, num, memo)) % mod
+        if(prev - 1 >= 0 && prev - 1 < d) res = (res + dfs(len - 1, prev - 1, false, num, memo)) % mod
+        else if(prev - 1 === d) res = (res + dfs(len - 1, prev - 1, true, num, memo)) % mod
+
+
+    } else {
+        if(prev + 1 < 10) res = (res + dfs(len - 1, prev + 1, false, num, memo)) % mod
+        if(prev - 1 >= 0) res = (res + dfs(len - 1, prev - 1, false, num, memo)) % mod
+    }
+
+    memo[+isSame][prev][len] = res
+
+    return res
+  }
+  function isSteppingNumber(num){
+    if(num.length === 1) return 1
+    for(let i = 1; i < num.length; i++){
+      if(Math.abs(num[i] - num[i - 1]) !== 1) return 0
+    }
+    return 1
+  }
+};
+
+
