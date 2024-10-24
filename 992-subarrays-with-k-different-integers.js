@@ -108,3 +108,34 @@ const subarraysWithKDistinct = function (A, K) {
   }
 }
 
+// another
+
+const subarraysWithKDistinct = function (nums, k) {
+  const n = nums.length
+  const atMost = (k) => {
+    const freq = new Array(n + 1).fill(0)
+    let l = 0,
+      r = 0
+    let res = 0
+    let cnt = 0
+    while (r < n) {
+      if (freq[nums[r]] === 0) {
+        cnt++
+      }
+      freq[nums[r]]++
+      while (cnt > k) {
+        freq[nums[l]]--
+        if (freq[nums[l]] === 0) {
+          cnt--
+        }
+        l++
+      }
+      res += r - l + 1
+      r++
+    }
+    return res
+  }
+  return atMost(k) - atMost(k - 1)
+}
+
+
