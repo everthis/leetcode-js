@@ -45,6 +45,36 @@ const lengthOfLongestSubstring = function(s) {
  * @return {number}
  */
 const lengthOfLongestSubstring = function(s) {
+    const n = s.length, hash = {}
+    let res = 0
+    let l = 0, r = 0
+    while(r < n) {
+        const ch = s[r]
+        if(hash[ch] == null) hash[ch] = 0
+        hash[ch]++
+        while(hash[s[l]] > 1) {
+            hash[s[l]]--
+            l++
+        }
+        while(l <= r && Object.keys(hash).length !== r - l + 1) {
+            hash[s[l]]--
+            if(hash[s[l]] === 0) delete hash[s[l]]
+            l++
+        }
+        res = Math.max(res, r - l + 1)
+        r++
+    }
+
+    return res
+};
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const lengthOfLongestSubstring = function(s) {
   // var p=0, q=0; //p: start of the sub, q: end of the queue
 
   //hashmap in js????? Array.indexOf
