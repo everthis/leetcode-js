@@ -2,6 +2,55 @@
  * @param {number[]} nums
  * @return {number}
  */
+const medianOfUniquenessArray = function(nums) {
+  const n = nums.length;
+  const {floor} = Math;
+  const total = (n * (n + 1)) / 2;
+  const half = floor((total + 1) / 2);
+  let l = 1, r = n
+  while(l < r) {
+    const mid = l + floor((r - l) / 2);
+    if (atMostK(nums, mid) >= half) {
+      r = mid;
+    } else {
+      l = mid + 1;
+    }
+  }
+  return l
+
+  function atMostK(nums, k) {
+    const hash = new Map(), n = nums.length;
+    let res = 0
+    let i = 0, j = 0
+    while(j < n) {
+        const e = nums[j]
+        if(!hash.has(e)) hash.set(e, 0)
+        hash.set(e, hash.get(e) + 1)
+        while(i < j && hash.size > k) {
+            
+            hash.set(nums[i], hash.get(nums[i]) - 1)
+            if(hash.get(nums[i]) === 0) {
+                hash.delete(nums[i])
+            }
+            i++
+        }
+        res += j - i + 1
+
+        j++
+    }
+
+    return res
+  }
+};
+
+
+// another
+
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
 var medianOfUniquenessArray = function (nums) {
   let low = 1
   let high = nums.length
