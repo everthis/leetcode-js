@@ -47,3 +47,44 @@ var validSubstringCount = function (word1, word2) {
 
   return res
 }
+
+// another
+
+/**
+ * @param {string} word1
+ * @param {string} word2
+ * @return {number}
+ */
+const validSubstringCount = function(word1, word2) {
+  const n = word1.length;
+  const target = Array(26).fill(0);
+  const a = 'a'.charCodeAt(0);
+  for(const ch of word2) {
+    target[ch.charCodeAt(0) - a]++;
+  }
+  const cur = Array(26).fill(0);
+  let j = 0
+  let res = 0
+  for(let i = 0; i < n; i++) {
+    const e = word1[i].charCodeAt(0) - a
+    while(j < n && !valid(cur, target)) {
+        cur[word1[j].charCodeAt(0) - a]++;
+        j++
+    }
+    if(valid(cur, target)) {
+      res += (n - 1) - (j - 1) + 1
+    }
+    cur[e]--;
+  }
+
+  return res
+
+  function valid(arr, target) {
+    for(let i = 0; i < 26; i++) {
+      if(arr[i] < target[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+};
