@@ -1,3 +1,26 @@
+function validSubstringCount(w1, w2) {
+    const cnt = {};
+    for (const ch of w2) {
+        cnt[ch] = (cnt[ch] || 0) + 1;
+    }
+    let match = Object.keys(cnt).length, res = 0, j = 0;
+
+    for (let i = 0; i < w1.length; i++) {
+        cnt[w1[i]] = (cnt[w1[i]] || 0) - 1;
+        match -= cnt[w1[i]] === 0 ? 1 : 0;
+
+        while (match === 0) {
+            res += w1.length - i;
+            match += cnt[w1[j]] === 0 ? 1 : 0;
+            cnt[w1[j]] = (cnt[w1[j]] || 0) + 1;
+            j++;
+        }
+    }
+    return res;
+}
+
+// another
+
 /**
  * @param {string} word1
  * @param {string} word2
