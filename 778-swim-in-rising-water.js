@@ -3,6 +3,112 @@
  * @return {number}
  */
 const swimInWater = function(grid) {
+    const pq = new PQ((a, b) => a[0] < b[0])
+    const dirs = [
+        [0, 1],
+        [0, -1],
+        [1, 0],
+        [-1, 0]
+    ]
+    const n = grid.length
+    const visited = Array.from({ length: n }, () => Array(n).fill(false))
+    pq.push([grid[0][0], 0, 0])
+    visited[0][0] = true
+    let res = 0
+
+    while (!pq.isEmpty()) {
+        const [h, x, y] = pq.pop()
+        res = Math.max(res, h)
+        if (x === n - 1 && y === n - 1) {
+            return res
+        }
+        for (const [dx, dy] of dirs) {
+            const nx = x + dx
+            const ny = y + dy
+            if (nx < 0 || nx >= n || ny < 0 || ny >= n || visited[nx][ny]) {
+                continue
+            }
+            pq.push([grid[nx][ny], nx, ny])
+            visited[nx][ny] = true
+        }
+    }
+};
+
+class PQ {
+    constructor(comparator = (a, b) => a > b) {
+      this.heap = []
+      this.top = 0
+      this.comparator = comparator
+    }
+    size() {
+      return this.heap.length
+    }
+    isEmpty() {
+      return this.size() === 0
+    }
+    peek() {
+      return this.heap[this.top]
+    }
+    push(...values) {
+      values.forEach((value) => {
+        this.heap.push(value)
+        this.siftUp()
+      })
+      return this.size()
+    }
+    pop() {
+      const poppedValue = this.peek()
+      const bottom = this.size() - 1
+      if (bottom > this.top) {
+        this.swap(this.top, bottom)
+      }
+      this.heap.pop()
+      this.siftDown()
+      return poppedValue
+    }
+    replace(value) {
+      const replacedValue = this.peek()
+      this.heap[this.top] = value
+      this.siftDown()
+      return replacedValue
+    }
+  
+    parent = (i) => ((i + 1) >>> 1) - 1
+    left = (i) => (i << 1) + 1
+    right = (i) => (i + 1) << 1
+    greater = (i, j) => this.comparator(this.heap[i], this.heap[j])
+    swap = (i, j) => ([this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]])
+    siftUp = () => {
+      let node = this.size() - 1
+      while (node > this.top && this.greater(node, this.parent(node))) {
+        this.swap(node, this.parent(node))
+        node = this.parent(node)
+      }
+    }
+    siftDown = () => {
+      let node = this.top
+      while (
+        (this.left(node) < this.size() && this.greater(this.left(node), node)) ||
+        (this.right(node) < this.size() && this.greater(this.right(node), node))
+      ) {
+        let maxChild =
+          this.right(node) < this.size() &&
+          this.greater(this.right(node), this.left(node))
+            ? this.right(node)
+            : this.left(node)
+        this.swap(node, maxChild)
+        node = maxChild
+      }
+    }
+  }
+
+// another
+
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+const swimInWater = function(grid) {
    const n = grid.length
    const limit = n * n, { floor } = Math
    let l = 0, r = limit - 1
