@@ -3,6 +3,34 @@
  * @param {number[][]} flights
  * @param {number} src
  * @param {number} dst
+ * @param {number} k
+ * @return {number}
+ */
+var findCheapestPrice = function(n, flights, src, dst, k) {
+    let cost = new Array(n).fill(Number.MAX_SAFE_INTEGER);
+    cost[src] = 0;
+    
+    for (let i = 0; i <= k; i++) {
+        let temp = [...cost];
+        for (let [curr, next, price] of flights) {
+            if (cost[curr] === Number.MAX_SAFE_INTEGER) {
+                continue;
+            }
+            temp[next] = Math.min(temp[next], cost[curr] + price);
+        }
+        cost = temp;
+    }
+    
+    return cost[dst] === Number.MAX_SAFE_INTEGER ? -1 : cost[dst];
+};
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[][]} flights
+ * @param {number} src
+ * @param {number} dst
  * @param {number} K
  * @return {number}
  */
