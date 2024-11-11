@@ -2,28 +2,17 @@
  * @param {number[]} nums
  * @return {number}
  */
-var sumOfGoodSubsequences = function (nums) {
-    const mod = 1000000007n;
-    const MAX = 100005;
-    const sum = new Array(MAX).fill(0n);
-    const cnt = new Array(MAX).fill(0n);
-
-    for (let i = nums.length - 1; i >= 0; i--) {
-        const v = nums[i];
-        cnt[v]++;
-
-        const tmp = 1n + cnt[v + 1] + (cnt[v - 1] || 0n);
-        cnt[v] += cnt[v + 1];
-        cnt[v] += cnt[v - 1] || 0n;
-
-        sum[v] += BigInt(v) * tmp;
-
-        sum[v] += sum[v + 1];
-        sum[v] += sum[v - 1] || 0n;
-
-        cnt[v] %= mod;
-        sum[v] %= mod;
-    }
-
-    return Number(sum.reduce((a, b) => (a + b) % mod, 0n));
-}
+const sumOfGoodSubsequences = function(nums) {
+  const limit = 1e5 + 10;
+  const mod = 1e9 + 7;
+  const count = Array(limit).fill(0);
+  const total = Array(limit).fill(0);
+  let res = 0;
+  for(const e of nums) {
+    count[e + 1] = (count[e] + count[e + 1] + count[e + 2] + 1) % mod
+    const cur = total[e] + total[e + 2] + e * (count[e] + count[e + 2] + 1)
+    total[e + 1] = (total[e + 1] + cur) % mod
+    res =(res + cur) % mod
+  }
+  return res
+};
