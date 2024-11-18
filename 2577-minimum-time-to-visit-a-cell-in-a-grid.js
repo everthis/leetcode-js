@@ -1,3 +1,41 @@
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var minimumTime = function(grid) {
+    if(grid[0][0] > 0) return -1
+      if(grid[0][1] > 1 && grid[1][0] > 1) return -1
+  const m = grid.length, n = grid[0].length;
+    const pq = new PQ((a, b) => a[0] < b[0]);
+    pq.push([0, 0, 0]);
+    const dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+    const dist = Array.from({ length: m }, () => Array(n).fill(-1));
+
+    while (!pq.isEmpty()) {
+        const [t, i, j] = pq.pop();
+        if (dist[i][j] !== -1) continue;
+        dist[i][j] = t
+        if (i === m - 1 && j === n - 1) break;
+        for(const [di, dj] of dirs) {
+            const ni = i + di, nj = j + dj;
+            if (ni < 0 || ni >= m || nj < 0 || nj >= n) continue;
+            if (dist[ni][nj] !== -1) continue;
+            if(grid[ni][nj] <= t + 1) {
+                pq.push([t + 1, ni, nj]);
+            } else if ((grid[ni][nj] - t) % 2 === 0) {
+                pq.push([grid[ni][nj] + 1, ni, nj]);
+            } else {
+                pq.push([grid[ni][nj], ni, nj]);
+            }
+        }
+    }
+
+    return dist[m - 1][n - 1];
+};
+
+
+// another
+
 class PQ {
   constructor(comparator = (a, b) => a > b) {
     this.heap = []
