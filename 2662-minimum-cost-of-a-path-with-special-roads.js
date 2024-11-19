@@ -1,3 +1,41 @@
+/**
+ * @param {number[]} start
+ * @param {number[]} target
+ * @param {number[][]} specialRoads
+ * @return {number}
+ */
+const minimumCost = function(start, target, specialRoads) {
+  const n = specialRoads.length;
+  let res = Infinity;
+  const pq = new PQ((a, b) => a[0] < b[0]);
+  const dist = Array(n).fill(Infinity);
+  const { abs } = Math;
+  for(let i = 0; i < n; i++) {
+    const [x, y, x2, y2, cost] = specialRoads[i];
+    dist[i] = abs(start[0] - x) + abs(start[1] - y) + cost;
+    pq.push([dist[i], i]);
+  }
+  res = abs(target[0] - start[0]) + abs(target[1] - start[1])
+  while(!pq.isEmpty()) {
+    const [d, i] = pq.pop();
+    if(d !== dist[i]) continue;
+    const e = specialRoads[i];
+    res = Math.min(res, d + abs(target[0] - e[2]) + abs(target[1] - e[3]));
+    for(let j = 0; j < n; j++) {
+      const w = abs(e[2] - specialRoads[j][0]) + abs(e[3] - specialRoads[j][1]) + specialRoads[j][4];
+      if(d + w < dist[j]) {
+        dist[j] = d + w;
+        pq.push([dist[j], j]);
+      }
+    }
+  }
+  
+  return res
+};
+
+// another
+
+
 class PQ {
   constructor(comparator = (a, b) => a > b) {
     this.heap = []
