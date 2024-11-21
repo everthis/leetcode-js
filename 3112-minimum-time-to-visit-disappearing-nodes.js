@@ -4,6 +4,38 @@
  * @param {number[]} disappear
  * @return {number[]}
  */
+const minimumTime = function(n, edges, disappear) {
+  const g = Array.from({ length: n }, () => [])
+    for (const [u, v, w] of edges) {
+        g[u].push([v, w])
+        g[v].push([u, w])
+    }
+    const pq = new PQ((a, b) => a[1] < b[1])
+    pq.push([0, 0])
+    const res = Array(n).fill(-1)
+    while(!pq.isEmpty()) {
+        const [u, t] = pq.pop()
+        if (res[u] !== -1) continue
+        res[u] = t
+        for(const [v, w] of g[u]) {
+            if (res[v] === -1 && t + w < disappear[v]) {
+                pq.push([v, t + w])
+            }
+        }
+    }
+
+    return res
+};
+
+// another
+
+
+/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @param {number[]} disappear
+ * @return {number[]}
+ */
 var minimumTime = function(n, edges, disappear) {
     const graph = {}; 
     for (let i = 0; i < n; i++) {
