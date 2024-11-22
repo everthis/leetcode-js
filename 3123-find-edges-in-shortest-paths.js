@@ -3,6 +3,65 @@
  * @param {number[][]} edges
  * @return {boolean[]}
  */
+const findAnswer = function (n, edges) {
+  const m = edges.length
+  const res = Array(m).fill(false)
+  const MAX = Number.MAX_SAFE_INTEGER
+  const g = Array(n)
+    .fill(null)
+    .map(() => [])
+  for (const [u, v, w] of edges) {
+    g[u].push([v, w])
+    g[v].push([u, w])
+  }
+  const dist = Array(n).fill(MAX)
+  dist[0] = 0
+  const pq = new PQ((a, b) => a[1] < b[1])
+  pq.push([0, 0])
+  while (!pq.isEmpty()) {
+    const [u, d] = pq.pop()
+    if (d > dist[u]) continue
+    for (const [v, w] of g[u]) {
+      if (dist[v] > d + w) {
+        dist[v] = d + w
+        pq.push([v, dist[v]])
+      }
+    }
+  }
+  const dist1 = Array(n).fill(MAX)
+  dist1[n - 1] = 0
+  pq.push([n - 1, 0])
+  while (!pq.isEmpty()) {
+    const [u, d] = pq.pop()
+    if (d > dist1[u]) continue
+    for (const [v, w] of g[u]) {
+      if (dist1[v] > d + w) {
+        dist1[v] = d + w
+        pq.push([v, dist1[v]])
+      }
+    }
+  }
+  for (let i = 0; i < m; i++) {
+    const [u, v, w] = edges[i]
+    if (
+      dist[u] + dist1[v] + w === dist[n - 1] ||
+      dist[v] + dist1[u] + w === dist[n - 1]
+    ) {
+      res[i] = true
+    }
+  }
+
+  return res
+}
+
+// another
+
+
+/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {boolean[]}
+ */
 var findAnswer = function (n, edges) {
   let graph = {}
   let edgeMapWithIndex = {}
