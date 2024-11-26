@@ -104,3 +104,53 @@ const findOrder = function(numCourses, prerequisites) {
     return true
   }
 }
+
+// another
+
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {number[]}
+ */
+var findOrder = function(numCourses, prerequisites) {
+  const inDegree = new Array(numCourses).fill(0);
+    const graph = {};
+    for (let i = 0;i < prerequisites.length;i++) {
+        const e = prerequisites[i];
+        inDegree[e[0]]++;
+        if (graph[e[1]]) {
+            graph[e[1]].push(e[0]);
+        } else {
+            graph[e[1]] = [e[0]];
+        }
+    }
+    let q = []
+    for (let i = 0;i < inDegree.length;i++) {
+        if (inDegree[i] === 0) {
+            q.push(i);
+        }
+    }
+    const res = []
+    let count = 0;
+    while(q.length) {
+        const tmp = []
+        const size = q.length
+        for(let i = 0;i < size;i++) {
+            const node = q[i]
+            res.push(node)
+            count++
+            if (graph[node]) {
+                for (let j = 0;j < graph[node].length;j++) {
+                    inDegree[graph[node][j]]--
+                    if (inDegree[graph[node][j]] === 0) {
+                        tmp.push(graph[node][j])
+                    }
+                }
+            }
+        }
+
+        q = tmp
+    }
+
+    return count === numCourses ? res : [];
+};
