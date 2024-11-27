@@ -3,6 +3,56 @@
  * @param {number[][]} edges
  * @return {number[]}
  */
+var findMinHeightTrees = function(n, edges) {
+  if(n === 1) return [0]
+  if(n === 2) return [0, 1]
+  const g = {}
+  const degree = new Array(n).fill(0)
+  for(const [u, v] of edges) {
+    degree[u]++
+    degree[v]++
+    if(g[u] == null) g[u] = []
+    if(g[v] == null) g[v] = []
+    g[u].push(v)
+    g[v].push(u)
+  }
+  let q = []
+  for(let i = 0; i < n; i++) {
+    if(degree[i] === 1) q.push(i)
+  }
+  let cnt = 0 
+  while(q.length) {
+    const size = q.length
+    const tmp = []
+    for(let i = 0; i < size; i++) {
+        const node = q[i]
+        cnt++
+        for(const nxt of (g[node] || [])) {
+            degree[nxt]--
+            if(degree[nxt] === 1) {
+                tmp.push(nxt)
+            }
+        }
+    }
+    
+    q = tmp
+    if(n - cnt <= 2) break
+  }
+  
+  const res = []
+  while(q.length) {
+    res.push(q.pop())
+  }
+  return res
+};
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {number[]}
+ */
 const findMinHeightTrees = function (n, edges) {
   const graph = {}
 
