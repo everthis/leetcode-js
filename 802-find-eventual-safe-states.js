@@ -2,6 +2,55 @@
  * @param {number[][]} graph
  * @return {number[]}
  */
+var eventualSafeNodes = function (graph) {
+  const n = graph.length
+  const g = {},
+    rg = {}
+  for (let i = 0; i < n; i++) {
+    const arr = graph[i]
+    g[i] = new Set(arr)
+    for (let j of arr) {
+      if (!rg[j]) {
+        rg[j] = new Set()
+      }
+      rg[j].add(i)
+    }
+  }
+  let q = []
+  for (let i = 0; i < n; i++) {
+    if (g[i].size === 0) {
+      q.push(i)
+    }
+  }
+  const res = []
+  while (q.length) {
+    const size = q.length
+    const nxt = []
+    for (let i = 0; i < size; i++) {
+      const node = q[i]
+      res.push(node)
+      for (let j of rg[node] || []) {
+        g[j].delete(node)
+        if (g[j].size === 0) {
+          nxt.push(j)
+        }
+      }
+    }
+
+    q = nxt
+  }
+
+  res.sort((a, b) => a - b)
+  return res
+}
+
+// another
+
+
+/**
+ * @param {number[][]} graph
+ * @return {number[]}
+ */
 const eventualSafeNodes = function (graph) {
   const ing = {},
     n = graph.length
