@@ -4,6 +4,59 @@
  * @param {number[][]} queries
  * @return {boolean[]}
  */
+var checkIfPrerequisite = function(numCourses, prerequisites, queries) {
+   const g = {}
+   const n = numCourses
+   const indegree = Array(n).fill(0)
+   for(const [a, b] of prerequisites) {
+     if(!g[a]) {
+       g[a] = []
+     }
+     g[a].push(b)
+     indegree[b]++
+   }
+   const q = []
+    for(let i = 0; i < n; i++) {
+      if(indegree[i] === 0) {
+        q.push(i)
+      }
+    }
+    const res = []
+    const hash = {}
+    for(const e of q) {
+      dfs(e, new Set())
+    }
+    for(let i = 0; i < queries.length; i++) {
+      const [a, b] = queries[i]
+      res.push(hash[a] && hash[a].has(b))
+    }
+
+    return res
+    function dfs(cur, set) {
+        if(hash[cur]) {
+            return hash[cur]
+        }
+        hash[cur] = new Set()
+        if(g[cur]) {
+            for(const e of g[cur]) {
+                for(const x of dfs(e, set)) {
+                    hash[cur].add(x)
+                }
+            }
+        }
+        hash[cur].add(cur)
+        return hash[cur]
+    }
+};
+
+// another
+
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @param {number[][]} queries
+ * @return {boolean[]}
+ */
 const checkIfPrerequisite = function (numCourses, prerequisites, queries) {
   const n = numCourses, m = prerequisites.length
   const graph = {}, inDegree = Array(n).fill(0)
