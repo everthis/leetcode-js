@@ -2,6 +2,74 @@
  * @param {number[][]} targetGrid
  * @return {boolean}
  */
+const isPrintable = function(targetGrid) {
+    // solve the problem: BFS
+    // 1. find the top-left and bottom-right corner of each color
+    // 2. check if there is a circle in the graph
+    // 3. if there is a circle, return false
+    // 4. if there is no circle, return true
+    const m = targetGrid.length;
+    const n = targetGrid[0].length;
+    const left = new Array(61).fill(n);
+    const right = new Array(61).fill(-1);
+    const top = new Array(61).fill(m);
+    const bottom = new Array(61).fill(-1);
+    const next = new Array(61).fill(null).map(() => []);
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            const color = targetGrid[i][j];
+            left[color] = Math.min(left[color], j);
+            right[color] = Math.max(right[color], j);
+            top[color] = Math.min(top[color], i);
+            bottom[color] = Math.max(bottom[color], i);
+        }
+    }
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            for (let color = 1; color <= 60; color++) {
+                if (i >= top[color] && i <= bottom[color] && j >= left[color] && j <= right[color]) {
+                    if (color !== targetGrid[i][j]) {
+                        next[targetGrid[i][j]].push(color);
+                    }
+                }
+            }
+        }
+    }
+    const numNodes = 61;
+    const inDegree = new Array(numNodes).fill(0);
+    for (let i = 0; i < numNodes; i++) {
+        for (const j of next[i]) {
+            inDegree[j]++;
+        }
+    }
+    const queue = [];
+    let count = 0;
+    for (let i = 0; i < numNodes; i++) {
+        if (inDegree[i] === 0) {
+            queue.push(i);
+            count++;
+        }
+    }
+    while (queue.length > 0) {
+        const curCourse = queue.shift();
+        for (const child of next[curCourse]) {
+            inDegree[child]--;
+            if (inDegree[child] === 0) {
+                queue.push(child);
+                count++;
+            }
+        }
+    }
+    return count === numNodes;
+};
+
+// another
+
+
+/**
+ * @param {number[][]} targetGrid
+ * @return {boolean}
+ */
 const isPrintable = function (targetGrid) {
   const posMin = Array.from({ length: 61 }, () => Array(2).fill(61))
   const posMax = Array.from({ length: 61 }, () => Array(2).fill(0))
