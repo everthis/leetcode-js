@@ -1,3 +1,91 @@
+class UF {
+    constructor(n) {
+        this.parent = new Array(n + 1).fill(0).map((_, i) => i);
+    }
+    union(x, y) {
+        const rootX = this.find(x);
+        const rootY = this.find(y);
+        if (rootX !== rootY) {
+            this.parent[rootX] = rootY;
+        }
+    }
+    find(x) {
+        if (x !== this.parent[x]) {
+            this.parent[x] = this.find(this.parent[x]);
+        }
+        return this.parent[x];
+    }
+}
+
+// Update the matrixRankTransform function to use the union-find functions
+var matrixRankTransform = function(matrix) {
+    const m = matrix.length
+    const n = matrix[0].length
+    const uf = new UF(m * n)
+    const res = Array.from({ length: m }, () => Array(n).fill(-1))
+
+    for (let i = 0; i < m; i++) {
+        const tmp = []
+        for (let j = 0; j < n; j++) {
+            tmp.push([matrix[i][j], i * n + j])
+        }
+        tmp.sort((a, b) => a[0] - b[0])
+        for (let j = 1; j < n; j++) {
+            if (tmp[j][0] === tmp[j - 1][0] && uf.find(tmp[j][1]) !== uf.find(tmp[j - 1][1])) {
+                uf.union(tmp[j][1], tmp[j - 1][1])
+            }
+        }
+    }
+
+    for (let j = 0; j < n; j++) {
+        const tmp = []
+        for (let i = 0; i < m; i++) {
+            tmp.push([matrix[i][j], i * n + j])
+        }
+        tmp.sort((a, b) => a[0] - b[0])
+        for (let i = 1; i < m; i++) {
+            if (tmp[i][0] === tmp[i - 1][0] && uf.find(tmp[i][1]) !== uf.find(tmp[i - 1][1])) {
+                uf.union(tmp[i][1], tmp[i - 1][1])
+            }
+        }
+    }
+
+    const nums = [], group = {}
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            const key = i * n + j
+            const root = uf.find(key)
+            if(group[root] == null) group[root] = []
+            group[root].push(key)
+            nums.push([matrix[i][j], key])
+        }
+    }
+    nums.sort((a, b) => a[0] - b[0])
+    const rowMax = Array(m).fill(0)
+    const colMax = Array(n).fill(0)
+    for(const e of nums) {
+        const [val, key] = e
+        const [i, j] = [Math.floor(key / n), key % n]
+        if(res[i][j] !== -1) continue
+        let rank = 0
+        for(const k of group[uf.find(key)]) {
+            const [x, y] = [Math.floor(k / n), k % n]
+            rank = Math.max(rank, rowMax[x], colMax[y])
+        }
+        rank++
+        for(const k of group[uf.find(key)]) {
+            const [x, y] = [Math.floor(k / n), k % n]
+            res[x][y] = rank
+            rowMax[x] = rank
+            colMax[y] = rank
+        }
+    }
+
+    return res
+};
+
+// another
+
 /**
  * @param {number[][]} matrix
  * @return {number[][]}
