@@ -3,6 +3,73 @@
  * @param {number[][]} edges
  * @return {number}
  */
+const largestPathValue = function(colors, edges) {
+    const n = colors.length;
+    const m = edges.length;
+    const adj = Array(n).fill(0).map(() => []);
+    const inDegree = Array(n).fill(0);
+    for (const [u, v] of edges) {
+        adj[u].push(v);
+        inDegree[v]++;
+    }
+    let res = 1
+    const colorSet = new Set(colors);
+    const a = 'a'.charCodeAt(0);
+    for(const e of colorSet) {
+        const tmp = helper(e.charCodeAt(0) - a);
+        if(tmp === -1) return -1;
+        res = Math.max(res, tmp);
+    }
+
+    return res
+
+    function code(ch) {
+        return ch.charCodeAt(0) - 'a'.charCodeAt(0);
+    }
+    function helper(k) {
+        const ind = [...inDegree];
+        const count = Array(n).fill(0);
+        let nodes = 0
+        let res = 0
+        let q = []
+        for(let i = 0; i < n; i++) {
+            if(ind[i] === 0) {
+                q.push(i);
+                nodes++
+                count[i] = code(colors[i]) === k ? 1 : 0;
+            }
+        }
+
+        while(q.length) {
+            const size = q.length;
+            const tmp = []
+            for(let i = 0; i < size; i++) {
+                const e = q[i];
+                for(const v of adj[e]) {
+                    count[v] = Math.max(count[v], count[e] + (code(colors[v]) === k ? 1 : 0));
+                    res = Math.max(res, count[v]);
+                    ind[v]--;
+                    if(ind[v] === 0) {
+                        tmp.push(v);
+                        nodes++
+                    }
+                }
+            }
+
+            q = tmp
+        }
+
+        return nodes === n ? res : -1
+    }
+};
+
+// another
+
+/**
+ * @param {string} colors
+ * @param {number[][]} edges
+ * @return {number}
+ */
 const largestPathValue = function (colors, edges) {
   const graph = {}
   const n = colors.length,
