@@ -4,6 +4,51 @@
  * @param {number[]} time
  * @return {number}
  */
+const minimumTime = function(n, relations, time) {
+  const adj = Array(n + 1).fill(0).map(() => []);
+    const inDegree = Array(n + 1).fill(0);
+    for (const [u, v] of relations) {
+        adj[u].push(v);
+        inDegree[v]++;
+    }
+    let q = []
+    const finishTime = Array(n + 1).fill(0);
+    for(let i = 1; i <= n; i++) {
+        if(inDegree[i] === 0) {
+            q.push(i);
+            finishTime[i] = time[i - 1];
+        }
+    }
+
+
+    while(q.length) {
+        const size = q.length;
+        const tmp = []
+        for(let i = 0; i < size; i++) {
+            const e = q[i];
+            for(const v of adj[e]) {
+                inDegree[v]--;
+                finishTime[v] = Math.max(finishTime[v], finishTime[e] + time[v - 1]);
+                if(inDegree[v] === 0) {
+                    tmp.push(v);
+                }
+            }
+        }
+
+        q = tmp
+    }
+
+    return Math.max(...finishTime.slice(1))
+};
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[][]} relations
+ * @param {number[]} time
+ * @return {number}
+ */
 const minimumTime = function (n, relations, time) {
   const inDegree = Array(n + 1).fill(0)
   const graph = {}, dist = Array(n + 1).fill(0)
