@@ -4,6 +4,72 @@
  * @param {number[][]} colConditions
  * @return {number[][]}
  */
+const buildMatrix = function(k, rowConditions, colConditions) {
+    const col = topo(k, colConditions);
+    const row = topo(k, rowConditions);
+    if(col.length === 0 || row.length === 0) return []
+
+    const res = Array.from({length: k}, () => Array.from({length: k}, () => 0));
+    const colHash = {}, rowHash = {};
+    for(let i = 0; i < k; i++) {
+        colHash[col[i]] = i;
+        rowHash[row[i]] = i;
+    }
+    for(let i = 1; i <= k; i++) {
+        res[rowHash[i]][colHash[i]] = i
+    }
+
+    return res
+
+    function topo(k, conditions) {
+        const n = conditions.length;
+        const ind = new Array(k + 1).fill(0);
+        const adj = Array.from({length: k + 1}, () => []);
+        for(let i = 0; i < n; i++) {
+            const [a, b] = conditions[i];
+            adj[a].push(b);
+            ind[b]++;
+        }
+      // console.log(adj, ind)
+        let q = []
+        for(let i = 1; i <= k; i++) {
+            if (ind[i] === 0) {
+                q.push(i);
+            }
+        }
+        const res = []
+
+        while(q.length) {
+            const size = q.length
+            const tmp = []
+            for(let i = 0; i < size; i++) {
+
+                const node = q[i]
+                res.push(node)
+                for(const nxt of adj[node]) {
+                    ind[nxt]--;
+                    if (ind[nxt] === 0) {
+                        tmp.push(nxt);
+                    }
+                }
+            }
+            q = tmp
+        }
+      // console.log(res)
+        if(res.length !== k) return []
+        return res
+    }
+};
+
+// another
+
+
+/**
+ * @param {number} k
+ * @param {number[][]} rowConditions
+ * @param {number[][]} colConditions
+ * @return {number[][]}
+ */
 const buildMatrix = function (k, rowConditions, colConditions) {
   const res = Array.from({ length: k }, () => Array(k).fill(0))
 
