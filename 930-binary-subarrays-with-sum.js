@@ -1,4 +1,28 @@
 /**
+ * @param {number[]} nums
+ * @param {number} goal
+ * @return {number}
+ */
+var numSubarraysWithSum = function(nums, goal) {
+  const n = nums.length
+  const hash = { 0: 1 }
+  let res = 0
+  let sum = 0
+  for(let i = 0; i < n; i++) {
+    const e = nums[i]
+    sum += e
+    const diff = sum - goal
+    if(hash[diff] != null) res += hash[diff]
+    if(hash[sum] == null) hash[sum] = 1
+    else hash[sum]++
+  }
+
+  return res
+};
+
+// another
+
+/**
  * @param {number[]} A
  * @param {number} S
  * @return {number}
