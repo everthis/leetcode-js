@@ -2,6 +2,41 @@
  * @param {string} s
  * @return {number}
  */
+var findTheLongestSubstring = function(s) {
+    const hash = {0: -1};
+    const vowels = 'aeiou';
+    const vowelsSet = new Set(vowels);
+    const n = s.length;
+    const key = (ch) => {
+        const idx = vowels.indexOf(ch);
+        return idx === -1 ? 0 : 1 << idx;
+    }
+    let state = 0;
+    let res = 0;
+    for(let i = 0; i < n; i++) {
+        const ch = s[i]
+        let tmp = state;
+        if(vowelsSet.has(ch)) {
+            tmp ^= key(ch);
+        }
+        if(hash[tmp] === undefined) {
+            hash[tmp] = i;
+        }else {
+            res = Math.max(res, i - hash[tmp]);
+        }
+
+        state = tmp
+    }
+
+    return res
+};
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
 const findTheLongestSubstring = function(s) {
   const n = s.length
   let res = 0, mask = 0
