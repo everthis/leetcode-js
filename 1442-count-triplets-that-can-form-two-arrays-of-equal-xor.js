@@ -67,3 +67,31 @@ const countTriplets = function(arr) {
   }
   return res
 };
+/*
+
+you have an array : a[0], a[1].... a[n - 1]
+
+
+First things first:
+We need to understand small fact, if xor(a[0....i]) has appeared before at index j then it means xor(a[j+1.....i]) = 0
+Another fact, if xor(a[i....j]) = 0 so this subarray will add (j - i - 1) to the answer.
+
+
+Now say currently we are at index i and let xor([0...i]) = x.
+
+
+Now say x has occurred 3 times previously at indices (i1, i2, i3)
+
+
+our answer for i will be = (i - i1 - 1) + (i - i2 - 1) + (i - i3 - 1)
+
+
+if you simplify this further you get f * i - (i1 + i2 + i3) - f = (i - 1) * f - (i1 + i2 + i3)
+
+
+f = no. of times x has occurred previously.
+
+
+(i1 + i2 + i3) = sum of all the indices where x has occurred previously.
+
+*/
