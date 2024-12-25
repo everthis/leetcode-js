@@ -3,6 +3,35 @@
  * @param {number} p
  * @return {number}
  */
+var minSubarray = function(nums, p) {
+    const n = nums.length
+    const sum = nums.reduce((acc, cur) => acc + cur, 0)
+    const target = sum % p
+    if(target === 0) return 0
+    const hash = {0: -1}
+    let res = n
+    let curSum = 0
+    for(let i = 0; i < n; i++) {
+        const e = nums[i]
+        curSum += e
+        const remain = curSum % p
+        const diff = (remain - target + p) % p
+        if(hash[diff] != null) {
+            res = Math.min(res, i - hash[diff])
+        }
+        hash[remain] = i
+    }
+
+    return res === n ? -1 : res
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} p
+ * @return {number}
+ */
 const minSubarray = function(nums, p) {
   const sum = nums.reduce((ac, e) => ac+ e,0)
   const target = sum % p, n = nums.length, {min} = Math
