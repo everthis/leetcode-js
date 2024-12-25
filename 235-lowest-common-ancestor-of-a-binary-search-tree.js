@@ -29,6 +29,7 @@ const lowestCommonAncestor = function(root, p, q) {
  *     this.left = this.right = null;
  * }
  */
+
 /**
  * @param {TreeNode} root
  * @param {TreeNode} p
@@ -36,8 +37,8 @@ const lowestCommonAncestor = function(root, p, q) {
  * @return {TreeNode}
  */
 const lowestCommonAncestor = function(root, p, q) {
-    while((root.val - p.val) * (root.val - q.val) > 0) {
-          root = root.val > p.val ? root.left : root.right
-    }
-    return root
+  while((root.val - p.val) * (root.val - q.val) > 0) {
+    root = p.val < root.val ? root.left : root.right
+  }
+  return root
 };
