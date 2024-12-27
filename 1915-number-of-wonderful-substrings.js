@@ -2,6 +2,35 @@
  * @param {string} word
  * @return {number}
  */
+const wonderfulSubstrings = function(word) {
+  const n = word.length;
+  let mask = 0
+  const hash = {0: 1}, a = 'a'.charCodeAt(0)
+  let res = 0
+  
+  for(let i = 0; i < n; i++) {
+    const idx = word.charCodeAt(i) - a
+    mask ^= (1 << idx)
+
+    res += hash[mask] || 0
+    for(let j = 0; j < 10; j++) {
+      const newMask = mask ^ (1 << j)
+      res += hash[newMask] || 0
+    }
+
+    if(hash[mask] == null) hash[mask] = 0
+    hash[mask]++
+  }
+  
+  return res
+};
+
+// another
+
+/**
+ * @param {string} word
+ * @return {number}
+ */
 const wonderfulSubstrings = function (word) {
   const n = word.length,
     a = 'a'.charCodeAt(0)
