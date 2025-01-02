@@ -3,6 +3,30 @@
  * @param {number} k
  * @return {number}
  */
+const maxSubarraySum = function(nums, k) {
+    const ps = [0]
+    for (const e of nums) {
+        ps.push(ps[ps.length - 1] + e)
+    }
+    let res = Number.MIN_SAFE_INTEGER
+    for (let p = 0; p < k; ++p) {
+        let sum = 0
+        for (let i = p; i + k <= nums.length; i += k) {
+            const n = ps[i + k] - ps[i]
+            sum = Math.max(n, sum + n)
+            res = Math.max(res, sum)
+        }
+    }
+    return res
+}
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
 var maxSubarraySum = function (nums, k) {
   const n = nums.length
   let res = -Infinity
