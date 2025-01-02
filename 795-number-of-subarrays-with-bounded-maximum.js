@@ -5,6 +5,55 @@
  * @return {number}
  */
 const numSubarrayBoundedMax = function(nums, left, right) {
+  const n = nums.length;
+    let res = 0
+    const preLargerOrEqual = Array(n).fill(-1)
+    const postLarger = Array(n).fill(n)
+    let stk = []
+    stk.push(0)
+    for(let i = 1; i < n; i++) {
+        const e = nums[i]
+        while(stk.length && nums[stk[stk.length - 1]] < e) {
+            stk.pop()
+        }
+        if(stk.length) {
+            preLargerOrEqual[i] = stk[stk.length - 1]
+        }
+        stk.push(i)
+    }
+    stk = []
+    stk.push(n - 1)
+    for(let i = n - 2; i >= 0; i--) {
+        const e = nums[i]
+        while(stk.length && nums[stk[stk.length - 1]] <= e) {
+            stk.pop()
+        }
+        if(stk.length) {
+            postLarger[i] = stk[stk.length - 1]
+        }
+        stk.push(i)
+    }
+    for(let i = 0; i < n; i++) {
+        const e = nums[i]
+        if(e >= left && e <= right) {
+            const pre = preLargerOrEqual[i]
+            const post = postLarger[i]
+            res += (i - pre) * (post - i)
+        }
+    }
+
+    return res
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} left
+ * @param {number} right
+ * @return {number}
+ */
+const numSubarrayBoundedMax = function(nums, left, right) {
   let prev = -1, res = 0, dp = 0
   const n = nums.length
 
