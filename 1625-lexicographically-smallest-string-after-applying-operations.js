@@ -3,6 +3,54 @@
  * @param {number} a
  * @param {number} b
  * @return {string}
+ */
+const findLexSmallestString = function(s, a, b) {
+    let res = s;
+    const n = s.length;
+
+    let evenLimit = 10;
+    if (b % 2 === 0) evenLimit = 1;
+
+    for (let i = 0; i < evenLimit; i++) {
+        for (let j = 0; j < 10; j++) {
+            let t = s.split('');
+
+            for (let k = 0; k < n; k += 2) {
+                t[k] = (parseInt(t[k]) + a * i) % 10;
+            }
+            for (let k = 1; k < n; k += 2) {
+                t[k] = (parseInt(t[k]) + a * j) % 10;
+            }
+
+            t = t.join('');
+            let p = t;
+            const gcdValue = gcd(n, b);
+            for (let k = 0; k <= n / gcdValue; k++) {
+                p = p.slice(n - b) + p.slice(0, n - b);
+                res = res < p ? res : p;
+            }
+        }
+    }
+
+    return res;    
+};
+
+
+function gcd(x, y) {
+    while (y !== 0) {
+        let temp = y;
+        y = x % y;
+        x = temp;
+    }
+    return x;
+}
+// another
+
+/**
+ * @param {string} s
+ * @param {number} a
+ * @param {number} b
+ * @return {string}
  */ 
 const findLexSmallestString = function(s, a, b) {
   let res = s
