@@ -3,6 +3,58 @@
  * @param {string} b
  * @return {number}
  */
+const minCharacters = function(a, b) {
+  const n = a.length, m = b.length;
+    const freqA = Array(26).fill(0), freqB = Array(26).fill(0);
+    const ac = 'a'.charCodeAt(0)
+    for(let i = 0; i < n; i++) {
+        freqA[a.charCodeAt(i) - ac]++
+    }
+    for(let i = 0; i < m; i++) {
+        freqB[b.charCodeAt(i) - ac]++
+    }
+    let res = Infinity
+    for(let i = 0; i < 26; i++) {
+        if(i > 0) {
+            let change = 0
+            for(let j = 0; j < i; j++) {
+                change += freqA[j]
+            }
+            for(let j = i; j < 26; j++) {
+                change += freqB[j]
+            }
+            res = Math.min(res, change)
+            change = 0
+            for(let j = 0; j < i; j++) {
+                change += freqB[j]
+            }
+            for(let j = i; j < 26; j++) {
+                change += freqA[j]
+            }
+            res = Math.min(res, change)
+        }
+        let change = 0
+        for(let j = 0; j < 26; j++) {
+            if(j !== i) {
+                change += freqA[j]
+                change += freqB[j]
+            }
+        }
+        res = Math.min(res, change)
+    }
+
+    return res
+};
+
+
+// another
+
+
+/**
+ * @param {string} a
+ * @param {string} b
+ * @return {number}
+ */
 const minCharacters = function (a, b) {
   const n1 = a.length,
     n2 = b.length
