@@ -1,4 +1,57 @@
 
+var DetectSquares = function() {
+    this.mat = Array.from({length: 1001}, () => Array.from({length: 1001}, () => 0));
+    this.ya = new Map()
+};
+
+/** 
+ * @param {number[]} point
+ * @return {void}
+ */
+DetectSquares.prototype.add = function(point) {
+    const [x, y] = point;
+    this.mat[x][y]++;
+    if(this.ya.get(y) == null) this.ya.set(y, new Map())
+    if(this.ya.get(y).get(x) == null) this.ya.get(y).set(x, 0)
+    this.ya.get(y).set(x, this.ya.get(y).get(x) + 1)
+};
+
+/** 
+ * @param {number[]} point
+ * @return {number}
+ */
+DetectSquares.prototype.count = function(point) {
+    const [x, y] = point;
+    let res = 0
+    if(!this.ya.has(y)) return res
+    for(const [key, cnt] of this.ya.get(y)) {
+        const i = +key
+        const d = Math.abs(x - i)
+        if(d === 0) continue
+        let j = y + d
+        if(j >= 0 && j < 1001) {
+            res += cnt * this.mat[x][j] * this.mat[i][j]
+        }
+        j = y - d
+        if(j >= 0 && j < 1001) {
+            res += cnt * this.mat[x][j] * this.mat[i][j]
+        }
+    }
+
+    return res
+};
+
+/** 
+ * Your DetectSquares object will be instantiated and called as such:
+ * var obj = new DetectSquares()
+ * obj.add(point)
+ * var param_2 = obj.count(point)
+ */
+
+// another
+
+
+
 const DetectSquares = function() {
   this.pts = []
   this.ptsCnt = {}
