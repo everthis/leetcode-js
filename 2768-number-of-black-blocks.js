@@ -4,6 +4,41 @@
  * @param {number[][]} coordinates
  * @return {number[]}
  */
+var countBlackBlocks = function(m, n, coordinates) {
+  
+  const map = new Map();
+    for (const [x, y] of coordinates) {
+        for(let i = x - 1; i <= x; i++) {
+            for(let j = y - 1; j <= y; j++) {
+                if(i >= 0 && j >= 0 && i < m - 1 && j < n - 1) {
+                    const key = encode(i, j);
+                    map.set(key, (map.get(key) || 0) + 1);
+                }
+            }
+        }
+    }
+    const res = Array(5).fill(0);
+    for (const count of map.values()) {
+        res[count]++;
+    }
+
+    res[0] = (m - 1) * (n - 1) - res[1] - res[2] - res[3] - res[4];
+    return res;
+
+  function encode(x, y) {
+    return x * n + y;
+  }
+};
+
+// another
+
+
+/**
+ * @param {number} m
+ * @param {number} n
+ * @param {number[][]} coordinates
+ * @return {number[]}
+ */
 const countBlackBlocks = function(m, n, coordinates) {
   const hash = {}
   const key = ([x, y]) => `${x},${y}`
