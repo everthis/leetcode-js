@@ -2,6 +2,24 @@
  * @param {number[][]} intervals
  * @return {number}
  */
+var eraseOverlapIntervals = function(intervals) {
+    intervals.sort((a, b) => a[1] - b[1]);
+    let res = 0
+    let end = -Infinity
+    for(const [start, finish] of intervals) {
+        if(start < end) res++
+        else end = finish
+    }
+
+    return res
+};
+
+// another
+
+/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
 const eraseOverlapIntervals = function(intervals) {
   if(intervals == null || intervals.length === 0) return 0
   intervals.sort((a, b) => a[1] - b[1])
