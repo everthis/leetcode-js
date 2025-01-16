@@ -2,6 +2,34 @@
  * @param {number[][]} intervals
  * @return {number}
  */
+var intersectionSizeTwo = function(intervals) {
+    intervals.sort((a, b) => a[1] === b[1] ? b[0] - a[0] : a[1] - b[1]);
+    let res = 2
+    let a = intervals[0][1] - 1, b = intervals[0][1]
+
+    for(const [s, e] of intervals) {
+        if(s <= a) continue
+        else if(s <= b) {
+            res++
+            a = b
+            b = e
+        } else {
+            res += 2
+            a = e - 1
+            b = e
+        }
+    }
+
+    return res
+};
+
+// another
+
+
+/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
 const intersectionSizeTwo = function (intervals) {
   if (intervals.length === 1) return 2
   intervals.sort((a, b) => (a[1] !== b[1] ? a[1] - b[1] : b[0] - a[0]))
