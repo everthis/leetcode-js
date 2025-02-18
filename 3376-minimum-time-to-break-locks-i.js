@@ -15,7 +15,7 @@ var findMinimumTime = function(strength, k) {
             res = Math.min(res, tmp)
             return
         } 
-        let sum = x, add = 0
+        let add = 0
         for(let i = 0; i < n; i++) {
             if(mask & (1 << i)) continue
             add = floor((strength[i] + x - 1) / x)
