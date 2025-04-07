@@ -2,6 +2,50 @@
  * @param {string[]} words
  * @return {number[]}
  */
+const sumPrefixScores = function(words) {
+  const root = new Node()
+  const n = words.length
+  for(const w of words) {
+    let cur = root
+    for(const ch of w) {
+        if(!cur.children.has(ch)) cur.children.set(ch, new Node())
+        const node = cur.children.get(ch)
+        node.cnt++
+        cur = node
+    }
+  }
+
+  const res = []
+
+  for(const w of words) {
+    let cur = root
+    let tmp = 0
+    for(const ch of w) {
+        if(cur.children.has(ch)) {
+            const node = cur.children.get(ch)
+            tmp += node.cnt
+            cur = node
+        } else break
+    }
+    res.push(tmp)
+  }
+
+  return res
+};
+
+class Node {
+    constructor() {
+        this.children = new Map()
+        this.cnt = 0
+    }
+}
+
+// another
+
+/**
+ * @param {string[]} words
+ * @return {number[]}
+ */
 const sumPrefixScores = (words) => {
   const n = words.length
   const trie = { _count: 0 }
