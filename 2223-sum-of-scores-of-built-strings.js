@@ -3,6 +3,39 @@
  * @return {number}
  */
 var sumScores = function(s) {
+  let res = 0
+  const pre = lps(s)
+  const cnt = []
+  for(let i = 0; i < s.length; i++) {
+    const j = pre[i]
+    cnt.push(j === 0 ? 0 : cnt[j - 1] + 1)
+  }
+  res = cnt.reduce((ac, e) => ac + e, 0) + s.length
+  return res
+
+  function lps(s) {
+    const n = s.length
+    const res = Array(n).fill(0)
+
+    for(let i = 1, j = 0; i < n; i++) {
+        while(j && s[j] !== s[i]) {
+            j = Math.max(0, res[j - 1])
+        }
+        j += (s[i] === s[j] ? 1 : 0)
+        res[i] = j
+    }
+
+    return res
+  }
+};
+
+// another
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var sumScores = function(s) {
   function z_function(s) {
       let n = s.length
       let z = Array(n).fill(0)
