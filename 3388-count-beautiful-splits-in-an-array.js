@@ -4,6 +4,7 @@
  */
 var beautifulSplits = function (nums) {
   const n = nums.length
+  // lcps[i][j] = length of the longest common prefix between nums[i:] and nums[j:]
   const lcps = Array.from({ length: n }, () => Array(n).fill(0))
 
   // Calculate longest common prefixes
