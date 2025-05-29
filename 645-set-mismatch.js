@@ -2,6 +2,27 @@
  * @param {number[]} nums
  * @return {number[]}
  */
+var findErrorNums = function(nums) {
+    const res = []
+    for(let i=0; i<nums.length; i++) {
+        let idx = Math.abs(nums[i])-1
+        if(nums[idx]> 0) nums[idx] = -nums[idx];
+        else res[0] = idx+1;
+    }
+    for(let i=0; i<nums.length; i++) {
+        if(nums[i] <0) nums[i] = -nums[i]
+        else res[1]=i+1
+    }
+    return res
+
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
 const findErrorNums = function(nums) {
   if(nums == null || nums.length === 0) return null
   const res = []
