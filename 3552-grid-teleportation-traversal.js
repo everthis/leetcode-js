@@ -37,7 +37,7 @@ var minMoves = function (matrix) {
     if (x === n - 1 && y === m - 1) return curDist
 
     if (
-      matrix[x][y].toUpperCase() === matrix[x][y] &&
+      isUpper(matrix[x][y]) &&
       !used.has(matrix[x][y])
     ) {
       used.add(matrix[x][y])
@@ -65,6 +65,13 @@ var minMoves = function (matrix) {
   }
 
   return -1
+}
+
+function isUpper(ch) {
+    const A = 'A'.charCodeAt(0)
+    const Z = 'Z'.charCodeAt(0)
+    const code = ch.charCodeAt(0)
+    return code >= A && code <= Z
 }
 function isValid(i, j, n, m, matrix) {
   if (i < 0 || j < 0 || i >= n || j >= m) return false
