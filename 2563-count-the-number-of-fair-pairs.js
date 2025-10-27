@@ -38,3 +38,32 @@ function low(arr, target) {
     }
     return count;
 }
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} lower
+ * @param {number} upper
+ * @return {number}
+ */
+const countFairPairs = function(nums, lower, upper) {
+  nums.sort((a, b) => a - b)
+  return lowerBound(nums, upper + 1) - lowerBound(nums, lower)
+};
+
+function lowerBound(nums, value) {
+    let l = 0, r = nums.length - 1
+    let res = 0
+    while(l < r) {
+        const sum = nums[l] + nums[r]
+        if(sum < value) {
+            res += r - l
+            l++
+        } else {
+            r--
+        }
+    }
+
+    return res
+}
