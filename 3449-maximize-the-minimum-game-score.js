@@ -31,16 +31,14 @@ var maxScore = function (points, m) {
   }
 
   let l = 1n,
-    r = 10n ** 15n,
-    res = 0n
-  while (l <= r) {
-    const mid = l + (r - l) / 2n
+    r = 10n ** 15n
+  while (l < r) {
+    const mid = r - (r - l) / 2n
     if (can(Number(mid))) {
-      res = mid
-      l = mid + 1n
+      l = mid
     } else {
       r = mid - 1n
     }
   }
-  return Number(res)
+  return Number(l)
 }
