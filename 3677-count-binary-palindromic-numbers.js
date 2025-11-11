@@ -15,25 +15,25 @@ var countBinaryPalindromes = function (n) {
     ret += mx - mn + 1n
   }
 
-  {
-    const L = maxLen
-    const h = Math.floor((L + 1) / 2)
-    const mn = 1n << BigInt(h - 1)
-    const mx = (1n << BigInt(h)) - 1n
-    let lo = mn,
-      hi = mx
-    while (lo < hi) {
-      const mid = hi - (hi - lo) / 2n
-      const pal = build(mid, L)
-      if (pal <= n) {
-        lo = mid
-      } else {
-        hi = mid - 1n
-      }
+  
+  const L = maxLen
+  const h = Math.floor((L + 1) / 2)
+  const mn = 1n << BigInt(h - 1)
+  const mx = (1n << BigInt(h)) - 1n
+  let lo = mn,
+    hi = mx
+  while (lo < hi) {
+    const mid = hi - (hi - lo) / 2n
+    const pal = build(mid, L)
+    if (pal <= n) {
+      lo = mid
+    } else {
+      hi = mid - 1n
     }
-    const pal = build(hi, L)
-    if (pal <= n) ret += hi - mn + 1n
   }
+  const pal = build(hi, L)
+  if (pal <= n) ret += hi - mn + 1n
+  
 
   return Number(ret)
 }
@@ -55,6 +55,7 @@ function build(half, L) {
     return (half << BigInt(k)) | reverseBits(half >> 1n)
   }
 }
+
 
 
 // another
