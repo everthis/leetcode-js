@@ -4,35 +4,31 @@
  * @return {number}
  */
 var minimumTime = function (d, r) {
-  let low = d[0] + d[1]
-  let high = 2 * low * 2
-  let res = high
+  const [d0, d1] = d, [r0, r1] = r
+  let low = d0 + d1, hi = 2 * low * 2
+  const lcm = r0 * r1 / gcd(r0, r1)
+  const {floor: flr} = Math
 
-  let lcm = (r[0] * r[1]) / gcd(r[0], r[1])
-
-  while (low < high) {
-    let mid = low + Math.floor((high - low) / 2)
-    if (isOK(mid)) {
-      high = mid
-    } else {
-      low = mid + 1
-    }
+  while(low < hi) {
+    const mid = low + flr((hi - low) / 2)
+    if(isOK(mid)) {
+      hi = mid
+    } else low = mid + 1
   }
 
   return low
 
-  function gcd(a, b) {
-    while (b !== 0) {
-      let temp = b
-      b = a % b
-      a = temp
+  function isOK(t) {
+    const s0 = t - flr(t / r0), s1 = t - flr(t / r1)
+    const total = t - flr(t / lcm)
+    if(s0 >= d0 && s1 >= d1 && total >= d0 + d1) {
+      return true
     }
-    return a
+
+    return false
   }
-  function isOK(time) {
-    let slots1 = time - Math.floor(time / r[0])
-    let slots2 = time - Math.floor(time / r[1])
-    let total_slots = time - Math.floor(time / lcm)
-    return slots1 >= d[0] && slots2 >= d[1] && total_slots >= d[0] + d[1]
-  }
+}
+
+function gcd(a, b) {
+  return b === 0 ? a : gcd(b, a % b)
 }
