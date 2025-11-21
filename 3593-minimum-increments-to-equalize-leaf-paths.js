@@ -44,3 +44,43 @@ function dfs(node, parent, tree, cost, changes) {
 
   return cost[node] + maxCost
 }
+
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @param {number[]} cost
+ * @return {number}
+ */
+var minIncrease = function(n, edges, cost) {
+  const g = {}
+  for(const [u, v] of edges) {
+    if(g[u] == null) g[u] = []
+    if(g[v] == null) g[v] = []
+    g[u].push(v)
+    g[v].push(u)
+  }
+  let res = 0
+
+  dfs(0, -1)
+  return res
+
+  function dfs(i, f) {
+    const score = []
+    for(let j of (g[i] || [])) {
+      if(j === f) continue
+      score.push(dfs(j, i))
+    }
+    if(score.length === 0) return cost[i]
+    let ans = Math.max(...score)
+
+    for(const v of score) {
+      if(ans > v) res++
+    }
+
+    return ans + cost[i]
+  }
+
+};
