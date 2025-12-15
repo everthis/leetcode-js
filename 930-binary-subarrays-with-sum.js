@@ -4,6 +4,36 @@
  * @return {number}
  */
 var numSubarraysWithSum = function(nums, goal) {
+  return atMost(nums, goal) - atMost(nums, goal - 1)
+
+  function atMost(arr, up) {
+    if(up < 0) return 0
+    let res = 0
+    const n = arr.length
+    let i = 0, remain = up
+    for(let j = 0; j < n; j++) {
+      const e = arr[j]
+      remain -= e
+      while(remain < 0) {
+        remain += arr[i]
+        i++
+      }
+      res += j - i + 1
+    }
+
+    return res
+  } 
+};
+
+// another
+
+
+/**
+ * @param {number[]} nums
+ * @param {number} goal
+ * @return {number}
+ */
+var numSubarraysWithSum = function(nums, goal) {
   const n = nums.length
   const hash = { 0: 1 }
   let res = 0
