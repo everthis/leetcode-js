@@ -4,6 +4,27 @@
  * @return {number}
  */
 const maxSubarraySum = function(nums, k) {
+  const prefix = new Array(k).fill(1e15)
+  prefix[k - 1] = 0
+
+  let res = -1e15, pre = 0
+  for(let i = 0; i < nums.length; i++) {
+    pre += nums[i]
+    res = Math.max(res, pre - prefix[i % k])
+    prefix[i % k] = Math.min(pre, prefix[i % k])
+  }
+
+  return res
+}
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+const maxSubarraySum = function(nums, k) {
     const ps = [0]
     for (const e of nums) {
         ps.push(ps[ps.length - 1] + e)
