@@ -3,6 +3,81 @@
  * @return {number}
  */
 var longestBalanced = function(s) {
+  const n = s.length;
+  let res = 1
+  const { max } = Math
+
+  // single
+  let len = 1
+  for(let i = 1; i < n; i++) {
+    if(s[i] === s[i - 1]) {
+      len++
+    } else {
+      len = 1
+    }
+    res = max(res, len)
+  }
+
+  // two
+  h(s, 'a', 'b', res)
+  h(s, 'a', 'c', res)
+  h(s, 'b', 'c', res)
+
+  // three
+  const hash = {}
+  // a, b, c
+  const cnt = Array(3).fill(0)
+  hash[`0,0`] = -1
+  const a = 'a'.charCodeAt(0)
+  const key = (a, b) => `${a},${b}`
+  for(let i = 0; i < n; i++) {
+    const ch = s[i]
+    const k = ch.charCodeAt(0) - a
+    cnt[k]++
+    const ab = cnt[0] - cnt[1]
+    const ac = cnt[0] - cnt[2]
+    if(hash[key(ab, ac)] != null) {
+      res = max(res, i - hash[key(ab, ac)])
+    } else {
+      hash[key(ab, ac)] = i
+    }
+  }
+
+
+  return res
+
+  function h(s, x, y, ma) {
+    let num = 0
+    let hash = {0: -1}
+    for(let i = 0; i < s.length; i++) {
+      const ch = s[i]
+      if(ch === x) {
+        num++
+      } else if(ch === y) {
+        num--
+      } else {
+        num = 0
+        hash = {0: i}
+      }
+      if(hash[num] != null) {
+        res = max(res, i - hash[num])
+      } else {
+        hash[num] = i
+      }
+    }
+  }
+
+};
+
+
+// another
+
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var longestBalanced = function(s) {
     const n = s.length;
     let ans = 0;
     let i = 0;
