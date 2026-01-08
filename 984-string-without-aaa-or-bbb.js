@@ -3,6 +3,41 @@
  * @param {number} b
  * @return {string}
  */
+var strWithout3a3b = function(a, b) {
+
+   return helper(a, b, 'a', 'b')
+
+   function helper(a, b, ca, cb) {
+    if(b > a) return helper(b, a, cb, ca)
+    let res = ''
+
+    while(a > 0) {
+        a--
+        res += ca
+        if(a > b) {
+            res += ca
+            a--
+        }
+        if(b > 0) {
+            res += cb
+            b--
+        }
+
+    }
+
+    return res
+   } 
+};
+
+
+// another
+
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @return {string}
+ */
 const strWithout3a3b = function (a, b) {
   let res = ''
 
