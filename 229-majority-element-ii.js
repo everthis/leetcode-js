@@ -3,6 +3,50 @@
  * @return {number[]}
  */
 const majorityElement = function(nums) {
+  const n = nums.length
+  let s = 0
+  let l = 1
+
+  const res = []
+
+  let sc = 0, lc = 0
+
+  for(let i = 0; i < n; i++) {
+    const e = nums[i]
+    if(e === l) {
+      lc++
+    } else if(e === s) {
+      sc++
+    } else if(lc === 0) {
+      l = e
+      lc = 1
+    } else if(sc === 0) {
+      s = e
+      sc = 1
+    } else {
+      sc--
+      lc--
+    }
+  }
+  const oneThird = Math.floor(n / 3)
+  let scc = 0, lcc = 0
+  for(const e of nums) {
+    if(e === s) scc++
+    if(e === l) lcc++
+  }
+  if(scc > oneThird) res.push(s)
+  if(lcc > oneThird) res.push(l)
+
+  return res
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+const majorityElement = function(nums) {
   let candidate1 = 0, candidate2 = 0, cnt1 = 0, cnt2 = 0
   for(const e of nums) {
     if(e === candidate1) {
