@@ -19,36 +19,28 @@ var minCostToEqualizeArray = function (nums, cost1, cost2) {
     sum += diff
     l.push(diff)
   }
-  l.sort((a ,b) => {
-    if(a > b) {
-      return -1;
-    } else if (a < b){
-      return 1;
-    } else {
-      return 0;
-    }
-  });
+  l.sort((a ,b) => Number(b - a));
 
   if (cost1 * 2n <= cost2) {
     return Number((sum * cost1) % mod)
   }
 
-  let ans = big(1e30)
+  let res = big(1e30)
   for (let add = 0; add <= max; add++) {
     let tmp = 0n
     if (l[0] <= sum / 2n) {
       tmp += (sum / 2n) * cost2
       tmp += (sum % 2n) * cost1
-      if(tmp < ans) ans = tmp
+      if(tmp < res) res = tmp
     } else {
       tmp += (sum - l[0]) * cost2
       tmp += (l[0] - (sum - l[0])) * cost1
-      if(tmp < ans) ans = tmp
+      if(tmp < res) res = tmp
     }
 
     l[0]++
     sum += big(nums.length)
   }
 
-  return ans % mod
+  return Number(res % mod)
 }
