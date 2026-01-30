@@ -20,3 +20,31 @@ function bt(res, tmp, start, n, k) {
     tmp.pop();
   }
 }
+
+
+// another
+
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[][]}
+ */
+var combine = function(n, k) {
+  const cur = Array(k).fill(0)
+
+  let i = 0
+  const res = []
+  while(i >= 0) {
+    cur[i]++
+    if(cur[i] > n) {
+      i--
+    } else if(i === k - 1) {
+      res.push(cur.slice(0))
+    } else {
+      i++
+      cur[i] = cur[i - 1]
+    }
+  }
+
+  return res
+};
