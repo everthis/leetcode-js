@@ -3,6 +3,44 @@
  * @return {number}
  */
 const continuousSubarrays = function(nums) {
+  const n = nums.length
+  let res = 0, l = 0, r = 0, j = 0
+  
+  for(let i = 0; i < n; i++) {
+    const e = nums[i]
+    if(i === 0) {
+        res += 1
+        l = e - 2
+        r = e + 2
+    } else if(e >= l && e <= r) {
+        l = Math.max(l, e - 2)
+        r = Math.min(r, e + 2)
+        res += i - j + 1
+    } else {
+       j = i - 1
+       l = e - 2
+       r = e + 2
+       while(e - nums[j] <= 2 && e - nums[j] >= -2) {
+        l = Math.max(l, nums[j] - 2)
+        r = Math.min(r, nums[j] + 2)
+        j--
+       }
+       j++
+       res += i - j + 1
+    }
+  }
+
+
+  return res
+};
+
+// another
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const continuousSubarrays = function(nums) {
   let res = 0
   let l = 0
   let r = 0
