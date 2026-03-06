@@ -2,6 +2,49 @@
  * @param {number[][]} grid
  * @return {number}
  */
+var swimInWater = function(grid) {
+    const n = grid.length
+    const res = Array.from({ length: n }, () => Array(n).fill(Infinity))
+    let q = [[0,0]]
+    const dirs = [
+        [0, 1],
+        [0, -1],
+        [1, 0],
+        [-1, 0]
+    ]
+    res[0][0] = grid[0][0]
+
+    while(q.length) {
+        const size = q.length
+        const tmp = []
+        for(let i = 0; i < size; i++) {
+            const [x, y] = q[i]
+            for(const [dx, dy] of dirs) {
+                const nx = x + dx, ny = y + dy
+                if(
+                    nx >= 0 &&
+                    nx < n &&
+                    ny >= 0 &&
+                    ny < n &&
+                    res[nx][ny] > Math.max(grid[nx][ny], res[x][y])
+                ) {
+                    tmp.push([nx, ny])
+                    res[nx][ny] = Math.max(grid[nx][ny], res[x][y])
+                }
+            }
+        }
+        q = tmp
+    }
+    return res[n - 1][n - 1]
+};
+
+// another
+
+
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
 const swimInWater = function(grid) {
     const pq = new PQ((a, b) => a[0] < b[0])
     const dirs = [
