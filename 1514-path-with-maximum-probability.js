@@ -2,6 +2,98 @@
  * @param {number} n
  * @param {number[][]} edges
  * @param {number[]} succProb
+ * @param {number} start_node
+ * @param {number} end_node
+ * @return {number}
+ */
+var maxProbability = function(n, edges, succProb, start_node, end_node) {
+    const g = {}
+    for(let i = 0; i < edges.length; i++) {
+        const [a, b] = edges[i]
+        if(g[a] == null) g[a] = []
+        if(g[b] == null) g[b] = []
+        g[a].push([b, i])
+        g[b].push([a, i])
+    }
+
+    const res = Array(n).fill(0)
+    res[start_node] = 1
+    let q = new Dq()
+    q.push(start_node)
+
+    while(!q.isEmpty()) {
+        const cur = q.shift()
+        // console.log(cur)
+        for(const [nxt, i] of (g[cur] || [])) {
+            if(succProb[i] * res[cur] > res[nxt]) {
+                res[nxt] = succProb[i] * res[cur]
+                q.push(nxt)
+            }
+        }
+    }
+// console.log(g, res)
+
+    return res[end_node]
+};
+
+class Dq {
+    constructor() {
+        this.dummy = new Node()
+        this.tail = null
+    }
+    push(val) {
+        const tmp = new Node(val)
+        // if(this.cur == null) this.cur = tmp
+        if(this.tail) {
+            this.tail.next = tmp
+            tmp.pre = this.tail
+        } else {
+            this.dummy.next = tmp
+            tmp.pre = this.dummy
+        }
+
+        this.tail = tmp
+    }
+    pop() {
+        if(this.tail == null) return
+        const pre = this.tail.pre
+        pre.next = null
+        this.tail = pre
+    }
+    isEmpty() {
+        return this.dummy.next == null
+    }
+    shift() {
+        const head = this.dummy.next
+        const hnxt = head.next
+        this.dummy.next = hnxt
+        if(hnxt) hnxt.pre = this.dummy
+        else this.tail = null
+        if(head) return head.val
+    }
+    head() {
+        return this.dummy.next ? this.dummy.next.val : -1
+    }
+    last() {
+        return this.tail ? this.tail.val : -1
+    }
+}
+
+class Node {
+    constructor(val) {
+        this.val = val
+        this.next = null
+        this.pre = null
+    }
+}
+
+// another
+
+
+/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @param {number[]} succProb
  * @param {number} start
  * @param {number} end
  * @return {number}
