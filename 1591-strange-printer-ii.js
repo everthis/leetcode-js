@@ -2,6 +2,66 @@
  * @param {number[][]} targetGrid
  * @return {boolean}
  */
+var isPrintable = function(targetGrid) {
+    const n = targetGrid.length;
+    const m = targetGrid[0].length;
+    const {max, min} = Math
+
+    const posMin = Array.from({ length: 61 }, () => Array(2).fill(Infinity))
+    const posMax = Array.from({ length: 61 }, () => Array(2).fill(-1))
+    let colorSet = new Set()
+
+    for(let i = 0; i < n; i++) {
+        for(let j = 0; j < m; j++) {
+            const c = targetGrid[i][j]
+            colorSet.add(c)
+            posMin[c][0] = min(posMin[c][0], i)
+            posMin[c][1] = min(posMin[c][1], j)
+            posMax[c][0] = max(posMax[c][0], i)
+            posMax[c][1] = max(posMax[c][1], j)
+        }
+    }
+
+    while(colorSet.size > 0) {
+        const tmpSet = new Set()
+        for(const c of colorSet) {
+            if(!valid(c)) tmpSet.add(c)
+        }
+
+        if(tmpSet.size === colorSet.size) return false
+
+        colorSet = tmpSet
+    }
+
+    return true
+
+
+    function valid(c) {
+        for(let i = posMin[c][0]; i <= posMax[c][0]; i++) {
+            for(let j = posMin[c][1]; j <= posMax[c][1]; j++) {
+                if(targetGrid[i][j] > 0 && targetGrid[i][j] !== c) return false
+            }
+        }
+        for(let i = posMin[c][0]; i <= posMax[c][0]; i++) {
+            for(let j = posMin[c][1]; j <= posMax[c][1]; j++) {
+                targetGrid[i][j] = 0
+            }
+        }
+
+
+        return true
+    }
+
+};
+
+
+// another
+
+
+/**
+ * @param {number[][]} targetGrid
+ * @return {boolean}
+ */
 const isPrintable = function(targetGrid) {
     // solve the problem: BFS
     // 1. find the top-left and bottom-right corner of each color
