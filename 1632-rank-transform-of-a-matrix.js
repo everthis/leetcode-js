@@ -1,3 +1,76 @@
+/**
+ * @param {number[][]} matrix
+ * @return {number[][]}
+ */
+var matrixRankTransform = function(matrix) {
+    const m = matrix.length
+    const n = matrix[0].length
+    const gbv = {}
+
+    for(let r = 0; r < m; r++) {
+        for(let c = 0; c < n; c++) {
+            const v = matrix[r][c]
+            if(gbv[v] == null) gbv[v] = []
+            gbv[v].push([r, c])
+        }
+    }
+// console.log(gbv)
+    const rank = Array(m + n).fill(0)
+
+    const entries = Object.entries(gbv).sort((a, b) => a[0] - b[0])
+    for(const [v, cells] of entries) {
+        // console.log(cells)
+        const uf = new UF(m + n)
+        for(const [r, c] of cells) {
+            uf.union(r, c + m)
+        }
+
+        for(const [_, gp] of Object.entries( uf.getGroups() ) ) {
+            const group = gp.map(e => +e)
+            // console.log(v, group)
+            let maxRank = 0
+            for(let i of group) maxRank = Math.max(maxRank, rank[i])
+            for(let i of group) rank[i] = maxRank + 1
+        }
+
+        for(const [r, c] of cells) matrix[r][c] = rank[r]
+    }
+
+    return matrix
+};
+
+
+class UF {
+  constructor() {
+    this.root = {}
+  }
+  find(x) {
+    if (this.root[x] !== x) {
+      this.root[x] = this.find(this.root[x])
+    }
+    return this.root[x]
+  }
+  union(x, y) {
+    if(this.root[x] == null) this.root[x] = x
+    if(this.root[y] == null) this.root[y] = y
+    const xr = this.find(x)
+    const yr = this.find(y)
+    this.root[yr] = xr
+  }
+  getGroups() {
+    const g = {}
+    for(const [u, _] of Object.entries(this.root)) {
+        const r = this.find(u)
+        if(g[r] == null)  g[r] = []
+        g[r].push(u)
+    }
+    return g
+  }
+} 
+
+// another
+
+
 class UF {
     constructor(n) {
         this.parent = new Array(n + 1).fill(0).map((_, i) => i);
