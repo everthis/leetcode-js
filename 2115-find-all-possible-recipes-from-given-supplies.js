@@ -4,6 +4,63 @@
  * @param {string[]} supplies
  * @return {string[]}
  */
+var findAllRecipes = function(recipes, ingredients, supplies) {
+    
+    const g = {}
+    const n = recipes.length
+
+    for(let i = 0; i < n; i++) {
+        const na = recipes[i]
+        g[na] = new Set(ingredients[i])
+    }
+
+    const res = []
+    chk()
+
+    const notOk = new Set(Object.keys(g))
+    
+    for(const e of recipes) {
+        if(notOk.has(e)) continue
+        else res.push(e)
+    }
+
+    return res
+
+
+    function chk() {
+        let q = [...supplies]
+
+        while(q.length) {
+            const size = q.length
+            const tmp = []
+
+            for(let i = 0; i < size; i++) {
+                const na = q[i]
+                const keys = Object.keys(g)
+                for(const k of keys) {
+                    g[k].delete(na)
+                    if(g[k].size === 0) {
+                        delete g[k]
+                        tmp.push(k)
+                    }
+                }
+            }
+
+            q = tmp
+        }
+    }
+};
+
+
+// another
+
+
+/**
+ * @param {string[]} recipes
+ * @param {string[][]} ingredients
+ * @param {string[]} supplies
+ * @return {string[]}
+ */
 const findAllRecipes = function(recipes, ingredients, supplies) {
   const set = new Set(supplies), res = [], graph = {}, n = recipes.length
   const inDegree = {}
