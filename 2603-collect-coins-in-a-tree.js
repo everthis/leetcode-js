@@ -4,6 +4,82 @@
  * @return {number}
  */
 var collectTheCoins = function(coins, edges) {
+    const g = {}
+    const len = edges.length
+    for(const [a, b] of edges) {
+        if(g[a] == null) g[a] = new Set()
+        if(g[b] == null) g[b] = new Set()
+        g[a].add(b)
+        g[b].add(a)
+    }
+
+    let q = []
+    for(let i = 0; i < coins.length; i++) {
+        if(g[i] && g[i].size === 1 && coins[i] === 0) q.push(i)
+    }
+
+    let totalSize = len * 2, del = 0
+
+    while(q.length) {
+        const size = q.length
+        const tmp = []
+        for(let i = 0; i < size; i++) {
+            const e = q[i]
+
+            for(const nxt of (g[e] || [])) {
+                g[e].delete(nxt)
+                g[nxt].delete(e)
+                del += 2
+
+                if(g[nxt].size === 1 && coins[nxt] === 0) tmp.push(nxt)
+            }
+
+        }
+
+        q = tmp
+    }
+
+    let q1 = []
+    for(let i = 0; i < coins.length; i++) {
+        if(g[i] && g[i].size === 1 && coins[i] === 1) q1.push(i)
+    }
+
+    let step = 2
+
+    while(step > 0) {
+        step--
+        const size = q1.length
+        const tmp = []
+
+        for(let i = 0; i < size; i++) {
+            const e = q1[i]
+
+            for(const nxt of (g[e] || [])) {
+                g[e].delete(nxt)
+                g[nxt].delete(e)
+                del += 2
+                if(g[nxt].size === 1) tmp.push(nxt)
+            }
+        }
+
+
+        q1 = tmp
+    }
+
+
+    return totalSize - del
+};
+
+
+// another
+
+
+/**
+ * @param {number[]} coins
+ * @param {number[][]} edges
+ * @return {number}
+ */
+var collectTheCoins = function(coins, edges) {
   let n = coins.length;
   let next = Array.from({ length: n }, () => new Set());
 
